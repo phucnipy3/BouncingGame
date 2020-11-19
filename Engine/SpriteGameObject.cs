@@ -32,6 +32,7 @@ namespace Engine
         /// A larger value means that the object will be drawn on top.
         /// </summary>
         protected float depth;
+        private string v;
 
         /// <summary>
         /// Creates a new SpriteGameObject with a given sprite name.
@@ -46,6 +47,11 @@ namespace Engine
             if (spriteName != null)
                 sprite = new SpriteSheet(spriteName, depth, sheetIndex);
             Origin = Vector2.Zero;
+        }
+
+        public SpriteGameObject(string v)
+        {
+            this.v = v;
         }
 
         /// <summary>

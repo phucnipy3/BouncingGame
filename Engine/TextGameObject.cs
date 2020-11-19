@@ -32,7 +32,7 @@ namespace Engine
         /// <summary>
         /// An enum that describes the different ways in which a text can be aligned horizontally.
         /// </summary>
-        public enum Alignment
+        public enum HorizontalAlignment
         {
             Left,
             Right,
@@ -40,9 +40,24 @@ namespace Engine
         }
 
         /// <summary>
+        /// An enum that describes the different ways in which a text can be aligned vertically.
+        /// </summary>
+        public enum VerticalAlignment
+        {
+            Top,
+            Center,
+            Bottom
+        }
+
+        /// <summary>
         /// The horizontal alignment of this text.
         /// </summary>
-        protected Alignment alignment;
+        protected HorizontalAlignment horizontalAlignment;
+
+        /// <summary>
+        /// The horizontal alignment of this text.
+        /// </summary>
+        protected VerticalAlignment verticalAlignment;
 
         /// <summary>
         /// Creates a new TextGameObject with the given details.
@@ -50,14 +65,15 @@ namespace Engine
         /// <param name="fontName">The name of the font to use.</param>
         /// <param name="depth">The depth at which the text should be drawn.</param>
         /// <param name="color">The color with which the text should be drawn.</param>
-        /// <param name="alignment">The horizontal alignment to use.</param>
+        /// <param name="horizontalAlignment">The horizontal alignment to use.</param>
 
-        public TextGameObject(string fontName, float depth, Color color, Alignment alignment = Alignment.Left)
+        public TextGameObject(string fontName, float depth, Color color, HorizontalAlignment horizontalAlignment = HorizontalAlignment.Left, VerticalAlignment verticalAlignment = VerticalAlignment.Top)
         {
             font = ExtendedGame.AssetManager.LoadFont(fontName);
             Color = color;
             this.depth = depth;
-            this.alignment = alignment;
+            this.horizontalAlignment = horizontalAlignment;
+            this.verticalAlignment = verticalAlignment;
 
             Text = "";
         }
@@ -73,7 +89,7 @@ namespace Engine
                 return;
 
             // calculate the origin
-            Vector2 origin = new Vector2(OriginX, 0);
+            Vector2 origin = new Vector2(OriginX, OriginY);
 
             // draw the text
             spriteBatch.DrawString(font, Text, GlobalPosition,
@@ -89,15 +105,36 @@ namespace Engine
             get
             {
                 // left-aligned
-                if (alignment == Alignment.Left)
+                if (horizontalAlignment == HorizontalAlignment.Left)
                     return 0;
 
                 // right-aligned
-                if (alignment == Alignment.Right)
+                if (horizontalAlignment == HorizontalAlignment.Right)
                     return font.MeasureString(Text).X;
 
                 // centered
-                return font.MeasureString(Text).X / 2.0f;
+                return (font.MeasureString(Text).X + 1) / 2.0f;
+            }
+        }
+
+        float OriginY
+        {
+            get
+            {
+                // top
+                if(verticalAlignment == VerticalAlignment.Top)
+                {
+                    return 0;
+                }
+
+                // center
+                if(verticalAlignment == VerticalAlignment.Center)
+                {
+                    return (font.MeasureString(Text).Y + 1) / 2.0f;
+                }
+
+                // bottom
+                return font.MeasureString(Text).Y;
             }
         }
     }

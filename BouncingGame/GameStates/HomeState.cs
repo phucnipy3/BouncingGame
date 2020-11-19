@@ -41,8 +41,7 @@ namespace BouncingGame.GameStates
             }
             if (playButton.Pressed)
             {
-                // TODO: switch to play
-                //ExtendedGame.GameStateManager.SwitchTo();
+                ExtendedGame.GameStateManager.SwitchTo(Bouncing.StateName_Play);
             }
         }
     }

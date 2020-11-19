@@ -8,6 +8,7 @@ namespace BouncingGame
     public class Bouncing : ExtendedGame
     {
         public static string StateName_Home = "home";
+        public static string StateName_Play = "play";
 
 
         [STAThread]
@@ -36,6 +37,7 @@ namespace BouncingGame
 
             // add the game states
             GameStateManager.AddGameState(StateName_Home, new HomeState());
+            GameStateManager.AddGameState(StateName_Play, new PlayState());
 
 
             // start at the home screen
