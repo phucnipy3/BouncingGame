@@ -1,4 +1,5 @@
-﻿using Engine;
+﻿using BouncingGame.GameStates;
+using Engine;
 using Microsoft.Xna.Framework;
 using System;
 
@@ -6,6 +7,9 @@ namespace BouncingGame
 {
     public class Bouncing : ExtendedGame
     {
+        public static string StateName_Home = "home";
+
+
         [STAThread]
         static void Main()
         {
@@ -30,14 +34,12 @@ namespace BouncingGame
             FullScreen = false;
 
 
-            //// add the game states
-            //GameStateManager.AddGameState(StateName_Title, new TitleMenuState());
-            //GameStateManager.AddGameState(StateName_LevelSelect, new LevelMenuState());
-            //GameStateManager.AddGameState(StateName_Help, new HelpState());
-            //GameStateManager.AddGameState(StateName_Playing, new PlayingState());
+            // add the game states
+            GameStateManager.AddGameState(StateName_Home, new HomeState());
 
-            //// start at the title screen
-            //GameStateManager.SwitchTo(StateName_Title);
+
+            // start at the home screen
+            GameStateManager.SwitchTo(StateName_Home);
 
             //// play background music
             //AssetManager.PlaySong("Sounds/snd_music", true);
