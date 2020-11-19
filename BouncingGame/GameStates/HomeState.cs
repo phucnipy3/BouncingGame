@@ -14,11 +14,11 @@ namespace BouncingGame.GameStates
             gameObjects.AddChild(new SpriteGameObject("Sprites/Backgrounds/spr_home", 1));
             
             getBallButton = new Button("Sprites/Buttons/spr_btn_get_ball", 1);
-            getBallButton.LocalPosition = new Vector2(100, 100);
+            getBallButton.LocalPosition = new Vector2(620, 210);
             changeBallButton = new Button("Sprites/Buttons/spr_btn_change_ball", 1);
-            changeBallButton.LocalPosition = new Vector2(200, 200);
+            changeBallButton.LocalPosition = new Vector2(100, 800);
             playButton = new Button("Sprites/Buttons/spr_btn_play", 1);
-            playButton.LocalPosition = new Vector2(300, 300);
+            playButton.LocalPosition = new Vector2(400, 800);
 
             gameObjects.AddChild(getBallButton);
             gameObjects.AddChild(changeBallButton);
