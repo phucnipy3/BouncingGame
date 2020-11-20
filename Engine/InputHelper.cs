@@ -55,6 +55,7 @@ namespace Engine
         /// <returns>true if the left mouse button is now pressed and was not yet pressed in the previous frame; false otherwise.</returns>
         public bool MouseLeftButtonPressed()
         {
+
             return currentMouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released;
         }
 

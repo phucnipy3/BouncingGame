@@ -19,6 +19,11 @@ namespace Engine
         public Vector2 Origin { get; set; }
 
         /// <summary>
+        /// The rotation to use when drawing the sprite on the screen.
+        /// </summary>
+        public float Rotation { get; set; }
+
+        /// <summary>
         /// The sheet index of the attached sprite sheet.
         /// </summary>
         public int SheetIndex
@@ -32,7 +37,6 @@ namespace Engine
         /// A larger value means that the object will be drawn on top.
         /// </summary>
         protected float depth;
-        private string v;
 
         /// <summary>
         /// Creates a new SpriteGameObject with a given sprite name.
@@ -49,11 +53,6 @@ namespace Engine
             Origin = Vector2.Zero;
         }
 
-        public SpriteGameObject(string v)
-        {
-            this.v = v;
-        }
-
         /// <summary>
         /// Draws this SpriteGameObject on the screen, using its global position and origin. 
         /// Note that the object will only get drawn if it's actually marked as visible.
@@ -67,7 +66,7 @@ namespace Engine
 
             // draw the sprite at its *global* position in the game world
            if (sprite != null)
-                sprite.Draw(spriteBatch, GlobalPosition, Origin);
+                sprite.Draw(spriteBatch, GlobalPosition, Origin, Rotation);
         }
 
         /// <summary>
@@ -86,6 +85,22 @@ namespace Engine
         public void SetOriginToCenter()
         {
             Origin = sprite.Center;
+        }
+
+        /// <summary>
+        /// Updates this object's origin so that it lies in the center at bottom of the sprite.
+        /// </summary>
+        public void SetOriginToCenterBottom()
+        {
+            Origin = sprite.CenterBottom;
+        }
+
+        /// <summary>
+        /// Updates this object's origin so that it lies in the left at center of the sprite.
+        /// </summary>
+        public void SetOriginToLeftCenter()
+        {
+            Origin = sprite.LeftCenter;
         }
 
         /// <summary>

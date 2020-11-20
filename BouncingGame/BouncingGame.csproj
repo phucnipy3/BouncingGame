@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Bouncing.cs" />
     <Compile Include="GameObjects\Brick.cs" />
+    <Compile Include="GameObjects\Director.cs" />
     <Compile Include="GameStates\HomeState.cs" />
     <Compile Include="GameStates\PlayState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

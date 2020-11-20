@@ -7,9 +7,14 @@ namespace BouncingGame.GameStates
 {
     public class PlayState : GameState
     {
+        public Vector2 DropPosition { get; set; } = new Vector2(350, 1050);
+
+        private Director director;
         public PlayState()
         {
             gameObjects.AddChild(new SpriteGameObject("Sprites/Backgrounds/spr_home", 1));
+            director = new Director();
+            gameObjects.AddChild(director);
             AddNewRow(8);
         }
 

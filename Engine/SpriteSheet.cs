@@ -71,7 +71,7 @@ namespace Engine
         /// <param name="spriteBatch">The SpriteBatch object used for drawing sprites.</param>
         /// <param name="position">A position in the game world.</param>
         /// <param name="origin">An origin that should be subtracted from the drawing position.</param>
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, Vector2 origin)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, Vector2 origin, float rotation)
         {
             // mirror the sprite?
             SpriteEffects spriteEffects = SpriteEffects.None;
@@ -79,7 +79,7 @@ namespace Engine
                 spriteEffects = SpriteEffects.FlipHorizontally;
             
             spriteBatch.Draw(sprite, position, spriteRectangle, Color.White,
-                0.0f, origin, 1.0f, spriteEffects, depth);
+                rotation, origin, 1.0f, spriteEffects, depth);
         }
 
         /// <summary>
@@ -104,6 +104,22 @@ namespace Engine
         public Vector2 Center
         {
             get { return new Vector2(Width, Height) / 2; }
+        }
+
+        /// <summary>
+        /// Gets a vector that represents the center at bottom of a single sprite in this sprite sheet.
+        /// </summary>
+        public Vector2 CenterBottom
+        {
+            get { return new Vector2(Width / 2, Height); }
+        }
+
+        /// <summary>
+        /// Gets a vector that represents the left at center of a single sprite in this sprite sheet.
+        /// </summary>
+        public Vector2 LeftCenter
+        {
+            get { return new Vector2(0, Height / 2); }
         }
 
         /// <summary>
