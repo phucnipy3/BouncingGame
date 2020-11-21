@@ -2,7 +2,6 @@
 using Engine;
 using Microsoft.Xna.Framework;
 using System;
-using System.Diagnostics;
 
 namespace BouncingGame.GameObjects
 {
@@ -11,14 +10,18 @@ namespace BouncingGame.GameObjects
         SpriteGameObject arrow;
         Vector2 startPosition = Vector2.Zero;
         Vector2 endPosition = Vector2.Zero;
-        bool startAim = false;
-        public Director()
+        bool aimStarted = false;
+        bool canShoot = false;
+
+        ListBall listBall;
+        public Director(ListBall listBall)
         {
             arrow = new SpriteGameObject("Sprites/UI/spr_arrow", 1);
             arrow.SetOriginToLeftCenter();
             arrow.Rotation = -MathHelper.Pi / 2;
             this.AddChild(arrow);
             this.Visible = false;
+            this.listBall = listBall;
         }
 
         public override void Update(GameTime gameTime)
@@ -29,44 +32,46 @@ namespace BouncingGame.GameObjects
 
         public override void HandleInput(InputHelper inputHelper)
         {
+            if (listBall.Shooting)
+                return;
+
             Vector2 mousePosition = inputHelper.MousePositionWorld;
             Rectangle rectangle = new Rectangle(0, 150, 700, 900);
 
-            if (inputHelper.MouseLeftButtonPressed())
+            if (inputHelper.MouseLeftButtonPressed() && rectangle.Contains(mousePosition))
             {
-                if (rectangle.Contains(mousePosition))
-                {
-                    startPosition = mousePosition;
-                    startAim = true;
-                }
-                else 
-                {
-                    startAim = false;
-                }
+                aimStarted = true;
+                startPosition = mousePosition;
             }
 
-            if (startAim && inputHelper.MouseLeftButtonDown())
+            if(aimStarted && inputHelper.MouseLeftButtonDown())
             {
                 endPosition = mousePosition;
 
                 Vector2 force = endPosition - startPosition;
                 arrow.Rotation = (float)Math.Atan2(force.Y, force.X) + MathHelper.Pi;
-                Debug.WriteLine(arrow.Rotation);
-                if (force.Length() > 10 && (arrow.Rotation > MathHelper.Pi + MathHelper.Pi/12) && (arrow.Rotation< MathHelper.TwoPi - MathHelper.Pi/12))
+                if (force.Length() > 10 && (arrow.Rotation > MathHelper.Pi + MathHelper.Pi / 12) && (arrow.Rotation < MathHelper.TwoPi - MathHelper.Pi / 12))
                 {
-                    Visible = true;
+                    canShoot = true;
                 }
                 else
                 {
-                    Visible = false;
+                    canShoot = false;
                 }
             }
-            else
+
+            if (inputHelper.MouseLeftButtonReleased())
             {
-                Visible = false;
+                if (aimStarted && canShoot)
+                {
+                    listBall.Shoot(arrow.Rotation);
+                }
+
+                aimStarted = false;
+                canShoot = false;
             }
 
-            
+            Visible = canShoot;
 
             base.HandleInput(inputHelper);
         }

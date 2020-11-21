@@ -60,6 +60,16 @@ namespace Engine
         }
 
         /// <summary>
+        /// Checks and returns whether the player has released the left mouse button in the last frame of the game loop.
+        /// </summary>
+        /// <returns>true if the left mouse button is now released and was not yet released in the previous frame; false otherwise.</returns>
+        public bool MouseLeftButtonReleased()
+        {
+
+            return currentMouseState.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed;
+        }
+
+        /// <summary>
         /// Checks and returns whether the left mouse button is currently being held down.
         /// </summary>
         /// <returns>true if the left mouse button is currently being held down; false otherwise.</returns>

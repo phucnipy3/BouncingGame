@@ -42,8 +42,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Bouncing.cs" />
+    <Compile Include="Constants\NormalVector.cs" />
+    <Compile Include="GameObjects\Ball.cs" />
     <Compile Include="GameObjects\Brick.cs" />
     <Compile Include="GameObjects\Director.cs" />
+    <Compile Include="GameObjects\ListBall.cs" />
     <Compile Include="GameStates\HomeState.cs" />
     <Compile Include="GameStates\PlayState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -57,16 +60,64 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Icon.ico" />
+    <Content Include="Resources\Home\spr_btn_change_ball.png" />
+    <Content Include="Resources\Home\spr_btn_get_ball.png" />
+    <Content Include="Resources\Home\spr_btn_play.png" />
+    <Content Include="Resources\Home\spr_home.png" />
+    <Content Include="Resources\Home\spr_logo_name.png" />
+    <Content Include="Resources\icon\coin-dollar-yellow.png" />
+    <Content Include="Resources\icon\coin-dollar.png" />
+    <Content Include="Resources\icon\exchange %281%29.png" />
+    <Content Include="Resources\icon\exchange.png" />
+    <Content Include="Resources\icon\fitness-ball.png" />
+    <Content Include="Resources\icon\home-page.png" />
+    <Content Include="Resources\icon\low-volume.png" />
+    <Content Include="Resources\icon\pause.png" />
+    <Content Include="Resources\icon\play-button-arrowhead.png" />
+    <Content Include="Resources\icon\play-button-arrowhead1.png" />
+    <Content Include="Resources\icon\plus.png" />
+    <Content Include="Resources\icon\question-mark-draw.png" />
+    <Content Include="Resources\icon\ranking.png" />
+    <Content Include="Resources\icon\share.png" />
+    <Content Include="Resources\icon\shopping-cart.png" />
+    <Content Include="Resources\icon\speaker-audio-tool.png" />
+    <Content Include="Resources\icon\straight-right-arrow-white.png" />
+    <Content Include="Resources\icon\straight-right-arrow.png" />
+    <Content Include="Resources\icon\tag.png" />
+    <Content Include="Resources\icon\triangle-outline-variant.png" />
+    <Content Include="Resources\Mockup\Change.png" />
+    <Content Include="Resources\Mockup\Continue.png" />
+    <Content Include="Resources\Mockup\End.png" />
+    <Content Include="Resources\Mockup\Help.png" />
+    <Content Include="Resources\Mockup\Home.png" />
+    <Content Include="Resources\Mockup\Pause.png" />
+    <Content Include="Resources\Mockup\Play.png" />
+    <Content Include="Resources\Play\spr_arrow.png" />
+    <Content Include="Resources\Play\spr_ball_normal_4mm.png" />
+    <Content Include="Resources\Play\spr_box - Copy.png" />
+    <Content Include="Resources\Play\spr_box.png" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
+    <None Include="Resources\Home\project_btn_change_ball.psd" />
+    <None Include="Resources\Home\project_btn_get_ball.psd" />
+    <None Include="Resources\Home\project_btn_play.psd" />
+    <None Include="Resources\Home\project_home.psd" />
+    <None Include="Resources\Home\project_logo_name.psd" />
+    <None Include="Resources\Mockup\Mockup.docx" />
+    <None Include="Resources\Play\project_arrow.psd" />
+    <None Include="Resources\Play\project_ball_normal_4mm.psd" />
+    <None Include="Resources\Play\project_box.psd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.csproj">
       <Project>{11b5c378-02f1-48f0-aa0c-b02476cd3512}</Project>
       <Name>Engine</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Extension\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

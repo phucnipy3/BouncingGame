@@ -24,6 +24,11 @@ namespace Engine
         public float Rotation { get; set; }
 
         /// <summary>
+        /// The color to use when drawing the sprite on the screen.
+        /// </summary>
+        public Color Color { get; set; } = Color.White;
+
+        /// <summary>
         /// The sheet index of the attached sprite sheet.
         /// </summary>
         public int SheetIndex
@@ -66,7 +71,7 @@ namespace Engine
 
             // draw the sprite at its *global* position in the game world
            if (sprite != null)
-                sprite.Draw(spriteBatch, GlobalPosition, Origin, Rotation);
+                sprite.Draw(spriteBatch, GlobalPosition, Origin, Rotation, Color);
         }
 
         /// <summary>
@@ -158,7 +163,7 @@ namespace Engine
         /// <returns>true if the two objects overlap and that intersection contains 
         /// at least one pixel that is non-transparent for both objects.
         /// Returns false otherwise.</returns>
-        public bool HasPixelPreciseCollision(SpriteGameObject other)
+        public bool HasPixelPreciseCollision(SpriteGameObject other, out Vector2 thisCollision)
         {
             // calculate the intersection between the two bounding boxes
             Rectangle b = CollisionDetection.CalculateIntersection(BoundingBox, other.BoundingBox);
@@ -175,11 +180,15 @@ namespace Engine
                     
                     // if both pixels are not transparent, then there is a collision
                     if (!sprite.IsPixelTransparent(thisX, thisY) && !other.sprite.IsPixelTransparent(otherX, otherY))
+                    {
+                        thisCollision = new Vector2(thisX, thisY);
                         return true;
+                    }    
                 }
             }
 
             // otherwise, there is no collision
+            thisCollision = Vector2.Zero;
             return false;
         }
     }
