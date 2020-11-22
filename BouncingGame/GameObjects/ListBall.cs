@@ -1,15 +1,28 @@
-﻿using BouncingGame.GameStates;
-using Engine;
+﻿using Engine;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace BouncingGame.GameObjects
 {
-    public class ListBall: GameObjectList
+    public class ListBall : GameObjectList
     {
         public List<Ball> Balls { get; private set; }
 
+        public Vector2 DropPosition { get; set; } = new Vector2(350, 1050);
+
+
+        private static ListBall instance = new ListBall();
+
+
+        public static ListBall Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
 
         public bool Shooting
         {
@@ -29,7 +42,7 @@ namespace BouncingGame.GameObjects
 
         public Ball FirstDropBall { get; set; }
 
-        public ListBall()
+        private ListBall()
         {
             Balls = new List<Ball>();
         }
@@ -37,6 +50,7 @@ namespace BouncingGame.GameObjects
         public void AddBall()
         {
             var newBall = new Ball();
+            newBall.LocalPosition = DropPosition;
             Balls.Add(newBall);
             AddChild(newBall);
         }
@@ -44,7 +58,7 @@ namespace BouncingGame.GameObjects
         public void Shoot(float rotation)
         {
             double peddingTime = 0;
-            foreach(var ball in Balls)
+            foreach (var ball in Balls)
             {
                 ball.Shoot(rotation, peddingTime);
                 peddingTime += 6d * 0.01699999998;
@@ -53,13 +67,12 @@ namespace BouncingGame.GameObjects
 
         public void AllDrop()
         {
-            LocalPosition = FirstDropBall.GlobalPosition;
-            ((PlayState)ExtendedGame.GameStateManager.GetGameState(Bouncing.StateName_Play)).DropPosition = LocalPosition;
+            DropPosition = FirstDropBall.LocalPosition;
+        }
 
-            foreach(var ball in Balls)
-            {
-                ball.LocalPosition = Vector2.Zero;
-            }
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            base.Draw(gameTime, spriteBatch);
         }
     }
 }

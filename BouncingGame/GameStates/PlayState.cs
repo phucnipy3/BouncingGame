@@ -1,206 +1,25 @@
 ﻿using BouncingGame.GameObjects;
 using Engine;
 using Microsoft.Xna.Framework;
-using System;
-using System.Diagnostics;
 
 namespace BouncingGame.GameStates
 {
     public class PlayState : GameState
     {
-        public Vector2 DropPosition { get; set; } = new Vector2(350, 1050);
-
-        private Director director;
-        private ListBall listBall;
+        Ball ball = new Ball();
 
         public PlayState()
         {
             gameObjects.AddChild(new SpriteGameObject("Sprites/Backgrounds/spr_home", 1));
-            listBall = new ListBall();
-            gameObjects.AddChild(listBall);
-            listBall.LocalPosition = DropPosition;
-            director = new Director(listBall);
-            gameObjects.AddChild(director);
-            AddNewRow(8);
-            AddNewRow(8);
-            AddNewRow(8);
-            AddNewRow(8);
-            AddNewRow(8);
-            AddNewRow(8);
-            AddNewRow(8);
-            AddNewRow(8);
-            AddNewRow(8);
-            AddNewRow(8);
+            gameObjects.AddChild(ListBall.Instance);
+            gameObjects.AddChild(Director.Instance);
             AddNewRow(8);
 
+            ListBall.Instance.AddBall();
+            ListBall.Instance.AddBall();
+            ListBall.Instance.AddBall();
+            ListBall.Instance.AddBall();
 
-
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall(); 
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
-            listBall.AddBall();
 
 
         }
@@ -208,16 +27,18 @@ namespace BouncingGame.GameStates
         private void AddNewRow(int level)
         {
             int durability = GetDurability(level);
-            gameObjects.AddChild(new Brick(durability, new Vector2(3, 250 + 3), listBall));
-            gameObjects.AddChild(new Brick(durability, new Vector2(100 + 3, 250 + 3), listBall));
-            gameObjects.AddChild(new Brick(durability, new Vector2(200 + 3, 250 + 3), listBall));
-            gameObjects.AddChild(new Brick(durability, new Vector2(300 + 3, 250 + 3), listBall));
-            gameObjects.AddChild(new Brick(durability, new Vector2(600 + 3, 250 + 3), listBall));
+            gameObjects.AddChild(new Brick(durability, new Vector2(3, 250 + 3)));
+            gameObjects.AddChild(new Brick(durability, new Vector2(100 + 3, 250 + 3)));
+            gameObjects.AddChild(new Brick(durability, new Vector2(200 + 3, 250 + 3)));
+            gameObjects.AddChild(new Brick(durability, new Vector2(300 + 3, 250 + 3)));
+            gameObjects.AddChild(new Brick(durability, new Vector2(600 + 3, 250 + 3)));
         }
 
         private int GetDurability(int level)
         {
             return level * 10;
         }
+
+
     }
 }

@@ -13,26 +13,33 @@ namespace BouncingGame.GameObjects
         bool aimStarted = false;
         bool canShoot = false;
 
-        ListBall listBall;
-        public Director(ListBall listBall)
+        private static Director instance = new Director();
+
+        public static Director Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+        private Director()
         {
             arrow = new SpriteGameObject("Sprites/UI/spr_arrow", 1);
             arrow.SetOriginToLeftCenter();
             arrow.Rotation = -MathHelper.Pi / 2;
             this.AddChild(arrow);
             this.Visible = false;
-            this.listBall = listBall;
         }
 
         public override void Update(GameTime gameTime)
         {
-            LocalPosition = ((PlayState)ExtendedGame.GameStateManager.GetGameState(Bouncing.StateName_Play)).DropPosition + new Vector2(0, -10);
+            LocalPosition = ListBall.Instance.DropPosition + new Vector2(0, -10);
             base.Update(gameTime);
         }
 
         public override void HandleInput(InputHelper inputHelper)
         {
-            if (listBall.Shooting)
+            if (ListBall.Instance.Shooting)
                 return;
 
             Vector2 mousePosition = inputHelper.MousePositionWorld;
@@ -64,7 +71,7 @@ namespace BouncingGame.GameObjects
             {
                 if (aimStarted && canShoot)
                 {
-                    listBall.Shoot(arrow.Rotation);
+                    ListBall.Instance.Shoot(arrow.Rotation);
                 }
 
                 aimStarted = false;

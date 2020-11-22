@@ -14,7 +14,7 @@ namespace BouncingGame.GameObjects
 
         Vector2? targetPosition;
 
-        public new ListBall Parent 
+        public new ListBall Parent
         {
             get
             {
@@ -23,6 +23,24 @@ namespace BouncingGame.GameObjects
         }
 
         public bool Shooting { get; private set; }
+
+        public Vector2 PreviousLocation { get; set; }
+
+        public Vector2 UnitVelocity 
+        {
+            get
+            {
+                return Vector2.Normalize(velocity);
+            }
+        }
+
+        public Vector2 Velocity
+        {
+            get
+            {
+                return velocity;
+            }
+        }
         public Ball() : base("Sprites/UI/spr_ball_normal_4mm", 1)
         {
             SetOriginToCenterBottom();
@@ -30,11 +48,12 @@ namespace BouncingGame.GameObjects
 
         public override void Update(GameTime gameTime)
         {
+            PreviousLocation = LocalPosition;
 
             if (targetPosition.HasValue)
             {
-                LocalPosition += (float)gameTime.ElapsedGameTime.TotalSeconds * (targetPosition.Value - LocalPosition) * 8;
-                if(Vector2.Distance(LocalPosition, targetPosition.Value) < 2)
+                LocalPosition += (float)gameTime.ElapsedGameTime.TotalSeconds * (targetPosition.Value - LocalPosition) * 5;
+                if (Vector2.Distance(LocalPosition, targetPosition.Value) < 2)
                 {
                     Shooting = false;
                     LocalPosition = targetPosition.Value;
@@ -64,18 +83,24 @@ namespace BouncingGame.GameObjects
         {
             if (HitRightWall())
             {
+                float xDistance = 700f + Origin.X - Width - GlobalPosition.X;
+                LocalPosition += (velocity * (xDistance / velocity.X));
                 velocity = Vector2.Reflect(velocity, NormalVector.StandRight);
                 lastNormal = NormalVector.StandRight;
             }
 
             if (HitLeftWall())
             {
+                float xDistance = Origin.X - GlobalPosition.X;
+                LocalPosition += (velocity * (xDistance / velocity.X));
                 velocity = Vector2.Reflect(velocity, NormalVector.StandLeft);
                 lastNormal = NormalVector.StandLeft;
             }
 
             if (HitTopWall())
             {
+                float yDistance = 150f + Origin.Y - GlobalPosition.Y;
+                LocalPosition += velocity * (yDistance / velocity.Y);
                 velocity = Vector2.Reflect(velocity, NormalVector.LieTop);
                 lastNormal = NormalVector.LieTop;
             }
@@ -85,6 +110,22 @@ namespace BouncingGame.GameObjects
                 Drop();
                 lastNormal = NormalVector.LieBottom;
             }
+        }
+
+        public void Reflect(Vector2 normal, Rectangle intersection)
+        {
+            if (normal.Equals(lastNormal))
+                return;
+            if (intersection.Width > intersection.Height)
+            {
+                LocalPosition += velocity * (intersection.Height / velocity.Y) * (normal.Y > 0 ? 1 : -1);
+            }
+            else
+            {
+                LocalPosition += velocity * (intersection.Width / velocity.X) * (normal.X > 0 ? 1 : -1);
+            }
+            velocity = Vector2.Reflect(velocity, normal);
+            lastNormal = normal;
         }
 
         public void Reflect(Vector2 normal)
@@ -97,8 +138,9 @@ namespace BouncingGame.GameObjects
 
         private void Drop()
         {
-            float yDistance = 1050f - GlobalPosition.Y;
-            LocalPosition = new Vector2(LocalPosition.X, LocalPosition.Y + yDistance);
+            float yDistance = 1050f + Origin.Y - Height - GlobalPosition.Y;
+
+            LocalPosition += velocity * (yDistance / velocity.Y);
             if (Parent.NonDrop)
             {
                 velocity = Vector2.Zero;
