@@ -8,9 +8,9 @@ namespace BouncingGame.GameObjects
 {
     public class Ball : SpriteGameObject
     {
-        float forceLength = 600;
-        float eslapsedTime = 0;
-        Vector2 lastNormal;
+        float forceLength = 900;
+        double eslapsedTime = 0;
+        Vector2 lastNormal = NormalVector.LieBottom;
 
         Vector2? targetPosition;
 
@@ -33,7 +33,7 @@ namespace BouncingGame.GameObjects
 
             if (targetPosition.HasValue)
             {
-                LocalPosition += (float)gameTime.ElapsedGameTime.TotalSeconds * (targetPosition.Value - LocalPosition) * 10;
+                LocalPosition += (float)gameTime.ElapsedGameTime.TotalSeconds * (targetPosition.Value - LocalPosition) * 8;
                 if(Vector2.Distance(LocalPosition, targetPosition.Value) < 2)
                 {
                     Shooting = false;
@@ -48,11 +48,11 @@ namespace BouncingGame.GameObjects
             }
             else
             {
-                eslapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                eslapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
 
                 if (eslapsedTime > 0)
                 {
-                    LocalPosition += velocity * eslapsedTime;
+                    LocalPosition += velocity * (float)eslapsedTime;
                     eslapsedTime = 0;
                 }
             }
@@ -87,7 +87,7 @@ namespace BouncingGame.GameObjects
             }
         }
 
-        internal void Reflect(Vector2 normal)
+        public void Reflect(Vector2 normal)
         {
             if (normal.Equals(lastNormal))
                 return;
@@ -131,7 +131,7 @@ namespace BouncingGame.GameObjects
             return GlobalPosition.X - Origin.X + Width > 700;
         }
 
-        public void Shoot(float rotation, float peddingTime)
+        public void Shoot(float rotation, double peddingTime)
         {
             velocity = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation)) * forceLength;
             eslapsedTime = -peddingTime;

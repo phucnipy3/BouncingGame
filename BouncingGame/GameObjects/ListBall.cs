@@ -43,11 +43,11 @@ namespace BouncingGame.GameObjects
 
         public void Shoot(float rotation)
         {
-            float peddingTime = 0;
+            double peddingTime = 0;
             foreach(var ball in Balls)
             {
                 ball.Shoot(rotation, peddingTime);
-                peddingTime += 0.1f;
+                peddingTime += 6d * 0.01699999998;
             }
         }
 

@@ -163,7 +163,7 @@ namespace Engine
         /// <returns>true if the two objects overlap and that intersection contains 
         /// at least one pixel that is non-transparent for both objects.
         /// Returns false otherwise.</returns>
-        public bool HasPixelPreciseCollision(SpriteGameObject other, out Vector2 thisCollision)
+        public bool HasPixelPreciseCollision(SpriteGameObject other)
         {
             // calculate the intersection between the two bounding boxes
             Rectangle b = CollisionDetection.CalculateIntersection(BoundingBox, other.BoundingBox);
@@ -181,14 +181,12 @@ namespace Engine
                     // if both pixels are not transparent, then there is a collision
                     if (!sprite.IsPixelTransparent(thisX, thisY) && !other.sprite.IsPixelTransparent(otherX, otherY))
                     {
-                        thisCollision = new Vector2(thisX, thisY);
                         return true;
                     }    
                 }
             }
 
             // otherwise, there is no collision
-            thisCollision = Vector2.Zero;
             return false;
         }
     }

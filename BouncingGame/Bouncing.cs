@@ -21,6 +21,8 @@ namespace BouncingGame
         public Bouncing()
         {
             IsMouseVisible = true;
+            this.IsFixedTimeStep = true;
+            this.TargetElapsedTime = TimeSpan.FromSeconds(1 / 60d);
         }
 
         protected override void LoadContent()

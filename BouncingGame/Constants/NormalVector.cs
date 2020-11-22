@@ -8,7 +8,7 @@ namespace BouncingGame.Constants
         {
             get
             {
-                return new Vector2(1, 0);
+                return new Vector2(-1, 0);
             }
         }
 
@@ -16,7 +16,7 @@ namespace BouncingGame.Constants
         {
             get
             {
-                return new Vector2(-1, 0);
+                return new Vector2(1, 0);
             }
         }
 
@@ -24,14 +24,14 @@ namespace BouncingGame.Constants
         {
             get
             {
-                return new Vector2(0, 1);
+                return new Vector2(0, -1);
             }
         }
         public static Vector2 LieTop
         {
             get
             {
-                return new Vector2(0, -1);
+                return new Vector2(0, 1);
             }
         }
 
@@ -39,7 +39,9 @@ namespace BouncingGame.Constants
         {
             get
             {
-                return new Vector2(-1, 1);
+                var x =  new Vector2(-1, -1);
+                x.Normalize();
+                return x;
             }
         }
 
@@ -47,7 +49,9 @@ namespace BouncingGame.Constants
         {
             get
             {
-                return new Vector2(1, 1);
+                var x = new Vector2(1, -1);
+                x.Normalize();
+                return x;
             }
         }
 
@@ -55,7 +59,9 @@ namespace BouncingGame.Constants
         {
             get
             {
-                return new Vector2(-1, -1);
+                var x = new Vector2(-1, 1);
+                x.Normalize();
+                return x;
             }
         }
 
@@ -63,7 +69,9 @@ namespace BouncingGame.Constants
         {
             get
             {
-                return new Vector2(1, -1);
+                var x = new Vector2(1, 1);
+                x.Normalize();
+                return x;
             }
         }
 
