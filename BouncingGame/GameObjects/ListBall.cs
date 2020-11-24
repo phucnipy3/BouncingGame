@@ -10,7 +10,7 @@ namespace BouncingGame.GameObjects
     {
         public List<Ball> Balls { get; private set; }
 
-        public Vector2 DropPosition { get; set; } = new Vector2(350, 1050);
+        public Vector2 DropPosition { get; set; } = new Vector2(9, 1050);
 
 
         private static ListBall instance = new ListBall();

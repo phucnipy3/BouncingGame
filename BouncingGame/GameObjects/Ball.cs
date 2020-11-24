@@ -3,6 +3,8 @@ using BouncingGame.GameStates;
 using Engine;
 using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BouncingGame.GameObjects
 {
@@ -26,7 +28,9 @@ namespace BouncingGame.GameObjects
 
         public Vector2 PreviousLocation { get; set; }
 
-        public Vector2 UnitVelocity 
+        private bool droped = true;
+
+        public Vector2 UnitVelocity
         {
             get
             {
@@ -52,7 +56,7 @@ namespace BouncingGame.GameObjects
 
             if (targetPosition.HasValue)
             {
-                LocalPosition += (float)gameTime.ElapsedGameTime.TotalSeconds * (targetPosition.Value - LocalPosition) * 5;
+                LocalPosition += (float)gameTime.ElapsedGameTime.TotalSeconds * (targetPosition.Value - LocalPosition) * 7;
                 if (Vector2.Distance(LocalPosition, targetPosition.Value) < 2)
                 {
                     Shooting = false;
@@ -76,56 +80,95 @@ namespace BouncingGame.GameObjects
                 }
             }
 
-            CheckCollision();
-        }
-
-        private void CheckCollision()
-        {
-            if (HitRightWall())
+            if (!droped)
             {
-                float xDistance = 700f + Origin.X - Width - GlobalPosition.X;
-                LocalPosition += (velocity * (xDistance / velocity.X));
-                velocity = Vector2.Reflect(velocity, NormalVector.StandRight);
-                lastNormal = NormalVector.StandRight;
-            }
-
-            if (HitLeftWall())
-            {
-                float xDistance = Origin.X - GlobalPosition.X;
-                LocalPosition += (velocity * (xDistance / velocity.X));
-                velocity = Vector2.Reflect(velocity, NormalVector.StandLeft);
-                lastNormal = NormalVector.StandLeft;
-            }
-
-            if (HitTopWall())
-            {
-                float yDistance = 150f + Origin.Y - GlobalPosition.Y;
-                LocalPosition += velocity * (yDistance / velocity.Y);
-                velocity = Vector2.Reflect(velocity, NormalVector.LieTop);
-                lastNormal = NormalVector.LieTop;
-            }
-
-            if (HitBottomWall())
-            {
-                Drop();
-                lastNormal = NormalVector.LieBottom;
+                HandleCollision();
             }
         }
 
-        public void Reflect(Vector2 normal, Rectangle intersection)
+        private void HandleCollision()
         {
-            if (normal.Equals(lastNormal))
-                return;
-            if (intersection.Width > intersection.Height)
+            Vector2 distance = LocalPosition - PreviousLocation;
+            int stateCount = (int)distance.Length() + 1;
+            Vector2 currentPosition = LocalPosition;
+            int count;
+            for (count = 0; count < stateCount; count++)
             {
-                LocalPosition += velocity * (intersection.Height / velocity.Y) * (normal.Y > 0 ? 1 : -1);
+                LocalPosition = PreviousLocation + count * UnitVelocity;
+
+                var normals = new List<Vector2>();
+
+                if (HitBottomWall())
+                {
+                    Drop();
+                    break;
+                }
+
+                if (HitRightWall())
+                {
+                    normals.Add(NormalVector.StandRight);
+                }
+
+                if (HitLeftWall())
+                {
+                    normals.Add(NormalVector.StandLeft);
+                }
+
+                if (HitTopWall())
+                {
+                    normals.Add(NormalVector.LieTop);
+                }
+
+                foreach (var brick in ListBrick.Instance.Bricks)
+                {
+                    if (!brick.Visible)
+                        continue;
+                    if (brick.TouchSprite.HasPixelPreciseCollision(this))
+                    {
+                        Vector2 centerBall = GlobalPosition - Origin + (new Vector2(Width, Height) / 2);
+                        Vector2 centerBrick = brick.TouchSprite.GlobalPosition - brick.TouchSprite.Origin + (new Vector2(brick.TouchSprite.Width, brick.TouchSprite.Height) / 2);
+                        var touchVector = centerBall - centerBrick;
+                        touchVector.Normalize();
+
+                        Vector2 normal = Vector2.Zero;
+                        bool special = false;
+                        foreach (var vector in brick.SpecialNormals)
+                        {
+                            if (Vector2.Distance(touchVector, vector) <= 0.02f)
+                            {
+                                normal = vector;
+                                special = true;
+                                break;
+                            }
+                        }
+
+                        if (!special)
+                        {
+                            float minDistance = brick.Normals.Min(x => Vector2.Distance(x, touchVector));
+                            normal = brick.Normals.FirstOrDefault(x => Vector2.Distance(x, touchVector) == minDistance);
+                        }
+
+                        normals.Add(normal);
+                        brick.Touched();
+                    }
+                }
+
+                Vector2 combineNormal = Vector2.Zero;
+                foreach (var normal in normals)
+                {
+                    combineNormal += normal;
+                }
+                combineNormal.Normalize();
+                if (normals.Any())
+                {
+                    LocalPosition = PreviousLocation + (count - 2) * UnitVelocity;
+                    Reflect(combineNormal);
+                    break;
+                }
             }
-            else
-            {
-                LocalPosition += velocity * (intersection.Width / velocity.X) * (normal.X > 0 ? 1 : -1);
-            }
-            velocity = Vector2.Reflect(velocity, normal);
-            lastNormal = normal;
+
+            if (count == stateCount)
+                LocalPosition = currentPosition;
         }
 
         public void Reflect(Vector2 normal)
@@ -141,6 +184,14 @@ namespace BouncingGame.GameObjects
             float yDistance = 1050f + Origin.Y - Height - GlobalPosition.Y;
 
             LocalPosition += velocity * (yDistance / velocity.Y);
+            if(LocalPosition.X - Origin.X + Width > 700)
+            {
+                LocalPosition = new Vector2(700 + Origin.X + Width, LocalPosition.Y);
+            }
+            if(LocalPosition.X -Origin.X < 0)
+            {
+                LocalPosition = new Vector2(Origin.X, LocalPosition.Y);
+            }
             if (Parent.NonDrop)
             {
                 velocity = Vector2.Zero;
@@ -151,6 +202,9 @@ namespace BouncingGame.GameObjects
             {
                 targetPosition = Parent.FirstDropBall.LocalPosition;
             }
+
+            lastNormal = NormalVector.LieBottom;
+            droped = true;
         }
 
         private bool HitBottomWall()
@@ -178,6 +232,7 @@ namespace BouncingGame.GameObjects
             velocity = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation)) * forceLength;
             eslapsedTime = -peddingTime;
             Shooting = true;
+            droped = false;
         }
 
     }

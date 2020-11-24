@@ -14,6 +14,22 @@ namespace BouncingGame.GameObjects
         TextGameObject displayText;
         List<Vector2> normals = new List<Vector2> { NormalVector.StandLeft, NormalVector.StandRight, NormalVector.LieBottom, NormalVector.LieTop };
         List<Vector2> specialNormals = new List<Vector2> { NormalVector.InclinedUpRight, NormalVector.InclinedUpLeft, NormalVector.InclinedDownRight, NormalVector.InclinedDownLeft };
+        
+        public List<Vector2> Normals
+        {
+            get
+            {
+                return normals;
+            }
+        }
+        public List<Vector2> SpecialNormals
+        {
+            get
+            {
+                return specialNormals;
+            }
+        }
+
         public Brick(int durability, Vector2 position)
         {
             this.durability = durability;
@@ -34,93 +50,25 @@ namespace BouncingGame.GameObjects
             }
             this.displayText.Text = this.durability.ToString();
             base.Update(gameTime);
-
-            if (Visible)
-                CheckColiision();
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             base.Draw(gameTime, spriteBatch);
         }
-        private void CheckColiision()
+
+        public SpriteGameObject TouchSprite
         {
-            foreach (var ball in ListBall.Instance.Balls)
+            get
             {
-                Vector2 distance = ball.LocalPosition - ball.PreviousLocation;
-                int stateCount = (int)(distance.X / ball.UnitVelocity.X) + 1;
-                Vector2 currentPosition = ball.LocalPosition;
-                int count;
-                for (count = 0; count < stateCount; count++)
-                {
-                    ball.LocalPosition = ball.PreviousLocation + count * ball.UnitVelocity;
-                    if (container.HasPixelPreciseCollision(ball))
-                    {
-                        var touchVector =
-                        (ball.GlobalPosition - ball.Origin + (new Vector2(ball.Width, ball.Height) / 2))
-                        - (container.GlobalPosition - container.Origin + (new Vector2(container.Width, container.Height) / 2));
-                        touchVector.Normalize();
-
-                        Vector2 normal = Vector2.Zero;
-                        bool speacial = false;
-                        foreach (var vector in specialNormals)
-                        {
-                            if (Vector2.Distance(touchVector, vector) <= 0.02f)
-                            {
-                                normal = vector;
-                                speacial = true;
-                                break;
-                            }
-                        }
-
-                        if (!speacial)
-                        {
-                            float minDistance = normals.Min(x => Vector2.Distance(x, touchVector));
-                            normal = normals.FirstOrDefault(x => Vector2.Distance(x, touchVector) == minDistance);
-                        }
-
-                        ball.Reflect(normal);
-
- 
-                        ball.LocalPosition = ball.PreviousLocation + (count - 1) * ball.UnitVelocity;
-
-                        durability--;
-                        break;
-                    }
-                }
-
-                if (count == stateCount)
-                    ball.LocalPosition = currentPosition;
-                //if (container.HasPixelPreciseCollision(ball))
-                //{
-                //    var touchVector =
-                //        (ball.GlobalPosition - ball.Origin + (new Vector2(ball.Width, ball.Height) / 2)) 
-                //        - ( container.GlobalPosition - container.Origin + (new Vector2(container.Width, container.Height) / 2));
-                //    touchVector.Normalize();
-
-                //    Vector2 normal = Vector2.Zero;
-                //    bool speacial = false;
-                //    foreach (var vector in specialNormals)
-                //    {
-                //        if (Vector2.Distance(touchVector, vector) <= 0.02f)
-                //        {
-                //            normal = vector;
-                //            speacial = true;
-                //            break;
-                //        }
-                //    }
-
-                //    if (!speacial)
-                //    {
-                //        float minDistance = normals.Min(x => Vector2.Distance(x, touchVector));
-                //        normal = normals.FirstOrDefault(x => Vector2.Distance(x, touchVector) == minDistance);
-                //    }
-
-                //    ball.Reflect(normal, CollisionDetection.CalculateIntersection(container.BoundingBox, ball.BoundingBox));
-
-                //    durability--;
-                //}
+                return container;
             }
         }
+
+        public void Touched()
+        {
+            durability--;
+        }
+
     }
 }
