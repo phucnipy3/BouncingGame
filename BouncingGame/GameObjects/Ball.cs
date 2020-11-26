@@ -119,39 +119,8 @@ namespace BouncingGame.GameObjects
                     normals.Add(NormalVector.LieTop);
                 }
 
-                foreach (var brick in ListBrick.Instance.Bricks)
-                {
-                    if (!brick.Visible)
-                        continue;
-                    if (brick.TouchSprite.HasPixelPreciseCollision(this))
-                    {
-                        Vector2 centerBall = GlobalPosition - Origin + (new Vector2(Width, Height) / 2);
-                        Vector2 centerBrick = brick.TouchSprite.GlobalPosition - brick.TouchSprite.Origin + (new Vector2(brick.TouchSprite.Width, brick.TouchSprite.Height) / 2);
-                        var touchVector = centerBall - centerBrick;
-                        touchVector.Normalize();
 
-                        Vector2 normal = Vector2.Zero;
-                        bool special = false;
-                        foreach (var vector in brick.SpecialNormals)
-                        {
-                            if (Vector2.Distance(touchVector, vector) <= 0.02f)
-                            {
-                                normal = vector;
-                                special = true;
-                                break;
-                            }
-                        }
-
-                        if (!special)
-                        {
-                            float minDistance = brick.Normals.Min(x => Vector2.Distance(x, touchVector));
-                            normal = brick.Normals.FirstOrDefault(x => Vector2.Distance(x, touchVector) == minDistance);
-                        }
-
-                        normals.Add(normal);
-                        brick.Touched();
-                    }
-                }
+                normals.AddRange(ListBrick.Instance.GetNormalVectorsWhenTouchBall(this));
 
                 Vector2 combineNormal = Vector2.Zero;
                 foreach (var normal in normals)
@@ -197,6 +166,10 @@ namespace BouncingGame.GameObjects
                 velocity = Vector2.Zero;
                 Parent.FirstDropBall = this;
                 Shooting = false;
+                if (!Parent.Shooting)
+                {
+                    Parent.AllDrop();
+                }
             }
             else
             {

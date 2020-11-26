@@ -42,7 +42,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Bouncing.cs" />
+    <Compile Include="Constants\Constant.cs" />
     <Compile Include="Constants\NormalVector.cs" />
+    <Compile Include="Constants\StateName.cs" />
     <Compile Include="Extension\DrawLineExtension.cs" />
     <Compile Include="GameObjects\Ball.cs" />
     <Compile Include="GameObjects\Brick.cs" />

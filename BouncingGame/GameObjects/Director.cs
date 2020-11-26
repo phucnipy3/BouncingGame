@@ -1,11 +1,12 @@
 ﻿using BouncingGame.GameStates;
 using Engine;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 
 namespace BouncingGame.GameObjects
 {
-    public class Director : GameObjectList
+    public class Director : GameObject
     {
         SpriteGameObject arrow;
         Vector2 startPosition = Vector2.Zero;
@@ -27,7 +28,7 @@ namespace BouncingGame.GameObjects
             arrow = new SpriteGameObject("Sprites/UI/spr_arrow", 1);
             arrow.SetOriginToLeftCenter();
             arrow.Rotation = -MathHelper.Pi / 2;
-            this.AddChild(arrow);
+            arrow.Parent = this;
             this.Visible = false;
         }
 
@@ -81,6 +82,13 @@ namespace BouncingGame.GameObjects
             Visible = canShoot;
 
             base.HandleInput(inputHelper);
+        }
+
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            if (!Visible)
+                return;
+            arrow.Draw(gameTime, spriteBatch);
         }
     }
 }

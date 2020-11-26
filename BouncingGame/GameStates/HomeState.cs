@@ -1,4 +1,5 @@
-﻿using Engine;
+﻿using BouncingGame.Constants;
+using Engine;
 using Engine.UI;
 using Microsoft.Xna.Framework;
 
@@ -41,7 +42,7 @@ namespace BouncingGame.GameStates
             }
             if (playButton.Pressed)
             {
-                ExtendedGame.GameStateManager.SwitchTo(Bouncing.StateName_Play);
+                ExtendedGame.GameStateManager.SwitchTo(StateName.Play);
             }
         }
     }
