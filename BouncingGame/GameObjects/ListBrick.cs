@@ -48,7 +48,7 @@ namespace BouncingGame.GameObjects
 
         private void AddNewBricks()
         {
-            int durability = level * 10;
+            int durability = level;
             AddChild(new Brick(durability, new Vector2(0, 150)));
             AddChild(new Brick(durability, new Vector2(100, 150)));
             AddChild(new Brick(durability, new Vector2(200, 150)));

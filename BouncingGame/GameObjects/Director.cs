@@ -25,7 +25,7 @@ namespace BouncingGame.GameObjects
         }
         private Director()
         {
-            arrow = new SpriteGameObject("Sprites/UI/spr_arrow", 1);
+            arrow = new SpriteGameObject("Sprites/UI/spr_arrow", 0);
             arrow.SetOriginToLeftCenter();
             arrow.Rotation = -MathHelper.Pi / 2;
             arrow.Parent = this;

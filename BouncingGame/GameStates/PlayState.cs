@@ -12,7 +12,7 @@ namespace BouncingGame.GameStates
 
         public PlayState()
         {
-            gameObjects.AddChild(new SpriteGameObject("Sprites/Backgrounds/spr_home", 1));
+            gameObjects.AddChild(new SpriteGameObject("Sprites/Backgrounds/spr_home", 0));
             gameObjects.AddChild(ListBrick.Instance);
             gameObjects.AddChild(ListBall.Instance);
             gameObjects.AddChild(Director.Instance);

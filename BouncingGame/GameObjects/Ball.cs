@@ -48,7 +48,7 @@ namespace BouncingGame.GameObjects
 
         List<Brick> touchedBricks;
 
-        public Ball() : base("Sprites/UI/spr_ball_normal_4mm", 1)
+        public Ball() : base("Sprites/UI/spr_ball_normal_4mm", 0)
         {
             SetOriginToCenterBottom();
             touchedBricks = new List<Brick>();
@@ -111,31 +111,31 @@ namespace BouncingGame.GameObjects
 
                 if (HitRightWall())
                 {
-                    normals.Add(NormalVector.StandRight);
+                    normals.Add(UnitVector.Angle180);
                 }
 
                 if (HitLeftWall())
                 {
-                    normals.Add(NormalVector.StandLeft);
+                    normals.Add(UnitVector.Angle0);
                 }
 
                 if (HitTopWall())
                 {
-                    normals.Add(NormalVector.LieTop);
+                    normals.Add(UnitVector.Angle270);
                 }
 
                 RefreshTouchedBrick();
 
                 normals.AddRange(ListBrick.Instance.GetNormalVectorsWhenTouchBall(this));
 
-                Vector2 combineNormal = Vector2.Zero;
-                foreach (var normal in normals)
-                {
-                    combineNormal += normal;
-                }
-                combineNormal.Normalize();
                 if (normals.Any())
                 {
+                    Vector2 combineNormal = normals[0];
+                    foreach (var normal in normals)
+                    {
+                        combineNormal = UnitVector.Combine(combineNormal, normal);
+                    }
+                    combineNormal.Normalize();
                     if (Reflect(combineNormal))
                     {
                         LocalPosition = PreviousLocation + (count - 1) * UnitVelocity;
@@ -144,7 +144,7 @@ namespace BouncingGame.GameObjects
                     else
                     {
                         RevertTouchedBricks();
-                    }    
+                    }
                 }
             }
 
@@ -190,7 +190,7 @@ namespace BouncingGame.GameObjects
                 targetPosition = Parent.FirstDropBall.LocalPosition;
             }
 
-            lastNormal = NormalVector.LieBottom;
+            lastNormal = UnitVector.Angle90;
             droped = true;
         }
 
@@ -250,6 +250,14 @@ namespace BouncingGame.GameObjects
             }
 
             return false;
+        }
+
+        public Vector2 GlobalCenter
+        {
+            get
+            {
+                return GlobalPosition - Origin + new Vector2(Width, Height) / 2;
+            }
         }
     }
 }

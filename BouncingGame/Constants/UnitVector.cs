@@ -2,9 +2,9 @@
 
 namespace BouncingGame.Constants
 {
-    public class NormalVector
+    public class UnitVector
     {
-        public static Vector2 StandRight
+        public static Vector2 Angle180
         {
             get
             {
@@ -12,7 +12,7 @@ namespace BouncingGame.Constants
             }
         }
 
-        public static Vector2 StandLeft
+        public static Vector2 Angle0
         {
             get
             {
@@ -20,14 +20,14 @@ namespace BouncingGame.Constants
             }
         }
 
-        public static Vector2 LieBottom
+        public static Vector2 Angle90
         {
             get
             {
                 return new Vector2(0, -1);
             }
         }
-        public static Vector2 LieTop
+        public static Vector2 Angle270
         {
             get
             {
@@ -35,7 +35,7 @@ namespace BouncingGame.Constants
             }
         }
 
-        public static Vector2 InclinedUpLeft
+        public static Vector2 Angle135
         {
             get
             {
@@ -45,7 +45,7 @@ namespace BouncingGame.Constants
             }
         }
 
-        public static Vector2 InclinedUpRight
+        public static Vector2 Angle45
         {
             get
             {
@@ -55,7 +55,7 @@ namespace BouncingGame.Constants
             }
         }
 
-        public static Vector2 InclinedDownLeft
+        public static Vector2 Angle225
         {
             get
             {
@@ -65,7 +65,7 @@ namespace BouncingGame.Constants
             }
         }
 
-        public static Vector2 InclinedDownRight
+        public static Vector2 Angle315
         {
             get
             {
@@ -73,6 +73,15 @@ namespace BouncingGame.Constants
                 x.Normalize();
                 return x;
             }
+        }
+
+        public static Vector2 Combine(Vector2 u1, Vector2 u2)
+        {
+            u1.Normalize();
+            u2.Normalize();
+            Vector2 tempVector = u1 + u2;
+            tempVector.Normalize();
+            return tempVector;
         }
 
     }
