@@ -144,7 +144,7 @@ namespace BouncingGame.GameObjects
                     else
                     {
                         RevertTouchedBricks();
-                    }
+                    }    
                 }
             }
 
@@ -167,11 +167,11 @@ namespace BouncingGame.GameObjects
             float yDistance = 1050f + Origin.Y - Height - GlobalPosition.Y;
 
             LocalPosition += velocity * (yDistance / velocity.Y);
-            if(LocalPosition.X - Origin.X + Width > 700)
+            if (LocalPosition.X - Origin.X + Width > 700)
             {
                 LocalPosition = new Vector2(700 + Origin.X + Width, LocalPosition.Y);
             }
-            if(LocalPosition.X -Origin.X < 0)
+            if (LocalPosition.X - Origin.X < 0)
             {
                 LocalPosition = new Vector2(Origin.X, LocalPosition.Y);
             }
@@ -234,11 +234,22 @@ namespace BouncingGame.GameObjects
 
         private void RevertTouchedBricks()
         {
-            foreach(var brick in touchedBricks)
+            foreach (var brick in touchedBricks)
             {
                 brick.RevertTouched();
             }
         }
 
+        public bool Contains(Vector2 globalPosition)
+        {
+            if (BoundingBox.Contains(globalPosition))
+            {
+                var pixelLocation = globalPosition - (GlobalPosition - Origin);
+                if (!sprite.IsPixelTransparent((int)pixelLocation.X, (int)pixelLocation.Y))
+                    return true;
+            }
+
+            return false;
+        }
     }
 }

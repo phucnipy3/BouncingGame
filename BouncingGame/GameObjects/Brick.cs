@@ -17,7 +17,9 @@ namespace BouncingGame.GameObjects
         List<Vector2> normals = new List<Vector2> { NormalVector.StandLeft, NormalVector.StandRight, NormalVector.LieBottom, NormalVector.LieTop };
         List<Vector2> specialNormals = new List<Vector2> { NormalVector.InclinedUpRight, NormalVector.InclinedUpLeft, NormalVector.InclinedDownRight, NormalVector.InclinedDownLeft };
 
-        List<Vector2> corners = new List<Vector2> { new Vector2(0,0), new Vector2(0, 0) }
+        List<Vector2> corners = new List<Vector2> { new Vector2(100, 0), new Vector2(0, 0), new Vector2(100, 100), new Vector2(0, 100) };
+
+        Dictionary<Vector2, Vector2> sNormals = new Dictionary<Vector2, Vector2>();
 
         int row;
         Vector2 targetPosition;
@@ -51,6 +53,11 @@ namespace BouncingGame.GameObjects
 
             row = 1;
             targetPosition = LocalPosition;
+
+            for(int i = 0; i< corners.Count; i++)
+            {
+                sNormals.Add(corners[i], specialNormals[i]);
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -67,7 +74,7 @@ namespace BouncingGame.GameObjects
                 LocalPosition = targetPosition;
             }
 
-            if (LocalPosition.Y >= 946 )
+            if (LocalPosition.Y >= 346 )
             {
                 ((PlayState)ExtendedGame.GameStateManager.GetGameState(StateName.Play)).GameOver();
             }
@@ -115,16 +122,25 @@ namespace BouncingGame.GameObjects
                 touchVector.Normalize();
 
                 bool special = false;
-                // if hit the corner
-                foreach (var vector in specialNormals)
+                foreach(var corner in corners)
                 {
-                    if (Vector2.Distance(touchVector, vector) <= 0.001f)
+                    if(ball.Contains(GlobalPosition + corner))
                     {
-                        normal = vector;
+                        normal = sNormals[corner];
                         special = true;
                         break;
                     }
                 }
+
+                //foreach (var vector in specialNormals)
+                //{
+                //    if (Vector2.Distance(touchVector, vector) <= 0.001f)
+                //    {
+                //        normal = vector;
+                //        special = true;
+                //        break;
+                //    }
+                //}
 
                 if (!special)
                 {
