@@ -12,7 +12,7 @@ namespace BouncingGame.GameObjects
     {
         float forceLength = 900;
         double eslapsedTime = 0;
-        Vector2 lastNormal = NormalVector.LieBottom;
+        Vector2 lastNormal = Vector2.Zero;
 
         Vector2? targetPosition;
 
@@ -45,9 +45,13 @@ namespace BouncingGame.GameObjects
                 return velocity;
             }
         }
+
+        List<Brick> touchedBricks;
+
         public Ball() : base("Sprites/UI/spr_ball_normal_4mm", 1)
         {
             SetOriginToCenterBottom();
+            touchedBricks = new List<Brick>();
         }
 
         public override void Update(GameTime gameTime)
@@ -79,6 +83,7 @@ namespace BouncingGame.GameObjects
                     eslapsedTime = 0;
                 }
             }
+
 
             if (!droped)
             {
@@ -119,6 +124,7 @@ namespace BouncingGame.GameObjects
                     normals.Add(NormalVector.LieTop);
                 }
 
+                RefreshTouchedBrick();
 
                 normals.AddRange(ListBrick.Instance.GetNormalVectorsWhenTouchBall(this));
 
@@ -130,9 +136,15 @@ namespace BouncingGame.GameObjects
                 combineNormal.Normalize();
                 if (normals.Any())
                 {
-                    LocalPosition = PreviousLocation + (count - 2) * UnitVelocity;
-                    Reflect(combineNormal);
-                    break;
+                    if (Reflect(combineNormal))
+                    {
+                        LocalPosition = PreviousLocation + (count - 1) * UnitVelocity;
+                        break;
+                    }
+                    else
+                    {
+                        RevertTouchedBricks();
+                    }
                 }
             }
 
@@ -140,12 +152,14 @@ namespace BouncingGame.GameObjects
                 LocalPosition = currentPosition;
         }
 
-        public void Reflect(Vector2 normal)
+        public bool Reflect(Vector2 normal)
         {
             if (normal.Equals(lastNormal))
-                return;
+                return false;
             velocity = Vector2.Reflect(velocity, normal);
             lastNormal = normal;
+
+            return true;
         }
 
         private void Drop()
@@ -206,6 +220,24 @@ namespace BouncingGame.GameObjects
             eslapsedTime = -peddingTime;
             Shooting = true;
             droped = false;
+        }
+
+        public void AddTouchedBrick(Brick brick)
+        {
+            touchedBricks.Add(brick);
+        }
+
+        private void RefreshTouchedBrick()
+        {
+            touchedBricks.Clear();
+        }
+
+        private void RevertTouchedBricks()
+        {
+            foreach(var brick in touchedBricks)
+            {
+                brick.RevertTouched();
+            }
         }
 
     }

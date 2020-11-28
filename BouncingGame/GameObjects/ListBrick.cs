@@ -49,11 +49,11 @@ namespace BouncingGame.GameObjects
         private void AddNewBricks()
         {
             int durability = level * 10;
-            AddChild(new Brick(durability, new Vector2(3, 150 + 3)));
-            AddChild(new Brick(durability, new Vector2(100 + 3, 150 + 3)));
-            AddChild(new Brick(durability, new Vector2(200 + 3, 150 + 3)));
-            AddChild(new Brick(durability, new Vector2(300 + 3, 150 + 3)));
-            AddChild(new Brick(durability, new Vector2(600 + 3, 150 + 3)));
+            AddChild(new Brick(durability, new Vector2(0, 150)));
+            AddChild(new Brick(durability, new Vector2(100, 150)));
+            AddChild(new Brick(durability, new Vector2(200, 150)));
+            AddChild(new Brick(durability, new Vector2(300, 150)));
+            AddChild(new Brick(durability, new Vector2(600, 150)));
         }
 
         public override void Reset()
@@ -74,6 +74,7 @@ namespace BouncingGame.GameObjects
                 {
                     normals.Add(normal);
                     brick.Touched();
+                    ball.AddTouchedBrick(brick);
                 }
             }
 

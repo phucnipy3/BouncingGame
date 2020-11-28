@@ -3,6 +3,7 @@ using BouncingGame.GameStates;
 using Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,6 +16,9 @@ namespace BouncingGame.GameObjects
         TextGameObject text;
         List<Vector2> normals = new List<Vector2> { NormalVector.StandLeft, NormalVector.StandRight, NormalVector.LieBottom, NormalVector.LieTop };
         List<Vector2> specialNormals = new List<Vector2> { NormalVector.InclinedUpRight, NormalVector.InclinedUpLeft, NormalVector.InclinedDownRight, NormalVector.InclinedDownLeft };
+
+        List<Vector2> corners = new List<Vector2> { new Vector2(0,0), new Vector2(0, 0) }
+
         int row;
         Vector2 targetPosition;
         public List<Vector2> Normals
@@ -88,7 +92,7 @@ namespace BouncingGame.GameObjects
 
         public void Touched()
         {
-            //durability--;
+            durability--;
         }
 
         public void MoveDown()
@@ -111,9 +115,10 @@ namespace BouncingGame.GameObjects
                 touchVector.Normalize();
 
                 bool special = false;
+                // if hit the corner
                 foreach (var vector in specialNormals)
                 {
-                    if (Vector2.Distance(touchVector, vector) <= 0.1f)
+                    if (Vector2.Distance(touchVector, vector) <= 0.001f)
                     {
                         normal = vector;
                         special = true;
@@ -131,6 +136,11 @@ namespace BouncingGame.GameObjects
             }
 
             return false;
+        }
+
+        public void RevertTouched()
+        {
+            durability++;
         }
     }
 }
