@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -12,7 +13,7 @@ namespace Engine
         /// <summary>
         /// The child objects of this game object.
         /// </summary>
-        List<GameObject> children;
+        protected List<GameObject> children;
 
         /// <summary>
         /// Creates a new GameObjectList with an empty list of children.
@@ -30,6 +31,24 @@ namespace Engine
         {
             obj.Parent = this;
             children.Add(obj);
+        }
+
+        /// <summary>
+        /// Remove an object from this GameObjectList
+        /// </summary>
+        /// <param name="obj">The game object to remove.</param>
+        public void RemoveChild(GameObject obj)
+        {
+            children.Remove(obj);
+        }
+
+        /// <summary>
+        /// Remove objects from this GameObjectList
+        /// </summary>
+        /// <param name="objs">The game object to remove.</param>
+        public void RemoveChild(IEnumerable<GameObject> objs)
+        {
+            children.RemoveAll(x => objs.Contains(x));
         }
 
         /// <summary>
@@ -73,6 +92,14 @@ namespace Engine
         {
             foreach (GameObject obj in children)
                 obj.Reset();
+        }
+
+        /// <summary>
+        /// Clear list game object
+        /// </summary>
+        public void Clear()
+        {
+            children.Clear();
         }
     }
 }

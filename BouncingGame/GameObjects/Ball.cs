@@ -3,6 +3,8 @@ using BouncingGame.GameStates;
 using Engine;
 using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BouncingGame.GameObjects
 {
@@ -10,7 +12,7 @@ namespace BouncingGame.GameObjects
     {
         float forceLength = 900;
         double eslapsedTime = 0;
-        Vector2 lastNormal = NormalVector.LieBottom;
+        Vector2 lastNormal = Vector2.Zero;
 
         Vector2? targetPosition;
 
@@ -26,7 +28,9 @@ namespace BouncingGame.GameObjects
 
         public Vector2 PreviousLocation { get; set; }
 
-        public Vector2 UnitVelocity 
+        private bool droped = true;
+
+        public Vector2 UnitVelocity
         {
             get
             {
@@ -41,9 +45,13 @@ namespace BouncingGame.GameObjects
                 return velocity;
             }
         }
-        public Ball() : base("Sprites/UI/spr_ball_normal_4mm", 1)
+
+        List<Brick> touchedBricks;
+
+        public Ball() : base("Sprites/UI/spr_ball_normal_4mm", 0)
         {
             SetOriginToCenterBottom();
+            touchedBricks = new List<Brick>();
         }
 
         public override void Update(GameTime gameTime)
@@ -52,7 +60,7 @@ namespace BouncingGame.GameObjects
 
             if (targetPosition.HasValue)
             {
-                LocalPosition += (float)gameTime.ElapsedGameTime.TotalSeconds * (targetPosition.Value - LocalPosition) * 5;
+                LocalPosition += (float)gameTime.ElapsedGameTime.TotalSeconds * (targetPosition.Value - LocalPosition) * 7;
                 if (Vector2.Distance(LocalPosition, targetPosition.Value) < 2)
                 {
                     Shooting = false;
@@ -76,64 +84,82 @@ namespace BouncingGame.GameObjects
                 }
             }
 
-            CheckCollision();
+
+            if (!droped)
+            {
+                HandleCollision();
+            }
         }
 
-        private void CheckCollision()
+        private void HandleCollision()
         {
-            if (HitRightWall())
+            Vector2 distance = LocalPosition - PreviousLocation;
+            int stateCount = (int)distance.Length() + 1;
+            Vector2 currentPosition = LocalPosition;
+            int count;
+            for (count = 0; count < stateCount; count++)
             {
-                float xDistance = 700f + Origin.X - Width - GlobalPosition.X;
-                LocalPosition += (velocity * (xDistance / velocity.X));
-                velocity = Vector2.Reflect(velocity, NormalVector.StandRight);
-                lastNormal = NormalVector.StandRight;
+                LocalPosition = PreviousLocation + count * UnitVelocity;
+
+                var normals = new List<Vector2>();
+
+                if (HitBottomWall())
+                {
+                    Drop();
+                    break;
+                }
+
+                if (HitRightWall())
+                {
+                    normals.Add(UnitVector.Angle180);
+                }
+
+                if (HitLeftWall())
+                {
+                    normals.Add(UnitVector.Angle0);
+                }
+
+                if (HitTopWall())
+                {
+                    normals.Add(UnitVector.Angle270);
+                }
+
+                RefreshTouchedBrick();
+
+                normals.AddRange(ListBrick.Instance.GetNormalVectorsWhenTouchBall(this));
+
+                if (normals.Any())
+                {
+                    Vector2 combineNormal = normals[0];
+                    foreach (var normal in normals)
+                    {
+                        combineNormal = UnitVector.Combine(combineNormal, normal);
+                    }
+                    combineNormal.Normalize();
+                    if (Reflect(combineNormal))
+                    {
+                        LocalPosition = PreviousLocation + (count - 1) * UnitVelocity;
+                        break;
+                    }
+                    else
+                    {
+                        RevertTouchedBricks();
+                    }
+                }
             }
 
-            if (HitLeftWall())
-            {
-                float xDistance = Origin.X - GlobalPosition.X;
-                LocalPosition += (velocity * (xDistance / velocity.X));
-                velocity = Vector2.Reflect(velocity, NormalVector.StandLeft);
-                lastNormal = NormalVector.StandLeft;
-            }
-
-            if (HitTopWall())
-            {
-                float yDistance = 150f + Origin.Y - GlobalPosition.Y;
-                LocalPosition += velocity * (yDistance / velocity.Y);
-                velocity = Vector2.Reflect(velocity, NormalVector.LieTop);
-                lastNormal = NormalVector.LieTop;
-            }
-
-            if (HitBottomWall())
-            {
-                Drop();
-                lastNormal = NormalVector.LieBottom;
-            }
+            if (count == stateCount)
+                LocalPosition = currentPosition;
         }
 
-        public void Reflect(Vector2 normal, Rectangle intersection)
+        public bool Reflect(Vector2 normal)
         {
             if (normal.Equals(lastNormal))
-                return;
-            if (intersection.Width > intersection.Height)
-            {
-                LocalPosition += velocity * (intersection.Height / velocity.Y) * (normal.Y > 0 ? 1 : -1);
-            }
-            else
-            {
-                LocalPosition += velocity * (intersection.Width / velocity.X) * (normal.X > 0 ? 1 : -1);
-            }
+                return false;
             velocity = Vector2.Reflect(velocity, normal);
             lastNormal = normal;
-        }
 
-        public void Reflect(Vector2 normal)
-        {
-            if (normal.Equals(lastNormal))
-                return;
-            velocity = Vector2.Reflect(velocity, normal);
-            lastNormal = normal;
+            return true;
         }
 
         private void Drop()
@@ -141,16 +167,31 @@ namespace BouncingGame.GameObjects
             float yDistance = 1050f + Origin.Y - Height - GlobalPosition.Y;
 
             LocalPosition += velocity * (yDistance / velocity.Y);
+            if (LocalPosition.X - Origin.X + Width > 700)
+            {
+                LocalPosition = new Vector2(700 + Origin.X + Width, LocalPosition.Y);
+            }
+            if (LocalPosition.X - Origin.X < 0)
+            {
+                LocalPosition = new Vector2(Origin.X, LocalPosition.Y);
+            }
             if (Parent.NonDrop)
             {
                 velocity = Vector2.Zero;
                 Parent.FirstDropBall = this;
                 Shooting = false;
+                if (!Parent.Shooting)
+                {
+                    Parent.AllDrop();
+                }
             }
             else
             {
                 targetPosition = Parent.FirstDropBall.LocalPosition;
             }
+
+            lastNormal = UnitVector.Angle90;
+            droped = true;
         }
 
         private bool HitBottomWall()
@@ -178,7 +219,45 @@ namespace BouncingGame.GameObjects
             velocity = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation)) * forceLength;
             eslapsedTime = -peddingTime;
             Shooting = true;
+            droped = false;
         }
 
+        public void AddTouchedBrick(Brick brick)
+        {
+            touchedBricks.Add(brick);
+        }
+
+        private void RefreshTouchedBrick()
+        {
+            touchedBricks.Clear();
+        }
+
+        private void RevertTouchedBricks()
+        {
+            foreach (var brick in touchedBricks)
+            {
+                brick.RevertTouched();
+            }
+        }
+
+        public bool Contains(Vector2 globalPosition)
+        {
+            if (BoundingBox.Contains(globalPosition))
+            {
+                var pixelLocation = globalPosition - (GlobalPosition - Origin);
+                if (!sprite.IsPixelTransparent((int)pixelLocation.X, (int)pixelLocation.Y))
+                    return true;
+            }
+
+            return false;
+        }
+
+        public Vector2 GlobalCenter
+        {
+            get
+            {
+                return GlobalPosition - Origin + new Vector2(Width, Height) / 2;
+            }
+        }
     }
 }

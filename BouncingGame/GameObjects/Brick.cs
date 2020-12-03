@@ -1,125 +1,224 @@
 ﻿using BouncingGame.Constants;
+using BouncingGame.GameStates;
 using Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace BouncingGame.GameObjects
 {
-    public class Brick : GameObjectList
+    public class Brick : GameObject
     {
         int durability;
         SpriteGameObject container;
-        TextGameObject displayText;
-        List<Vector2> normals = new List<Vector2> { NormalVector.StandLeft, NormalVector.StandRight, NormalVector.LieBottom, NormalVector.LieTop };
-        List<Vector2> specialNormals = new List<Vector2> { NormalVector.InclinedUpRight, NormalVector.InclinedUpLeft, NormalVector.InclinedDownRight, NormalVector.InclinedDownLeft };
+        TextGameObject text;
+
+        List<List<Vector2>> StandardNormals =
+            new List<List<Vector2>>
+            {
+                new List<Vector2> { UnitVector.Angle0, UnitVector.Angle90, UnitVector.Angle180, UnitVector.Angle270 },
+                new List<Vector2> { UnitVector.Angle45, UnitVector.Angle180, UnitVector.Angle270 },
+                new List<Vector2> { UnitVector.Angle90, UnitVector.Angle180, UnitVector.Angle315 },
+                new List<Vector2> { UnitVector.Angle0, UnitVector.Angle90, UnitVector.Angle225 },
+                new List<Vector2> { UnitVector.Angle0, UnitVector.Angle135, UnitVector.Angle270 },
+            };
+
+        List<List<Vector2>> StandardCombinedNormals =
+            new List<List<Vector2>>
+            {
+                new List<Vector2> {
+                    UnitVector.Angle135,
+                    UnitVector.Angle225,
+                    UnitVector.Angle45,
+                    UnitVector.Angle315
+                },
+                new List<Vector2> {
+                    UnitVector.Combine(UnitVector.Angle180, UnitVector.Angle45),
+                    UnitVector.Angle225,
+                    UnitVector.Combine(UnitVector.Angle270, UnitVector.Angle45),
+
+                },
+                new List<Vector2> {
+                    UnitVector.Angle135,
+                    UnitVector.Combine(UnitVector.Angle180, UnitVector.Angle315),
+                    UnitVector.Combine(UnitVector.Angle90, UnitVector.Angle315),
+                },
+                new List<Vector2> {
+                    UnitVector.Combine(UnitVector.Angle90, UnitVector.Angle225),
+                    UnitVector.Angle45,
+                    UnitVector.Combine(UnitVector.Angle0, UnitVector.Angle225),
+                },
+                new List<Vector2> {
+                    UnitVector.Combine(UnitVector.Angle270, UnitVector.Angle135),
+                    UnitVector.Combine(UnitVector.Angle0, UnitVector.Angle135),
+                    UnitVector.Angle315,
+                },
+
+            };
+
+        List<List<Vector2>> StandardCorners =
+            new List<List<Vector2>>
+            {
+                new List<Vector2> { new Vector2(0, 0), new Vector2(0, 100), new Vector2(100, 0), new Vector2(100, 100) },
+                new List<Vector2> { new Vector2(0, 0), new Vector2(0, 100), new Vector2(100, 100) },
+                new List<Vector2> { new Vector2(0, 0), new Vector2(0, 100), new Vector2(100, 0) },
+                new List<Vector2> { new Vector2(0, 0), new Vector2(100, 0), new Vector2(100, 100) },
+                new List<Vector2> { new Vector2(0, 100), new Vector2(100, 0), new Vector2(100, 100) },
+            };
+
+        List<Vector2> centers =
+            new List<Vector2>
+            {
+                new Vector2(50,50),
+                new Vector2(29.28931881f, 100 - 29.28931881f),
+                new Vector2(29.28931881f, 29.28931881f),
+                new Vector2(100 - 29.28931881f, 29.28931881f),
+                new Vector2(100 - 29.28931881f, 100 - 29.28931881f),
+            };
+
+        List<Vector2> normals;
+        List<Vector2> combinedNormals;
+        List<Vector2> corners;
+        Vector2 centerPoint;
+
+        Dictionary<Vector2, Vector2> cornerNormals = new Dictionary<Vector2, Vector2>();
+
+        int row;
+        Vector2 targetPosition;
+
+
+        // TODO: postion => column index
         public Brick(int durability, Vector2 position)
         {
+            // adapt input values
             this.durability = durability;
             this.localPosition = position;
-            container = new SpriteGameObject("Sprites/UI/spr_box", 1);
-            container.Color = Color.Red;
-            displayText = new TextGameObject("Fonts/MainFont", 1, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
-            displayText.LocalPosition = new Vector2(container.Width, container.Height) / 2;
-            this.AddChild(container);
-            this.AddChild(displayText);
+
+            // initialize data
+            row = 1;
+            targetPosition = LocalPosition;
+
+            // initialize container
+            container = new SpriteGameObject("Sprites/UI/spr_brick@5", 0);
+            container.Color = Color.White;
+            container.Parent = this;
+
+            // initialize text
+            text = new TextGameObject("Fonts/MainFont", 0.1f, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
+            text.Parent = this;
+
+            // set up type different
+            int type = ExtendedGame.Random.Next(8);
+            if(type % 2 == 0)
+            {
+                type = 0;
+            }
+            else
+            {
+                type = type / 2 + 1;
+            }
+            container.SheetIndex = type;
+            normals = StandardNormals[type];
+            combinedNormals = StandardCombinedNormals[type];
+            corners = StandardCorners[type];
+            centerPoint = centers[type];
+            text.LocalPosition = centerPoint;
+
+            for (int i = 0; i < corners.Count; i++)
+            {
+                cornerNormals.Add(corners[i], combinedNormals[i]);
+            }
+
         }
 
         public override void Update(GameTime gameTime)
         {
             if (durability <= 0)
-            {
-                this.Visible = false;
-            }
-            this.displayText.Text = this.durability.ToString();
+                Visible = false;
+            this.text.Text = this.durability.ToString();
+
+            velocity = (targetPosition - LocalPosition) * 4;
             base.Update(gameTime);
 
-            if (Visible)
-                CheckColiision();
+            if (Vector2.Distance(targetPosition, localPosition) < 1)
+            {
+                LocalPosition = targetPosition;
+            }
+
+            if (LocalPosition.Y >= 946)
+            {
+                ((PlayState)ExtendedGame.GameStateManager.GetGameState(StateName.Play)).GameOver();
+            }
         }
+
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            base.Draw(gameTime, spriteBatch);
+            if (!Visible)
+                return;
+            container.Draw(gameTime, spriteBatch);
+            text.Draw(gameTime, spriteBatch);
         }
-        private void CheckColiision()
+
+        public void Touched()
         {
-            foreach (var ball in ListBall.Instance.Balls)
+            durability--;
+        }
+
+        public void MoveDown()
+        {
+            row++;
+            targetPosition = LocalPosition + new Vector2(0, 100);
+        }
+
+        public bool CheckCollisionWithBall(Ball ball, out Vector2 normal)
+        {
+            normal = Vector2.Zero;
+
+            if (!Visible)
+                return false;
+            if (container.HasPixelPreciseCollision(ball))
             {
-                Vector2 distance = ball.LocalPosition - ball.PreviousLocation;
-                int stateCount = (int)(distance.X / ball.UnitVelocity.X) + 1;
-                Vector2 currentPosition = ball.LocalPosition;
-                int count;
-                for (count = 0; count < stateCount; count++)
+                Vector2 centerBall = ball.GlobalCenter;
+                Vector2 centerBrick = GlobalCenter;
+                var touchVector = centerBall - centerBrick;
+                touchVector.Normalize();
+
+                bool touchCorner = false;
+                foreach (var corner in corners)
                 {
-                    ball.LocalPosition = ball.PreviousLocation + count * ball.UnitVelocity;
-                    if (container.HasPixelPreciseCollision(ball))
+                    if (ball.Contains(GlobalPosition + corner))
                     {
-                        var touchVector =
-                        (ball.GlobalPosition - ball.Origin + (new Vector2(ball.Width, ball.Height) / 2))
-                        - (container.GlobalPosition - container.Origin + (new Vector2(container.Width, container.Height) / 2));
-                        touchVector.Normalize();
-
-                        Vector2 normal = Vector2.Zero;
-                        bool speacial = false;
-                        foreach (var vector in specialNormals)
-                        {
-                            if (Vector2.Distance(touchVector, vector) <= 0.02f)
-                            {
-                                normal = vector;
-                                speacial = true;
-                                break;
-                            }
-                        }
-
-                        if (!speacial)
-                        {
-                            float minDistance = normals.Min(x => Vector2.Distance(x, touchVector));
-                            normal = normals.FirstOrDefault(x => Vector2.Distance(x, touchVector) == minDistance);
-                        }
-
-                        ball.Reflect(normal);
-
- 
-                        ball.LocalPosition = ball.PreviousLocation + (count - 1) * ball.UnitVelocity;
-
-                        durability--;
+                        normal = cornerNormals[corner];
+                        touchCorner = true;
                         break;
                     }
                 }
 
-                if (count == stateCount)
-                    ball.LocalPosition = currentPosition;
-                //if (container.HasPixelPreciseCollision(ball))
-                //{
-                //    var touchVector =
-                //        (ball.GlobalPosition - ball.Origin + (new Vector2(ball.Width, ball.Height) / 2)) 
-                //        - ( container.GlobalPosition - container.Origin + (new Vector2(container.Width, container.Height) / 2));
-                //    touchVector.Normalize();
+                if (!touchCorner)
+                {
+                    float minDistance = normals.Min(x => Vector2.Distance(x, touchVector));
+                    normal = normals.FirstOrDefault(x => Vector2.Distance(x, touchVector) == minDistance);
+                }
 
-                //    Vector2 normal = Vector2.Zero;
-                //    bool speacial = false;
-                //    foreach (var vector in specialNormals)
-                //    {
-                //        if (Vector2.Distance(touchVector, vector) <= 0.02f)
-                //        {
-                //            normal = vector;
-                //            speacial = true;
-                //            break;
-                //        }
-                //    }
+                return true;
+            }
 
-                //    if (!speacial)
-                //    {
-                //        float minDistance = normals.Min(x => Vector2.Distance(x, touchVector));
-                //        normal = normals.FirstOrDefault(x => Vector2.Distance(x, touchVector) == minDistance);
-                //    }
+            return false;
+        }
 
-                //    ball.Reflect(normal, CollisionDetection.CalculateIntersection(container.BoundingBox, ball.BoundingBox));
+        public void RevertTouched()
+        {
+            durability++;
+        }
 
-                //    durability--;
-                //}
+        public Vector2 GlobalCenter
+        {
+            get
+            {
+                return container.GlobalPosition - container.Origin + centerPoint;
             }
         }
     }

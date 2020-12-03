@@ -1,4 +1,6 @@
-﻿using Engine;
+﻿using BouncingGame.Constants;
+using BouncingGame.GameStates;
+using Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
@@ -8,7 +10,13 @@ namespace BouncingGame.GameObjects
 {
     public class ListBall : GameObjectList
     {
-        public List<Ball> Balls { get; private set; }
+        private List<Ball> balls 
+        {
+            get
+            {
+                return children.Select(x => (Ball)x).ToList();
+            }
+        }
 
         public Vector2 DropPosition { get; set; } = new Vector2(350, 1050);
 
@@ -28,7 +36,7 @@ namespace BouncingGame.GameObjects
         {
             get
             {
-                return Balls.Any(x => x.Shooting);
+                return balls.Any(x => x.Shooting);
             }
         }
 
@@ -36,7 +44,7 @@ namespace BouncingGame.GameObjects
         {
             get
             {
-                return Balls.All(x => x.Shooting);
+                return balls.All(x => x.Shooting);
             }
         }
 
@@ -44,21 +52,20 @@ namespace BouncingGame.GameObjects
 
         private ListBall()
         {
-            Balls = new List<Ball>();
+            Reset();
         }
 
         public void AddBall()
         {
             var newBall = new Ball();
             newBall.LocalPosition = DropPosition;
-            Balls.Add(newBall);
             AddChild(newBall);
         }
 
         public void Shoot(float rotation)
         {
             double peddingTime = 0;
-            foreach (var ball in Balls)
+            foreach (var ball in balls)
             {
                 ball.Shoot(rotation, peddingTime);
                 peddingTime += 6d * 0.01699999998;
@@ -68,11 +75,19 @@ namespace BouncingGame.GameObjects
         public void AllDrop()
         {
             DropPosition = FirstDropBall.LocalPosition;
+            ((PlayState)ExtendedGame.GameStateManager.GetGameState(StateName.Play)).NextLevel();
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             base.Draw(gameTime, spriteBatch);
+        }
+
+        public override void Reset()
+        {
+            DropPosition = new Vector2(350, 1050);
+            Clear();
+            AddBall();
         }
     }
 }
