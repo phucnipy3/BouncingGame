@@ -52,6 +52,7 @@ namespace BouncingGame.GameObjects
         {
             SetOriginToCenterBottom();
             touchedBricks = new List<Brick>();
+            Radius = Width / 2;
         }
 
         public override void Update(GameTime gameTime)
@@ -127,7 +128,7 @@ namespace BouncingGame.GameObjects
                 RefreshTouchedBrick();
 
                 normals.AddRange(ListBrick.Instance.GetNormalVectorsWhenTouchBall(this));
-
+                  
                 if (normals.Any())
                 {
                     Vector2 combineNormal = normals[0];
@@ -135,10 +136,9 @@ namespace BouncingGame.GameObjects
                     {
                         combineNormal = UnitVector.Combine(combineNormal, normal);
                     }
-                    combineNormal.Normalize();
+                    LocalPosition = PreviousLocation + (count - 1) * UnitVelocity;
                     if (Reflect(combineNormal))
                     {
-                        LocalPosition = PreviousLocation + (count - 1) * UnitVelocity;
                         break;
                     }
                     else
@@ -154,7 +154,9 @@ namespace BouncingGame.GameObjects
 
         public bool Reflect(Vector2 normal)
         {
-            if (normal.Equals(lastNormal))
+            if (float.IsNaN(normal.X) || float.IsNaN(normal.Y))
+                return false;
+            if (Vector2.Distance(normal,lastNormal) < 0.2f)
                 return false;
             velocity = Vector2.Reflect(velocity, normal);
             lastNormal = normal;
@@ -259,5 +261,7 @@ namespace BouncingGame.GameObjects
                 return GlobalPosition - Origin + new Vector2(Width, Height) / 2;
             }
         }
+
+        public int Radius { get; private set; }
     }
 }
