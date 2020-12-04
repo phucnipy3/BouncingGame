@@ -49,9 +49,11 @@
     <Compile Include="GameObjects\Ball.cs" />
     <Compile Include="GameObjects\Brick.cs" />
     <Compile Include="GameObjects\Director.cs" />
+    <Compile Include="GameObjects\ItemAddBall.cs" />
     <Compile Include="GameObjects\ITouchable.cs" />
     <Compile Include="GameObjects\ListBall.cs" />
     <Compile Include="GameObjects\ListBrick.cs" />
+    <Compile Include="GameObjects\ListItemAddBall.cs" />
     <Compile Include="GameStates\HomeState.cs" />
     <Compile Include="GameStates\PlayState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -135,16 +135,14 @@ namespace BouncingGame.GameObjects
 
         public override void Update(GameTime gameTime)
         {
-            if (durability <= 0)
-                Visible = false;
             this.text.Text = this.durability.ToString();
 
-            velocity = (targetPosition - LocalPosition) * 4;
             base.Update(gameTime);
 
-            if (Vector2.Distance(targetPosition, localPosition) < 1)
+            if (targetPosition.Y - localPosition.Y <= 0)
             {
                 LocalPosition = targetPosition;
+                velocity = Vector2.Zero;
             }
 
             if (LocalPosition.Y >= 946)
@@ -165,12 +163,17 @@ namespace BouncingGame.GameObjects
         public void Touched()
         {
             durability--;
+            if(durability <= 0)
+            {
+                Visible = false;
+            }
         }
 
         public void MoveDown()
         {
             row++;
             targetPosition = LocalPosition + new Vector2(0, 100);
+            velocity = new Vector2(0, 1) * Constant.MoveDownVelocity;
         }
 
         public bool CheckCollisionWithBall(Ball ball, out Vector2 normal)

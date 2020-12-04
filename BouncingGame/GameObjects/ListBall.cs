@@ -3,6 +3,7 @@ using BouncingGame.GameStates;
 using Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -31,6 +32,8 @@ namespace BouncingGame.GameObjects
                 return instance;
             }
         }
+
+        private int ballNumber = 0;
 
         public bool Shooting
         {
@@ -75,6 +78,7 @@ namespace BouncingGame.GameObjects
         public void AllDrop()
         {
             DropPosition = FirstDropBall.LocalPosition;
+            
             ((PlayState)ExtendedGame.GameStateManager.GetGameState(StateName.Play)).NextLevel();
         }
 
@@ -83,11 +87,30 @@ namespace BouncingGame.GameObjects
             base.Draw(gameTime, spriteBatch);
         }
 
+        public void Increase(int n)
+        {
+            ballNumber += n;
+        }
+
         public override void Reset()
         {
             DropPosition = new Vector2(405, 367);
+            ballNumber = 1;
             Clear();
             AddBall();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            if (!Shooting)
+            {
+                while (ballNumber > balls.Count)
+                {
+                    AddBall();
+                }
+            }
+            
+            base.Update(gameTime);
         }
     }
 }

@@ -16,6 +16,7 @@ namespace BouncingGame.GameStates
             gameObjects.AddChild(ListBrick.Instance);
             gameObjects.AddChild(ListBall.Instance);
             gameObjects.AddChild(Director.Instance);
+            gameObjects.AddChild(ListItemAddBall.Instance);
         }
 
         public void GameOver()
@@ -26,6 +27,8 @@ namespace BouncingGame.GameStates
         public void NextLevel()
         {
             ListBrick.Instance.NextLevel();
+            ListItemAddBall.Instance.AddItem();
+            ListItemAddBall.Instance.MoveDown();
         }
 
         public override void Update(GameTime gameTime)

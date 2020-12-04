@@ -7,7 +7,7 @@ namespace Engine
         public float Radius { get; private set; }
         public Vector2 Center { get; private set; }
 
-        Circle(float radius, Vector2 center)
+        public Circle(float radius, Vector2 center)
         {
             Radius = radius;
             Center = center;
