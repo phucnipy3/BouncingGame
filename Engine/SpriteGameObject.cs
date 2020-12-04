@@ -29,6 +29,11 @@ namespace Engine
         public Color Color { get; set; } = Color.White;
 
         /// <summary>
+        /// The scale to use when drawing the sprite on the screen.
+        /// </summary>
+        public float Scale { get; set; } = 1.0f;
+
+        /// <summary>
         /// The sheet index of the attached sprite sheet.
         /// </summary>
         public int SheetIndex
@@ -71,7 +76,7 @@ namespace Engine
 
             // draw the sprite at its *global* position in the game world
            if (sprite != null)
-                sprite.Draw(spriteBatch, GlobalPosition, Origin, Rotation, Color);
+                sprite.Draw(spriteBatch, GlobalPosition, Origin, Rotation, Color, Scale);
         }
 
         /// <summary>
@@ -123,6 +128,7 @@ namespace Engine
                 return spriteBounds;
             }
         }
+
 
         /// <summary>
         /// Checks and returns if this <see cref="SpriteGameObject"/> 
