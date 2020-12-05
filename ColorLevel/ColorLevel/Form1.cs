@@ -16,10 +16,10 @@ namespace ColorLevel
             List<LevelView> levelViews = new List<LevelView>();
 
             int n = int.Parse(textBox1.Text);
-            for (int i = 0; i < 2 * n; i++)
+            for (int i = 1; i <= 2 * n; i++)
             {
-                levelViews.Add(new LevelView() { Level = i + 1, NormalColor = i + 1 > n ? Color.Empty : GetColorLevel(i, n), MediumColor = GetColorLevel(i, 2 * n, true) });
-            }    
+                levelViews.Add(new LevelView() { Level = i, NormalColor = GetColorLevel(i, n), MediumColor = GetColorLevel(i, n, true) });
+            }
 
             dataGridView1.DataSource = levelViews;
 
@@ -27,22 +27,27 @@ namespace ColorLevel
             {
                 dataGridView1.Rows[i].Cells[1].Style.BackColor = levelViews[i].NormalColor;
                 dataGridView1.Rows[i].Cells[2].Style.BackColor = levelViews[i].MediumColor;
-            }    
+            }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="current">from 0 to level - 1</param>
-        /// <param name="level"></param>
-        /// <param name="medium"></param>
-        /// <returns></returns>
         private Color GetColorLevel(int current, int level, bool medium = false)
         {
-            level = level > 1 ? level - 1 : level;
+            if (current < 1 || level < 1)
+                return Color.Empty;
+
+            if ((!medium && current > level) || (medium && current > 2 * level))
+                return Color.Empty;
+
             if (medium)
-                return Color.FromArgb((int)(((float)current / level) * 75), (int)(190 - ((float)current / level) * 190), (int)(255 - ((float)current / level) * 125));
-            return Color.FromArgb(255, (int)(255 - ((float)current / level) * 255), (int)(50 - ((float)current / level) * 50));
+            {
+                level = 2 * level - 1;
+                return Color.FromArgb((int)((current - 1f) / level * 75), (int)(190 - (current - 1f) / level * 190), (int)(255 - (current - 1f) / level * 125));
+            }
+
+            if (level == 1)
+                return Color.FromArgb(255, 0, 0);
+            level--;
+            return Color.FromArgb(255, (int)(255 - (current - 1f) / level * 255), (int)(50 - (current - 1f) / level * 50));
         }
     }
 
