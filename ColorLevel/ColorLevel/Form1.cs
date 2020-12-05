@@ -6,9 +6,6 @@ namespace ColorLevel
 {
     public partial class Form1 : Form
     {
-        private Color MaxColor = Color.FromArgb(75, 0, 130);
-        private Color MinColor = Color.FromArgb(0, 190, 255);
-
         public Form1()
         {
             InitializeComponent();
@@ -21,7 +18,7 @@ namespace ColorLevel
             int n = int.Parse(textBox1.Text);
             for (int i = 0; i < 2 * n; i++)
             {
-                levelViews.Add(new LevelView() { Level = i + 1, NormalColor = i + 1 > n ? Color.Empty : GetColorLevel(i + 1, n), MediumColor = GetColorLevel(i + 1, 2 * n, true) });
+                levelViews.Add(new LevelView() { Level = i + 1, NormalColor = i + 1 > n ? Color.Empty : GetColorLevel(i, n), MediumColor = GetColorLevel(i, 2 * n, true) });
             }    
 
             dataGridView1.DataSource = levelViews;
@@ -33,8 +30,16 @@ namespace ColorLevel
             }    
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="current">from 0 to level - 1</param>
+        /// <param name="level"></param>
+        /// <param name="medium"></param>
+        /// <returns></returns>
         private Color GetColorLevel(int current, int level, bool medium = false)
         {
+            level = level > 1 ? level - 1 : level;
             if (medium)
                 return Color.FromArgb((int)(((float)current / level) * 75), (int)(190 - ((float)current / level) * 190), (int)(255 - ((float)current / level) * 125));
             return Color.FromArgb(255, (int)(255 - ((float)current / level) * 255), (int)(50 - ((float)current / level) * 50));
