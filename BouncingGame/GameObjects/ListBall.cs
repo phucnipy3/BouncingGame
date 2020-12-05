@@ -85,7 +85,7 @@ namespace BouncingGame.GameObjects
 
         public override void Reset()
         {
-            DropPosition = new Vector2(350, 1050);
+            DropPosition = new Vector2(405, 367);
             Clear();
             AddBall();
         }

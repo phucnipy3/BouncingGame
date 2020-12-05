@@ -61,11 +61,11 @@ namespace BouncingGame.GameObjects
         List<List<Vector2>> StandardCorners =
             new List<List<Vector2>>
             {
-                new List<Vector2> { new Vector2(0, 0), new Vector2(0, 100), new Vector2(100, 0), new Vector2(100, 100) },
-                new List<Vector2> { new Vector2(0, 0), new Vector2(0, 100), new Vector2(100, 100) },
-                new List<Vector2> { new Vector2(0, 0), new Vector2(0, 100), new Vector2(100, 0) },
-                new List<Vector2> { new Vector2(0, 0), new Vector2(100, 0), new Vector2(100, 100) },
-                new List<Vector2> { new Vector2(0, 100), new Vector2(100, 0), new Vector2(100, 100) },
+                new List<Vector2> { new Vector2(0 + 3, 0 + 3), new Vector2(0 + 3, 100 - 3), new Vector2(100 - 3, 100 - 3), new Vector2(100 - 3, 0 + 3) },
+                new List<Vector2> { new Vector2(0 + 3, 0 + 3), new Vector2(0 + 3, 100 - 3), new Vector2(100 - 3, 100 - 3) },
+                new List<Vector2> { new Vector2(0 + 3, 0 + 3), new Vector2(0 + 3, 100 - 3), new Vector2(100 - 3, 0 + 3) },
+                new List<Vector2> { new Vector2(0 + 3, 0 + 3), new Vector2(100 - 3, 0 + 3), new Vector2(100 - 3, 100 - 3) },
+                new List<Vector2> { new Vector2(0 + 3, 100 - 3), new Vector2(100 - 3, 0 + 3), new Vector2(100 - 3, 100 - 3) },
             };
 
         List<Vector2> centers =
@@ -111,7 +111,7 @@ namespace BouncingGame.GameObjects
 
             // set up type different
             int type = ExtendedGame.Random.Next(8);
-            if(type % 2 == 0)
+            if (type % 2 == 0)
             {
                 type = 0;
             }
@@ -179,30 +179,11 @@ namespace BouncingGame.GameObjects
 
             if (!Visible)
                 return false;
-            if (container.HasPixelPreciseCollision(ball))
+
+            Vector2 closestPoint = ClosestPoint(ball.GlobalCenter, corners.Select(x => x + GlobalPosition).ToArray());
+            if (Vector2.Distance(ball.GlobalCenter, closestPoint) <= ball.Radius)
             {
-                Vector2 centerBall = ball.GlobalCenter;
-                Vector2 centerBrick = GlobalCenter;
-                var touchVector = centerBall - centerBrick;
-                touchVector.Normalize();
-
-                bool touchCorner = false;
-                foreach (var corner in corners)
-                {
-                    if (ball.Contains(GlobalPosition + corner))
-                    {
-                        normal = cornerNormals[corner];
-                        touchCorner = true;
-                        break;
-                    }
-                }
-
-                if (!touchCorner)
-                {
-                    float minDistance = normals.Min(x => Vector2.Distance(x, touchVector));
-                    normal = normals.FirstOrDefault(x => Vector2.Distance(x, touchVector) == minDistance);
-                }
-
+                normal = Vector2.Normalize(ball.GlobalCenter - closestPoint);
                 return true;
             }
 
@@ -221,5 +202,81 @@ namespace BouncingGame.GameObjects
                 return container.GlobalPosition - container.Origin + centerPoint;
             }
         }
+
+        public static Vector2 ClosestPoint(Vector2 point, params Vector2[] vertices)
+        {
+            Vector2 closestPoint = Vector2.Zero;
+            float distance = float.MaxValue;
+
+            
+
+            var S = CalculateArea(vertices);
+            var tempS = 0f;
+            for(int i = 0; i< vertices.Length; i++)
+            {
+                tempS += CalculateArea(point, vertices[i], vertices[(i + 1) % vertices.Length]);
+            }
+
+            // if point is inside shape
+            if(Math.Abs(tempS - S) < 0.00001f)
+            {
+                return point;
+            }
+
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                Vector2 A = vertices[i];
+                Vector2 B = vertices[(i + 1) % vertices.Length];
+                Vector2 AB = B - A;
+                Vector2 footOnAB = CaculateSetTwoEquations(
+                                            new Vector3(AB.X, AB.Y, -AB.X * point.X - AB.Y * point.Y),
+                                            new Vector3(AB.Y, -AB.X, -A.X * AB.Y + AB.X * A.Y));
+
+                Vector2 closestPointOnAB;
+                closestPointOnAB.X = MathHelper.Clamp(footOnAB.X, Math.Min(A.X, B.X), Math.Max(A.X, B.X));
+                closestPointOnAB.Y = MathHelper.Clamp(footOnAB.Y, Math.Min(A.Y, B.Y), Math.Max(A.Y, B.Y));
+                float distanceToAB = Vector2.Distance(point, closestPointOnAB);
+                if(distanceToAB < distance)
+                {
+                    distance = distanceToAB;
+                    closestPoint = closestPointOnAB;
+                }
+            }
+
+            return closestPoint;
+        }
+
+        public static Vector2 CaculateSetTwoEquations(Vector3 equation1, Vector3 equation2)
+        {
+            float D = equation1.X * equation2.Y - equation2.X * equation1.Y;
+            float Da = -equation1.Z * equation2.Y + equation2.Z * equation1.Y;
+            float Db = -equation1.X * equation2.Z + equation2.X * equation1.Z;
+
+            return new Vector2(Da / D, Db / D);
+        }
+
+        public static float CalculateArea(params Vector2[] vertices)
+        {
+            float p = 0;
+            float[] lengths = new float[4];
+            for(int i = 0; i< vertices.Length; i++)
+            {
+                lengths[i] = Vector2.Distance(vertices[i], vertices[(i + 1) % vertices.Length]);
+            }
+
+            p = lengths.Sum() / 2;
+
+            float temp = 1f;
+            foreach(var length in lengths)
+            {
+                temp *= (p - length);
+            }
+
+            float s = (float)Math.Sqrt(temp);
+
+            return s;
+        }
+
+
     }
 }
