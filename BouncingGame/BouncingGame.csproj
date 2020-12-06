@@ -50,10 +50,16 @@
     <Compile Include="GameObjects\Brick.cs" />
     <Compile Include="GameObjects\Director.cs" />
     <Compile Include="GameObjects\ItemAddBall.cs" />
+    <Compile Include="GameObjects\ItemClearColumn.cs" />
+    <Compile Include="GameObjects\ItemSpreadBall.cs" />
+    <Compile Include="GameObjects\ItemClearRow.cs" />
     <Compile Include="GameObjects\ITouchable.cs" />
     <Compile Include="GameObjects\ListBall.cs" />
     <Compile Include="GameObjects\ListBrick.cs" />
     <Compile Include="GameObjects\ListItemAddBall.cs" />
+    <Compile Include="GameObjects\ListItemClearColumn.cs" />
+    <Compile Include="GameObjects\ListItemSpreadBall.cs" />
+    <Compile Include="GameObjects\ListItemClearRow.cs" />
     <Compile Include="GameStates\HomeState.cs" />
     <Compile Include="GameStates\PlayState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

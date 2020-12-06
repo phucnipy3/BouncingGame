@@ -86,18 +86,38 @@ namespace BouncingGame.GameObjects
         Dictionary<Vector2, Vector2> cornerNormals = new Dictionary<Vector2, Vector2>();
 
         int row;
+
+
+        public int Row
+        {
+            get
+            {
+                return row;
+            }
+        }
+
+        int column;
+
+        public int Column
+        {
+            get
+            {
+                return column;
+            }
+        }
         Vector2 targetPosition;
 
 
         // TODO: postion => column index
-        public Brick(int durability, Vector2 position)
+        public Brick(int durability, int column)
         {
             // adapt input values
             this.durability = durability;
-            this.localPosition = position;
+            this.column = column;
+            this.localPosition = new Vector2(100 * column, 150);
 
             // initialize data
-            row = 1;
+            row = 0;
             targetPosition = LocalPosition;
 
             // initialize container
@@ -163,7 +183,7 @@ namespace BouncingGame.GameObjects
         public void Touched()
         {
             durability--;
-            if(durability <= 0)
+            if (durability <= 0)
             {
                 Visible = false;
             }
@@ -211,17 +231,17 @@ namespace BouncingGame.GameObjects
             Vector2 closestPoint = Vector2.Zero;
             float distance = float.MaxValue;
 
-            
+
 
             var S = CalculateArea(vertices);
             var tempS = 0f;
-            for(int i = 0; i< vertices.Length; i++)
+            for (int i = 0; i < vertices.Length; i++)
             {
                 tempS += CalculateArea(point, vertices[i], vertices[(i + 1) % vertices.Length]);
             }
 
             // if point is inside shape
-            if(Math.Abs(tempS - S) < 0.00001f)
+            if (Math.Abs(tempS - S) < 0.00001f)
             {
                 return point;
             }
@@ -239,7 +259,7 @@ namespace BouncingGame.GameObjects
                 closestPointOnAB.X = MathHelper.Clamp(footOnAB.X, Math.Min(A.X, B.X), Math.Max(A.X, B.X));
                 closestPointOnAB.Y = MathHelper.Clamp(footOnAB.Y, Math.Min(A.Y, B.Y), Math.Max(A.Y, B.Y));
                 float distanceToAB = Vector2.Distance(point, closestPointOnAB);
-                if(distanceToAB < distance)
+                if (distanceToAB < distance)
                 {
                     distance = distanceToAB;
                     closestPoint = closestPointOnAB;
@@ -262,7 +282,7 @@ namespace BouncingGame.GameObjects
         {
             float p = 0;
             float[] lengths = new float[4];
-            for(int i = 0; i< vertices.Length; i++)
+            for (int i = 0; i < vertices.Length; i++)
             {
                 lengths[i] = Vector2.Distance(vertices[i], vertices[(i + 1) % vertices.Length]);
             }
@@ -270,7 +290,7 @@ namespace BouncingGame.GameObjects
             p = lengths.Sum() / 2;
 
             float temp = 1f;
-            foreach(var length in lengths)
+            foreach (var length in lengths)
             {
                 temp *= (p - length);
             }

@@ -48,7 +48,7 @@ namespace BouncingGame.GameObjects
 
         List<Brick> touchedBricks;
 
-        public Ball() : base("Sprites/UI/spr_ball_normal_4mm", 0)
+        public Ball() : base("Sprites/UI/spr_ball_normal_4mm", 0.1f)
         {
             SetOriginToCenterBottom();
             touchedBricks = new List<Brick>();
@@ -61,7 +61,7 @@ namespace BouncingGame.GameObjects
 
             if (targetPosition.HasValue)
             {
-                if(targetPosition.Value == dropPosition)
+                if (targetPosition.Value == dropPosition)
                 {
                     Shooting = false;
                     LocalPosition = targetPosition.Value;
@@ -106,6 +106,13 @@ namespace BouncingGame.GameObjects
             {
                 HandleCollision();
             }
+        }
+
+        public void ReflectRandom()
+        {
+            var rotation = ExtendedGame.Random.NextDouble() * MathHelper.Pi * 2;
+            velocity = new Vector2((float)Math.Sin(rotation), (float)Math.Cos(rotation)) * Constant.BallVelocity;
+            lastNormal = Vector2.Zero;
         }
 
         private void HandleCollision()
@@ -164,6 +171,12 @@ namespace BouncingGame.GameObjects
                 }
 
                 ListItemAddBall.Instance.CheckCollisionWithBall(this);
+                ListItemClearRow.Instance.CheckCollisionWithBall(this);
+                ListItemClearColumn.Instance.CheckCollisionWithBall(this);
+                if (ListItemSpreadBall.Instance.CheckCollisionWithBall(this))
+                {
+                    break;
+                }
             }
 
             if (count == stateCount)

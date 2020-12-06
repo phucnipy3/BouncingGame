@@ -98,6 +98,12 @@ namespace BouncingGame.GameObjects
             ballNumber = 1;
             Clear();
             AddBall();
+            AddBall();
+            AddBall();
+            AddBall();
+            AddBall();
+            AddBall();
+            AddBall();
         }
 
         public override void Update(GameTime gameTime)
