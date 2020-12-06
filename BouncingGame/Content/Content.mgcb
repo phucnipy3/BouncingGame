@@ -164,7 +164,7 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/UI/spr_item_break_vertical.png
 
-#begin Sprites/UI/spr_item_sprerd_ball.png
+#begin Sprites/UI/spr_item_spread_ball.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -174,7 +174,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/UI/spr_item_sprerd_ball.png
+/build:Sprites/UI/spr_item_spread_ball.png
 
 #begin Sprites/UI/spr_pause.png
 /importer:TextureImporter

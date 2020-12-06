@@ -27,7 +27,7 @@ namespace BouncingGame.GameObjects
 
         public ItemSpreadBall(int column)
         {
-            item = new SpriteGameObject("Sprites/UI/spr_item_sprerd_ball", 0f);
+            item = new SpriteGameObject("Sprites/UI/spr_item_spread_ball", 0f);
             item.SetOriginToCenter();
             item.Parent = this;
             item.LocalPosition = new Vector2(50, 50);
