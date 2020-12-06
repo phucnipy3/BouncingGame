@@ -49,11 +49,11 @@ namespace BouncingGame.GameObjects
         private void AddNewBricks()
         {
             int durability = level;
-            AddChild(new Brick(durability, new Vector2(0, 150)));
-            AddChild(new Brick(durability, new Vector2(100, 150)));
-            AddChild(new Brick(durability, new Vector2(200, 150)));
-            AddChild(new Brick(durability, new Vector2(300, 150)));
-            AddChild(new Brick(durability, new Vector2(600, 150)));
+            AddChild(new Brick(durability, 0));
+            AddChild(new Brick(durability, 1));
+            AddChild(new Brick(durability, 2));
+            AddChild(new Brick(durability, 4));
+            AddChild(new Brick(durability, 6));
         }
 
         public override void Reset()
@@ -85,6 +85,28 @@ namespace BouncingGame.GameObjects
         {
             RemoveChild(bricks.Where(x => !x.Visible).Select(x => x));
             base.Update(gameTime);
+        }
+
+        public void ClearRow(int row)
+        {
+            foreach (var brick in bricks)
+            {
+                if(brick.Row == row)
+                {
+                    brick.Touched();
+                }
+            }
+        }
+
+        public void ClearColumn(int column)
+        {
+            foreach (var brick in bricks)
+            {
+                if (brick.Column == column)
+                {
+                    brick.Touched();
+                }
+            }
         }
     }
 }

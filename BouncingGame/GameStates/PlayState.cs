@@ -1,5 +1,6 @@
 ﻿using BouncingGame.GameObjects;
 using Engine;
+using Engine.UI;
 using Microsoft.Xna.Framework;
 using System;
 
@@ -9,6 +10,7 @@ namespace BouncingGame.GameStates
     {
         Ball ball = new Ball();
         bool gameOver = false;
+        Button pauseButton;
 
         public PlayState()
         {
@@ -16,6 +18,11 @@ namespace BouncingGame.GameStates
             gameObjects.AddChild(ListBrick.Instance);
             gameObjects.AddChild(ListBall.Instance);
             gameObjects.AddChild(Director.Instance);
+            gameObjects.AddChild(ListItemSpreadBall.Instance);
+            pauseButton = new Button("Sprites/UI/spr_pause", 0);
+            gameObjects.AddChild(pauseButton);
+            pauseButton.LocalPosition = new Vector2(10, 10);
+            
         }
 
         public void GameOver()
@@ -26,6 +33,8 @@ namespace BouncingGame.GameStates
         public void NextLevel()
         {
             ListBrick.Instance.NextLevel();
+            ListItemSpreadBall.Instance.AddItem();
+            ListItemSpreadBall.Instance.MoveDown();
         }
 
         public override void Update(GameTime gameTime)

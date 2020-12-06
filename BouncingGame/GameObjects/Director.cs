@@ -9,10 +9,12 @@ namespace BouncingGame.GameObjects
     public class Director : GameObject
     {
         SpriteGameObject arrow;
+        SpriteGameObject alignment;
         Vector2 startPosition = Vector2.Zero;
         Vector2 endPosition = Vector2.Zero;
         bool aimStarted = false;
         bool canShoot = false;
+
 
         private static Director instance = new Director();
 
@@ -30,6 +32,11 @@ namespace BouncingGame.GameObjects
             arrow.Rotation = -MathHelper.Pi / 2;
             arrow.Parent = this;
             this.Visible = false;
+            alignment = new SpriteGameObject("Sprites/UI/spr_alignment_line", 0.2f);
+            alignment.SetOriginToLeftCenter();
+            alignment.Rotation = -MathHelper.Pi / 2;
+            alignment.Scale = 1f;
+            alignment.Parent = this;
         }
 
         public override void Update(GameTime gameTime)
@@ -56,9 +63,12 @@ namespace BouncingGame.GameObjects
             {
                 endPosition = mousePosition;
 
-                Vector2 force = endPosition - startPosition;
-                arrow.Rotation = (float)Math.Atan2(force.Y, force.X) + MathHelper.Pi;
-                if (force.Length() > 10 && (arrow.Rotation > MathHelper.Pi + MathHelper.Pi / 12) && (arrow.Rotation < MathHelper.TwoPi - MathHelper.Pi / 12))
+                Vector2 force = startPosition -endPosition;
+                alignment.LocalPosition = Vector2.Normalize(force) * (arrow.Width + 20);
+                arrow.Rotation = (float)Math.Atan2(force.Y, force.X);
+                alignment.Rotation = arrow.Rotation;
+                alignment.Scale = Map(force.Length(), 10f, 1140f, 1f, 0.2f);
+                if (force.Length() > 10 && (arrow.Rotation < -MathHelper.Pi / 12) && (arrow.Rotation > -MathHelper.Pi + MathHelper.Pi / 12))
                 {
                     canShoot = true;
                 }
@@ -89,6 +99,12 @@ namespace BouncingGame.GameObjects
             if (!Visible)
                 return;
             arrow.Draw(gameTime, spriteBatch);
+            alignment.Draw(gameTime, spriteBatch);
+        }
+
+        private float Map(float value, float minSource, float maxSource, float minDestination, float maxDestination)
+        {
+            return minDestination + (maxDestination - minDestination) * ((maxSource - value) / (maxSource - minSource));
         }
     }
 }

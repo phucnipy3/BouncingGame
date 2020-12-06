@@ -10,11 +10,11 @@ namespace BouncingGame.GameObjects
 {
     public class Ball : SpriteGameObject
     {
-        float forceLength = 900;
         double eslapsedTime = 0;
         Vector2 lastNormal = Vector2.Zero;
 
         Vector2? targetPosition;
+        Vector2 dropPosition;
 
         public new ListBall Parent
         {
@@ -48,7 +48,7 @@ namespace BouncingGame.GameObjects
 
         List<Brick> touchedBricks;
 
-        public Ball() : base("Sprites/UI/spr_ball_normal_4mm", 0)
+        public Ball() : base("Sprites/UI/spr_ball_normal_4mm", 0.1f)
         {
             SetOriginToCenterBottom();
             touchedBricks = new List<Brick>();
@@ -61,8 +61,7 @@ namespace BouncingGame.GameObjects
 
             if (targetPosition.HasValue)
             {
-                LocalPosition += (float)gameTime.ElapsedGameTime.TotalSeconds * (targetPosition.Value - LocalPosition) * 7;
-                if (Vector2.Distance(LocalPosition, targetPosition.Value) < 2)
+                if (targetPosition.Value == dropPosition)
                 {
                     Shooting = false;
                     LocalPosition = targetPosition.Value;
@@ -71,6 +70,23 @@ namespace BouncingGame.GameObjects
                     if (!Parent.Shooting)
                     {
                         Parent.AllDrop();
+                    }
+                }
+                else
+                {
+                    LocalPosition += (float)gameTime.ElapsedGameTime.TotalSeconds * Vector2.Normalize(targetPosition.Value - dropPosition) * Constant.SideVelocity;
+
+                    if ((dropPosition.X > targetPosition.Value.X && LocalPosition.X - targetPosition.Value.X <= 0) ||
+                        (dropPosition.X <= targetPosition.Value.X && LocalPosition.X - targetPosition.Value.X >= 0))
+                    {
+                        Shooting = false;
+                        LocalPosition = targetPosition.Value;
+                        targetPosition = null;
+                        velocity = Vector2.Zero;
+                        if (!Parent.Shooting)
+                        {
+                            Parent.AllDrop();
+                        }
                     }
                 }
             }
@@ -90,6 +106,13 @@ namespace BouncingGame.GameObjects
             {
                 HandleCollision();
             }
+        }
+
+        public void ReflectRandom()
+        {
+            var rotation = ExtendedGame.Random.NextDouble() * MathHelper.Pi * 2;
+            velocity = new Vector2((float)Math.Sin(rotation), (float)Math.Cos(rotation)) * Constant.BallVelocity;
+            lastNormal = Vector2.Zero;
         }
 
         private void HandleCollision()
@@ -128,7 +151,7 @@ namespace BouncingGame.GameObjects
                 RefreshTouchedBrick();
 
                 normals.AddRange(ListBrick.Instance.GetNormalVectorsWhenTouchBall(this));
-                  
+
                 if (normals.Any())
                 {
                     Vector2 combineNormal = normals[0];
@@ -146,6 +169,14 @@ namespace BouncingGame.GameObjects
                         RevertTouchedBricks();
                     }
                 }
+
+                ListItemAddBall.Instance.CheckCollisionWithBall(this);
+                ListItemClearRow.Instance.CheckCollisionWithBall(this);
+                ListItemClearColumn.Instance.CheckCollisionWithBall(this);
+                if (ListItemSpreadBall.Instance.CheckCollisionWithBall(this))
+                {
+                    break;
+                }
             }
 
             if (count == stateCount)
@@ -156,7 +187,7 @@ namespace BouncingGame.GameObjects
         {
             if (float.IsNaN(normal.X) || float.IsNaN(normal.Y))
                 return false;
-            if (Vector2.Distance(normal,lastNormal) < 0.2f)
+            if (Vector2.Distance(normal, lastNormal) < 0.2f)
                 return false;
             velocity = Vector2.Reflect(velocity, normal);
             lastNormal = normal;
@@ -190,6 +221,7 @@ namespace BouncingGame.GameObjects
             else
             {
                 targetPosition = Parent.FirstDropBall.LocalPosition;
+                dropPosition = LocalPosition;
             }
 
             lastNormal = UnitVector.Angle90;
@@ -218,7 +250,7 @@ namespace BouncingGame.GameObjects
 
         public void Shoot(float rotation, double peddingTime)
         {
-            velocity = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation)) * forceLength;
+            velocity = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation)) * Constant.BallVelocity;
             eslapsedTime = -peddingTime;
             Shooting = true;
             droped = false;
