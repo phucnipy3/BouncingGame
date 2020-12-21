@@ -84,7 +84,7 @@ namespace BouncingGame.GameObjects
         Vector2 centerPoint;
 
         Dictionary<Vector2, Vector2> cornerNormals = new Dictionary<Vector2, Vector2>();
-
+        private bool special;
         int row;
 
 
@@ -108,13 +108,13 @@ namespace BouncingGame.GameObjects
         Vector2 targetPosition;
 
 
-        // TODO: postion => column index
-        public Brick(int durability, int column)
+        public Brick(int durability, int column, bool special = false)
         {
             // adapt input values
             this.durability = durability;
             this.column = column;
             this.localPosition = new Vector2(100 * column, 150);
+            this.special = special;
 
             // initialize data
             row = 0;
@@ -155,7 +155,10 @@ namespace BouncingGame.GameObjects
 
         public override void Update(GameTime gameTime)
         {
-            this.text.Text = this.durability.ToString();
+            var color = CalculateColor();
+            text.Color = color;
+            text.Text = this.durability.ToString();
+            container.Color = color;
 
             base.Update(gameTime);
 
@@ -300,6 +303,12 @@ namespace BouncingGame.GameObjects
             return s;
         }
 
-
+        private Color CalculateColor()
+        {
+            int level = ((PlayState)ExtendedGame.GameStateManager.GetGameState(StateName.Play)).Level;
+            float diff = 255f / level;
+            return new Color(255, (int)((level - durability) * diff), 100);
+        }
     }
+
 }

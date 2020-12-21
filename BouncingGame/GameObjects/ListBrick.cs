@@ -24,8 +24,7 @@ namespace BouncingGame.GameObjects
             }
         }
 
-        
-        private int level = 10;
+        public int Level { get; set; }
         private ListBrick()
         {
             Reset();
@@ -33,7 +32,7 @@ namespace BouncingGame.GameObjects
 
         public void NextLevel()
         {
-            level++;
+            Level++;
             AddNewBricks();
             MoveDown();
         }
@@ -48,7 +47,7 @@ namespace BouncingGame.GameObjects
 
         private void AddNewBricks()
         {
-            int durability = level;
+            int durability = Level;
             AddChild(new Brick(durability, 0));
             AddChild(new Brick(durability, 1));
             AddChild(new Brick(durability, 2));
@@ -60,7 +59,7 @@ namespace BouncingGame.GameObjects
         {
             Clear();
             bricks.Clear();
-            level = 0;
+            Level = 0;
             NextLevel();
         }
 

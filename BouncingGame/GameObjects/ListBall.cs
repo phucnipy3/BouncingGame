@@ -3,7 +3,6 @@ using BouncingGame.GameStates;
 using Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,7 +10,7 @@ namespace BouncingGame.GameObjects
 {
     public class ListBall : GameObjectList
     {
-        private List<Ball> balls 
+        private List<Ball> balls
         {
             get
             {
@@ -78,7 +77,7 @@ namespace BouncingGame.GameObjects
         public void AllDrop()
         {
             DropPosition = FirstDropBall.LocalPosition;
-            
+
             ((PlayState)ExtendedGame.GameStateManager.GetGameState(StateName.Play)).NextLevel();
         }
 
@@ -94,16 +93,13 @@ namespace BouncingGame.GameObjects
 
         public override void Reset()
         {
-            DropPosition = new Vector2(405, 367);
+            DropPosition = new Vector2(350, 1050);
             ballNumber = 1;
             Clear();
             AddBall();
             AddBall();
             AddBall();
-            AddBall();
-            AddBall();
-            AddBall();
-            AddBall();
+
         }
 
         public override void Update(GameTime gameTime)
@@ -115,7 +111,7 @@ namespace BouncingGame.GameObjects
                     AddBall();
                 }
             }
-            
+
             base.Update(gameTime);
         }
     }
