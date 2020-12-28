@@ -100,5 +100,14 @@ namespace BouncingGame.GameObjects
 
             return touched;
         }
+
+        public void ClearDeadRows()
+        {
+            foreach (var item in items)
+            {
+                if (item.Row > 5)
+                    item.Visible = false;
+            }
+        }
     }
 }

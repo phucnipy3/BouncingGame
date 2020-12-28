@@ -17,14 +17,24 @@ namespace BouncingGame.GameStates
         Button continueButton;
         Button guideButton;
         Button homeButton;
-        Button volumnButton;
+        Switch volumnButton;
         SpriteGameObject pauseBackground;
         SpriteGameObject guideBackground;
+        SpriteGameObject continueBackground;
+        Button oneMoreButton;
+        Button endGameButton;
+        SpriteGameObject gameOverBackground;
+        Button getBallButton;
+        Button rankButton;
+        Button replayButton;
+        Button shareButton;
+
         bool pause = false;
         List<int> NumberBricks = new List<int>();
+        bool canContinue = true;
         public PlayState()
         {
-            for(int i = 0; i< Constant.NumberBrickRate.Length; i++)
+            for (int i = 0; i < Constant.NumberBrickRate.Length; i++)
             {
                 NumberBricks.AddRange(Enumerable.Repeat<int>(i, Constant.NumberBrickRate[i]));
             }
@@ -41,6 +51,7 @@ namespace BouncingGame.GameStates
             pauseButton = new Button("Sprites/Buttons/spr_pause", 0);
             gameObjects.AddChild(pauseButton);
             pauseButton.LocalPosition = new Vector2(10, 10);
+
             guideButton = new Button("Sprites/Buttons/spr_guide", 0);
             gameObjects.AddChild(guideButton);
             guideButton.LocalPosition = new Vector2(100, 10);
@@ -48,6 +59,7 @@ namespace BouncingGame.GameStates
             pauseBackground = new SpriteGameObject("Sprites/Backgrounds/spr_pause", 0.75f);
             pauseBackground.Visible = false;
             gameObjects.AddChild(pauseBackground);
+
             guideBackground = new SpriteGameObject("Sprites/Backgrounds/spr_guide", 0.75f);
             guideBackground.Visible = false;
             gameObjects.AddChild(guideBackground);
@@ -56,20 +68,69 @@ namespace BouncingGame.GameStates
             gameObjects.AddChild(continueButton);
             continueButton.LocalPosition = new Vector2(10, 10);
             continueButton.Visible = false;
+
             homeButton = new Button("Sprites/Buttons/spr_back_to_home", 1);
             gameObjects.AddChild(homeButton);
             homeButton.LocalPosition = new Vector2(600, 10);
-            homeButton.Visible = false; 
-            volumnButton = new Button("Sprites/Buttons/spr_mute", 1);
+            homeButton.Visible = false;
+
+            volumnButton = new Switch("Sprites/Buttons/spr_volume@2", 1);
             gameObjects.AddChild(volumnButton);
             volumnButton.LocalPosition = new Vector2(100, 10);
             volumnButton.Visible = false;
+
+            continueBackground = new Switch("Sprites/Backgrounds/spr_continue", 0.75f);
+            gameObjects.AddChild(continueBackground);
+            continueBackground.Visible = false;
+
+            oneMoreButton = new Switch("Sprites/Buttons/spr_btn_onemore", 1);
+            gameObjects.AddChild(oneMoreButton);
+            oneMoreButton.LocalPosition = new Vector2(100, 400);
+            oneMoreButton.Visible = false;
+
+            endGameButton = new Switch("Sprites/Buttons/spr_btn_endgame", 1);
+            gameObjects.AddChild(endGameButton);
+            endGameButton.LocalPosition = new Vector2(400, 400);
+            endGameButton.Visible = false;
+
+            gameOverBackground = new Switch("Sprites/Backgrounds/spr_game_over", 0.75f);
+            gameObjects.AddChild(gameOverBackground);
+            gameOverBackground.Visible = false;
+
+            getBallButton = new Switch("Sprites/Buttons/spr_btn_getball", 1);
+            gameObjects.AddChild(getBallButton);
+            getBallButton.LocalPosition = new Vector2(400, 800);
+            getBallButton.Visible = false;
+
+            rankButton = new Switch("Sprites/Buttons/spr_btn_rank", 1);
+            gameObjects.AddChild(rankButton);
+            rankButton.LocalPosition = new Vector2(600, 1000);
+            rankButton.Visible = false;
+
+            replayButton = new Switch("Sprites/Buttons/spr_btn_replay", 1);
+            gameObjects.AddChild(replayButton);
+            replayButton.LocalPosition = new Vector2(300, 1000);
+            replayButton.Visible = false;
+
+            shareButton = new Switch("Sprites/Buttons/spr_btn_share", 1);
+            gameObjects.AddChild(shareButton);
+            shareButton.LocalPosition = new Vector2(10, 1000);
+            shareButton.Visible = false;
+
             Reset();
         }
 
         public void GameOver()
         {
             gameOver = true;
+            if (canContinue)
+            {
+                ShowContinueOverlay();
+            }
+            else
+            {
+                ShowGameOverOverlay();
+            }
         }
 
         public void NextLevel()
@@ -121,12 +182,12 @@ namespace BouncingGame.GameStates
             {
                 int brickCount = NumberBricks[ExtendedGame.Random.Next(0, NumberBricks.Count)];
 
-                if(brickCount > positions.Count)
+                if (brickCount > positions.Count)
                 {
                     brickCount = positions.Count;
                 }
 
-                for(int i = 0; i< brickCount; i++)
+                for (int i = 0; i < brickCount; i++)
                 {
                     int brickPositionIndex = ExtendedGame.Random.Next(positions.Count);
 
@@ -144,12 +205,12 @@ namespace BouncingGame.GameStates
 
             List<BlockType> existingItems = new List<BlockType>();
 
-            foreach(var leftPosition in positions)
+            foreach (var leftPosition in positions)
             {
                 bool isItem = ExtendedGame.Random.NextDouble() <= Constant.ItemRate;
                 if (isItem && (existingItems.Count < (int)BlockType.LastRandomItem - (int)BlockType.FirstRandomItem + 1))
                 {
-                    var type = (BlockType)ExtendedGame.Random.Next((int)BlockType.FirstRandomItem, (int)BlockType.LastRandomItem +1);
+                    var type = (BlockType)ExtendedGame.Random.Next((int)BlockType.FirstRandomItem, (int)BlockType.LastRandomItem + 1);
                     while (existingItems.Contains(type))
                     {
                         type = (BlockType)ExtendedGame.Random.Next((int)BlockType.FirstRandomItem, (int)BlockType.LastRandomItem + 1);
@@ -170,14 +231,45 @@ namespace BouncingGame.GameStates
         {
             if (gameOver)
             {
-                Reset();
+                if (canContinue)
+                {
+                    if (oneMoreButton.Pressed)
+                    {
+                        HideContinueOverlay();
+                        ClearDeadRows();
+                        gameOver = false;
+                        canContinue = false;
+                    }
+
+                    if (endGameButton.Pressed)
+                    {
+                        HideContinueOverlay();
+                        ShowGameOverOverlay();
+                        canContinue = false;
+                    }
+                }
+                else
+                {
+                    if (getBallButton.Pressed)
+                    {
+                        // get ball
+                    }
+
+                    if (replayButton.Pressed)
+                    {
+                        ExtendedGame.GameStateManager.SwitchTo(StateName.Home);
+                    }
+
+                }
+
+                return;
             }
 
             if (pause)
             {
                 if (continueButton.Pressed)
                 {
-                    HideOverlay();
+                    HidePauseOverlay();
                     pause = false;
                 }
 
@@ -213,7 +305,49 @@ namespace BouncingGame.GameStates
 
         }
 
-        private void HideOverlay()
+        private void ClearDeadRows()
+        {
+            ListBrick.Instance.ClearDeadRows();
+            ListItemAddBall.Instance.ClearDeadRows();
+            ListItemAddCoin.Instance.ClearDeadRows();
+            ListItemClearColumn.Instance.ClearDeadRows();
+            ListItemClearRow.Instance.ClearDeadRows();
+            ListItemSpreadBall.Instance.ClearDeadRows();
+        }
+
+        private void HideGameOverOverlay()
+        {
+            gameOverBackground.Visible = false;
+            getBallButton.Visible = false;
+            rankButton.Visible = false;
+            replayButton.Visible = false;
+            shareButton.Visible = false;
+        }
+
+        private void ShowGameOverOverlay()
+        {
+            gameOverBackground.Visible = true;
+            getBallButton.Visible = true;
+            rankButton.Visible = true;
+            replayButton.Visible = true;
+            shareButton.Visible = true;
+        }
+
+        private void HideContinueOverlay()
+        {
+            continueBackground.Visible = false;
+            oneMoreButton.Visible = false;
+            endGameButton.Visible = false;
+        }
+
+        private void ShowContinueOverlay()
+        {
+            continueBackground.Visible = true;
+            oneMoreButton.Visible = true;
+            endGameButton.Visible = true;
+        }
+
+        private void HidePauseOverlay()
         {
             guideBackground.Visible = false;
             pauseBackground.Visible = false;
@@ -242,8 +376,11 @@ namespace BouncingGame.GameStates
         {
             base.Reset();
             gameOver = false;
+            canContinue = true;
             pause = false;
-            HideOverlay();
+            HidePauseOverlay();
+            HideContinueOverlay();
+            HideGameOverOverlay();
             Level = 0;
             NextLevel();
         }

@@ -2,13 +2,12 @@
 using Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace BouncingGame.GameObjects
-{         
+{
     public class ItemAddBall : GameObject
     {
-        private int row = 0;
+        public int Row { get; private set; } = 0;
         private SpriteGameObject item;
         private Vector2 targetPosition;
         private AnimatedGameObject increase;
@@ -38,7 +37,7 @@ namespace BouncingGame.GameObjects
 
         public void MoveDown()
         {
-            row++;
+            Row++;
             targetPosition = LocalPosition + new Vector2(0, 100);
             velocity = new Vector2(0, 1) * Constant.MoveDownVelocity;
         }
@@ -46,7 +45,7 @@ namespace BouncingGame.GameObjects
         public override void Update(GameTime gameTime)
         {
 
-            
+
             base.Update(gameTime);
 
             if (targetPosition.Y - localPosition.Y <= 0)
@@ -65,7 +64,7 @@ namespace BouncingGame.GameObjects
         {
             get
             {
-                return new Circle(item.Width/2, item.GlobalPosition);
+                return new Circle(item.Width / 2, item.GlobalPosition);
             }
         }
 
@@ -75,6 +74,6 @@ namespace BouncingGame.GameObjects
             increase.PlayAnimation("increase");
         }
 
-        
+
     }
 }

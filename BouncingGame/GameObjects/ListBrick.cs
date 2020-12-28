@@ -105,5 +105,14 @@ namespace BouncingGame.GameObjects
                 }
             }
         }
+
+        public void ClearDeadRows()
+        {
+            foreach (var brick in bricks)
+            {
+                if (brick.Row > 5)
+                    brick.Visible = false;
+            }
+        }
     }
 }

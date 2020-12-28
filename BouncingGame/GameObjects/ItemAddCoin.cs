@@ -8,7 +8,7 @@ namespace BouncingGame.GameObjects
 {
     public class ItemAddCoin : GameObject
     {
-        private int row = 0;
+        public int Row { get; private set; } = 0; 
         private SpriteGameObject item;
         private Vector2 targetPosition;
         private AnimatedGameObject increase;
@@ -38,7 +38,7 @@ namespace BouncingGame.GameObjects
 
         public void MoveDown()
         {
-            row++;
+            Row++;
             targetPosition = LocalPosition + new Vector2(0, 100);
             velocity = new Vector2(0, 1) * Constant.MoveDownVelocity;
         }
