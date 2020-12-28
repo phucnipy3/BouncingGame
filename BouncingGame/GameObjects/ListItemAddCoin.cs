@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace BouncingGame.GameObjects
 {
-    public class ListItemAddBall: GameObject
+    public class ListItemAddCoin: GameObject
     {
-        private List<ItemAddBall> items;
+        private List<ItemAddCoin> items;
 
-        private static ListItemAddBall instance = new ListItemAddBall();
+        private static ListItemAddCoin instance = new ListItemAddCoin();
 
-        public static ListItemAddBall Instance
+        public static ListItemAddCoin Instance
         {
             get
             {
@@ -23,14 +23,14 @@ namespace BouncingGame.GameObjects
             }
         }
 
-        private ListItemAddBall()
+        private ListItemAddCoin()
         {
-            items = new List<ItemAddBall>();
+            items = new List<ItemAddCoin>();
         }
 
         public void AddItem()
         {
-            var newItem = new ItemAddBall(4);
+            var newItem = new ItemAddCoin(4);
             items.Add(newItem);
             newItem.Parent = this;
         }
@@ -39,7 +39,7 @@ namespace BouncingGame.GameObjects
         {
             foreach(var col in cols)
             {
-                var newItem = new ItemAddBall(col);
+                var newItem = new ItemAddCoin(col);
                 items.Add(newItem);
                 newItem.Parent = this;
             }

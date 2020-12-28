@@ -108,10 +108,14 @@ namespace BouncingGame.GameObjects
         Vector2 targetPosition;
 
 
-        public Brick(int durability, int column, bool special = false)
+        public Brick(int durability, int type, int column, bool special = false)
         {
             // adapt input values
             this.durability = durability;
+            if (special)
+            {
+                this.durability *= 2;
+            }
             this.column = column;
             this.localPosition = new Vector2(100 * column, 150);
             this.special = special;
@@ -129,16 +133,6 @@ namespace BouncingGame.GameObjects
             text = new TextGameObject("Fonts/MainFont", 0.1f, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
             text.Parent = this;
 
-            // set up type different
-            int type = ExtendedGame.Random.Next(8);
-            if (type % 2 == 0)
-            {
-                type = 0;
-            }
-            else
-            {
-                type = type / 2 + 1;
-            }
             container.SheetIndex = type;
             normals = StandardNormals[type];
             combinedNormals = StandardCombinedNormals[type];
@@ -201,12 +195,20 @@ namespace BouncingGame.GameObjects
 
         public bool CheckCollisionWithBall(Ball ball, out Vector2 normal)
         {
+            return this.CheckCollisionWithBall(this.corners, this.GlobalPosition, this.Visible, ball, out normal);
+        }
+
+        public bool CheckCollisionWithBall(
+            List<Vector2> corners, Vector2 globalPosition,
+            bool visible, Ball ball, out Vector2 normal)
+        {
             normal = Vector2.Zero;
 
-            if (!Visible)
+            if (!visible)
                 return false;
 
-            Vector2 closestPoint = ClosestPoint(ball.GlobalCenter, corners.Select(x => x + GlobalPosition).ToArray());
+            Vector2 closestPoint = ClosestPoint(ball.GlobalCenter, corners.Select(x => x + globalPosition).ToArray());
+
             if (Vector2.Distance(ball.GlobalCenter, closestPoint) <= ball.Radius)
             {
                 normal = Vector2.Normalize(ball.GlobalCenter - closestPoint);
@@ -281,6 +283,8 @@ namespace BouncingGame.GameObjects
             return new Vector2(Da / D, Db / D);
         }
 
+
+        // Calcuate area of a triangle (3 vertices) or a rectangle (4 vertices)
         public static float CalculateArea(params Vector2[] vertices)
         {
             float p = 0;
@@ -307,6 +311,8 @@ namespace BouncingGame.GameObjects
         {
             int level = ((PlayState)ExtendedGame.GameStateManager.GetGameState(StateName.Play)).Level;
             float diff = 255f / level;
+            if (special)
+                return new Color(100, (int)((level*2 - durability) * diff / 2), 255);
             return new Color(255, (int)((level - durability) * diff), 100);
         }
     }

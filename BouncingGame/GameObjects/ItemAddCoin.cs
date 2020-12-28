@@ -5,8 +5,8 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 
 namespace BouncingGame.GameObjects
-{         
-    public class ItemAddBall : GameObject
+{
+    public class ItemAddCoin : GameObject
     {
         private int row = 0;
         private SpriteGameObject item;
@@ -14,9 +14,9 @@ namespace BouncingGame.GameObjects
         private AnimatedGameObject increase;
         private VisibilityTimer visibilityTimerIncrease;
 
-        public ItemAddBall(int column)
+        public ItemAddCoin(int column)
         {
-            item = new SpriteGameObject("Sprites/UI/spr_item_add_ball", 0f);
+            item = new SpriteGameObject("Sprites/UI/spr_item_add_coin", 0f);
             item.SetOriginToCenter();
             item.Parent = this;
             item.LocalPosition = new Vector2(50, 50);
@@ -46,7 +46,7 @@ namespace BouncingGame.GameObjects
         public override void Update(GameTime gameTime)
         {
 
-            
+
             base.Update(gameTime);
 
             if (targetPosition.Y - localPosition.Y <= 0)
@@ -65,7 +65,7 @@ namespace BouncingGame.GameObjects
         {
             get
             {
-                return new Circle(item.Width/2, item.GlobalPosition);
+                return new Circle(item.Width / 2, item.GlobalPosition);
             }
         }
 
@@ -75,6 +75,6 @@ namespace BouncingGame.GameObjects
             increase.PlayAnimation("increase");
         }
 
-        
+
     }
 }

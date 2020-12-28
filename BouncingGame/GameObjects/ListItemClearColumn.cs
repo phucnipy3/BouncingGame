@@ -31,6 +31,16 @@ namespace BouncingGame.GameObjects
             newItem.Parent = this;
         }
 
+        public void AddItems(IEnumerable<int> cols)
+        {
+            foreach (var col in cols)
+            {
+                var newItem = new ItemClearColumn(col);
+                items.Add(newItem);
+                newItem.Parent = this;
+            }
+        }
+
         public override void Update(GameTime gameTime)
         {
             if (!Visible)

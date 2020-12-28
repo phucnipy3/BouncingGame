@@ -1,4 +1,5 @@
 ﻿using BouncingGame.GameStates;
+using BouncingGame.Helpers;
 using Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,6 +15,8 @@ namespace BouncingGame.GameObjects
         Vector2 endPosition = Vector2.Zero;
         bool aimStarted = false;
         bool canShoot = false;
+        Vector2 force = Vector2.Zero;
+        float rotation = 0f;
 
 
         private static Director instance = new Director();
@@ -42,6 +45,7 @@ namespace BouncingGame.GameObjects
         public override void Update(GameTime gameTime)
         {
             LocalPosition = ListBall.Instance.DropPosition + new Vector2(0, -10);
+            UpdateElements();
             base.Update(gameTime);
         }
 
@@ -49,49 +53,74 @@ namespace BouncingGame.GameObjects
         {
             if (ListBall.Instance.Shooting)
                 return;
+            Visible = CanShoot(inputHelper);
+            base.HandleInput(inputHelper);
+        }
 
-            Vector2 mousePosition = inputHelper.MousePositionWorld;
+        private bool CanShoot(InputHelper inputHelper)
+        {
+            bool shot;
+            var result = CanShoot(
+                inputHelper.MousePositionWorld,
+                inputHelper.MouseLeftButtonPressed(),
+                inputHelper.MouseLeftButtonDown(),
+                inputHelper.MouseLeftButtonReleased(),
+                Visible,
+                ref aimStarted,
+                ref startPosition,
+                ref force,
+                ref rotation,
+                out shot);
+            if (shot)
+            {
+                ListBall.Instance.Shoot(rotation);
+            }
+
+            return result;
+        }
+
+        private bool CanShoot(
+            Vector2 mousePosition, bool mouseLeftPressed, bool mouseLeftDown,
+            bool mouseLeftReleased, bool visible,
+            ref bool aimStarted, ref Vector2 startPosition, ref Vector2 force, ref float rotation, out bool shot)
+        {
             Rectangle rectangle = new Rectangle(0, 150, 700, 900);
+            shot = false;
 
-            if (inputHelper.MouseLeftButtonPressed() && rectangle.Contains(mousePosition))
+            if (mouseLeftPressed && rectangle.Contains(mousePosition))
             {
                 aimStarted = true;
                 startPosition = mousePosition;
             }
 
-            if(aimStarted && inputHelper.MouseLeftButtonDown())
+            if (aimStarted && mouseLeftDown)
             {
-                endPosition = mousePosition;
-
-                Vector2 force = startPosition -endPosition;
-                alignment.LocalPosition = Vector2.Normalize(force) * (arrow.Width + 20);
-                arrow.Rotation = (float)Math.Atan2(force.Y, force.X);
-                alignment.Rotation = arrow.Rotation;
-                alignment.Scale = Map(force.Length(), 10f, 1140f, 1f, 0.2f);
-                if (force.Length() > 10 && (arrow.Rotation < -MathHelper.Pi / 12) && (arrow.Rotation > -MathHelper.Pi + MathHelper.Pi / 12))
-                {
-                    canShoot = true;
-                }
-                else
-                {
-                    canShoot = false;
-                }
+                force = startPosition - mousePosition;
+                rotation = (float)Math.Atan2(force.Y, force.X);
+                return force.Length() > 10 && (rotation < -MathHelper.Pi / 12) && (rotation > -MathHelper.Pi + MathHelper.Pi / 12);
             }
 
-            if (inputHelper.MouseLeftButtonReleased())
+            if (mouseLeftReleased)
             {
-                if (aimStarted && canShoot)
+                if (visible)
                 {
-                    ListBall.Instance.Shoot(arrow.Rotation);
+                    shot = true;
                 }
 
                 aimStarted = false;
-                canShoot = false;
+                return false;
             }
 
-            Visible = canShoot;
+            return false;
+        }
 
-            base.HandleInput(inputHelper);
+
+        private void UpdateElements()
+        {
+            alignment.LocalPosition = Vector2.Normalize(force) * (arrow.Width + 20);
+            arrow.Rotation = rotation;
+            alignment.Rotation = rotation;
+            alignment.Scale = MathHelperExtension.Map(force.Length(), 10f, 1140f, 1f, 0.2f);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -102,9 +131,6 @@ namespace BouncingGame.GameObjects
             alignment.Draw(gameTime, spriteBatch);
         }
 
-        private float Map(float value, float minSource, float maxSource, float minDestination, float maxDestination)
-        {
-            return minDestination + (maxDestination - minDestination) * ((maxSource - value) / (maxSource - minSource));
-        }
+        
     }
 }

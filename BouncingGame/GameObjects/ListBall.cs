@@ -97,8 +97,6 @@ namespace BouncingGame.GameObjects
             ballNumber = 1;
             Clear();
             AddBall();
-            AddBall();
-            AddBall();
 
         }
 

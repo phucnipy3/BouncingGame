@@ -1,5 +1,6 @@
 ﻿using BouncingGame.Constants;
 using BouncingGame.GameStates;
+using BouncingGame.Helpers;
 using Engine;
 using Microsoft.Xna.Framework;
 using System;
@@ -111,7 +112,8 @@ namespace BouncingGame.GameObjects
         public void ReflectRandom()
         {
             var rotation = ExtendedGame.Random.NextDouble() * MathHelper.Pi * 2;
-            velocity = new Vector2((float)Math.Sin(rotation), (float)Math.Cos(rotation)) * Constant.BallVelocity;
+            rotation = MathHelperExtension.Map(rotation, 0, MathHelper.Pi * 2, MathHelper.Pi / 6, MathHelper.Pi - MathHelper.Pi / 6);
+            velocity = new Vector2((float)Math.Cos(rotation),-(float)Math.Sin(rotation)) * Constant.BallVelocity;
             lastNormal = Vector2.Zero;
         }
 
@@ -173,6 +175,7 @@ namespace BouncingGame.GameObjects
                 ListItemAddBall.Instance.CheckCollisionWithBall(this);
                 ListItemClearRow.Instance.CheckCollisionWithBall(this);
                 ListItemClearColumn.Instance.CheckCollisionWithBall(this);
+                ListItemAddCoin.Instance.CheckCollisionWithBall(this);
                 if (ListItemSpreadBall.Instance.CheckCollisionWithBall(this))
                 {
                     break;
@@ -185,13 +188,20 @@ namespace BouncingGame.GameObjects
 
         public bool Reflect(Vector2 normal)
         {
+            return Reflect(normal, ref this.velocity, ref this.lastNormal);
+        }
+
+
+        public bool Reflect(Vector2 normal, ref Vector2 velocity, ref Vector2 lastNormal)
+        {
             if (float.IsNaN(normal.X) || float.IsNaN(normal.Y))
                 return false;
+
             if (Vector2.Distance(normal, lastNormal) < 0.2f)
                 return false;
+
             velocity = Vector2.Reflect(velocity, normal);
             lastNormal = normal;
-
             return true;
         }
 
