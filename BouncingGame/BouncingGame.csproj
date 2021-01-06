@@ -68,13 +68,22 @@
     <Compile Include="GameStates\ChangeBallState.cs" />
     <Compile Include="GameStates\HomeState.cs" />
     <Compile Include="GameStates\PlayState.cs" />
+    <Compile Include="Helpers\GameSettingHelper.cs" />
     <Compile Include="Helpers\MathHelperExtenstion.cs" />
     <Compile Include="Models\BallModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\GameSetting.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>GameSetting.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -120,7 +129,13 @@
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
+    <None Include="app.config" />
     <None Include="app.manifest" />
+    <None Include="packages.config" />
+    <None Include="Properties\GameSetting.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>GameSetting.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Resources\Home\project_btn_change_ball.psd" />
     <None Include="Resources\Home\project_btn_get_ball.psd" />
     <None Include="Resources\Home\project_btn_play.psd" />

@@ -10,6 +10,8 @@ namespace BouncingGame.GameStates
         Button getBallButton;
         Button changeBallButton;
         Button playButton;
+
+        // TODO: get selected ball and display
         public HomeState()
         {
             gameObjects.AddChild(new SpriteGameObject("Sprites/Backgrounds/spr_home", 0));

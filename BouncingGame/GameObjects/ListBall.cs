@@ -1,5 +1,6 @@
 ﻿using BouncingGame.Constants;
 using BouncingGame.GameStates;
+using BouncingGame.Helpers;
 using Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -52,6 +53,8 @@ namespace BouncingGame.GameObjects
 
         public Ball FirstDropBall { get; set; }
 
+        private string spriteName;
+
         private ListBall()
         {
             Reset();
@@ -59,7 +62,7 @@ namespace BouncingGame.GameObjects
 
         public void AddBall()
         {
-            var newBall = new Ball();
+            var newBall = new Ball(spriteName);
             newBall.LocalPosition = DropPosition;
             AddChild(newBall);
         }
@@ -93,6 +96,7 @@ namespace BouncingGame.GameObjects
 
         public override void Reset()
         {
+            spriteName = GameSettingHelper.GetSelectedBall().OriginSpritePath;
             DropPosition = new Vector2(350, 1050);
             ballNumber = 1;
             Clear();

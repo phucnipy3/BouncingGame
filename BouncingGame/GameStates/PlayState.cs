@@ -11,7 +11,6 @@ namespace BouncingGame.GameStates
 {
     public class PlayState : GameState
     {
-        Ball ball = new Ball();
         bool gameOver = false;
         Button pauseButton;
         Button continueButton;
