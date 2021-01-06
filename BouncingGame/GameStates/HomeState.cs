@@ -37,8 +37,7 @@ namespace BouncingGame.GameStates
             }
             if (changeBallButton.Pressed)
             {
-                // TODO: switch to change ball
-                //ExtendedGame.GameStateManager.SwitchTo();
+                ExtendedGame.GameStateManager.SwitchTo(StateName.ChangeBall);
             }
             if (playButton.Pressed)
             {
