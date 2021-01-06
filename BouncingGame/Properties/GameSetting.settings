@@ -2,16 +2,16 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="BouncingGame.Properties" GeneratedClassName="GameSetting">
   <Profiles />
   <Settings>
-    <Setting Name="ListBall" Type="System.String" Scope="Application">
+    <Setting Name="ListBall" Type="System.String" Scope="User">
       <Value Profile="(Default)">[]</Value>
     </Setting>
-    <Setting Name="SelectedId" Type="System.Int32" Scope="Application">
+    <Setting Name="SelectedId" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="TotalCoin" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="TotalCoin" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="HighScore" Type="System.Int32" Scope="Application">
+    <Setting Name="HighScore" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>

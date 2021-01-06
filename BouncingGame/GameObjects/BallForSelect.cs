@@ -62,6 +62,7 @@ namespace BouncingGame.GameObjects
             if (information == null)
                 return;
             ball.Update(gameTime);
+            shadowBall.Update(gameTime);
         }
     }
 

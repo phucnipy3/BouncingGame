@@ -33,7 +33,7 @@ namespace BouncingGame.GameStates
             ballForSelect = new BallForSelect();
             gameObjects.AddChild(ballForSelect);
 
-            listBall = GameSettingHelper.GetListBall();
+            
             Reset();
         }
 
@@ -56,26 +56,29 @@ namespace BouncingGame.GameStates
         public override void Reset()
         {
             base.Reset();
+            listBall = GameSettingHelper.GetListBall();
             var selectedBall = GameSettingHelper.GetSelectedBall();
             selectingBall = listBall.FirstOrDefault(x => x.Id == selectedBall.Id);
+            UpdateSelectingBall();
         }
 
         public void SelectLeftBall()
         {
             selectingBall =  listBall[(listBall.IndexOf(selectingBall) - 1) % listBall.Count()];
+            UpdateSelectingBall();
         }
 
         public void SelectRightBall()
         {
             selectingBall = listBall[(listBall.IndexOf(selectingBall) + 1) % listBall.Count()];
+            UpdateSelectingBall();
         }
 
-        public override void Update(GameTime gameTime)
+        private void UpdateSelectingBall()
         {
             if (selectingBall == null)
                 return;
             ballForSelect.Information = selectingBall;
-            base.Update(gameTime);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BouncingGame.Constants;
+using BouncingGame.Helpers;
 using Engine;
 using Engine.UI;
 using Microsoft.Xna.Framework;
@@ -36,6 +37,9 @@ namespace BouncingGame.GameStates
             {
                 // TODO: switch to get ball
                 //ExtendedGame.GameStateManager.SwitchTo();
+
+                // TODO: remove this code
+                GameSettingHelper.GenerateListBall();
             }
             if (changeBallButton.Pressed)
             {

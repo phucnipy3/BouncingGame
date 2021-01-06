@@ -32,7 +32,7 @@ namespace BouncingGame.Helpers
 
         public static void ChangeSelectedBall(int selectedId)
         {
-            Properties.GameSetting.Default["SettingsKey"] = selectedId;
+            Properties.GameSetting.Default["SelectedId"] = selectedId;
             Properties.GameSetting.Default.Save();
         }
 
@@ -54,12 +54,27 @@ namespace BouncingGame.Helpers
             AssignBalls(balls);
         }
 
-        // Call this method once in pre-productto generate list ball
+        // Call this method to re-generate list ball
         public static void GenerateListBall()
         {
             List<BallModel> balls = new List<BallModel>
             {
-
+                new BallModel
+                {
+                    Id = 1,
+                    LargeSpritePath = "Sprites/UI/spr_ball_normal_4mm",
+                    Locked = false,
+                    OriginSpritePath = "Sprites/UI/spr_ball_normal_4mm",
+                    ShadowSpritePath = "Sprites/UI/spr_ball_normal_4mm"
+                },
+                new BallModel
+                {
+                    Id = 2,
+                    LargeSpritePath = "Sprites/UI/spr_item_add_coin",
+                    Locked = false,
+                    OriginSpritePath = "Sprites/UI/spr_item_add_coin",
+                    ShadowSpritePath = "Sprites/UI/spr_item_add_coin"
+                },
             };
 
             AssignBalls(balls);
