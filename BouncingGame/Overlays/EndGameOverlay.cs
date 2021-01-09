@@ -18,6 +18,8 @@ namespace BouncingGame.Overlays
         private TextGameObject totalMoneyText;
         private TextGameObject additionMoneyText;
         private PlayState playState;
+        private GetBallOverlay getBallOverlay;
+        private ConfirmOverlay confirmOverlay;
 
         public int Score { get; set; }
         public int HighScore { get; set; }
@@ -60,15 +62,33 @@ namespace BouncingGame.Overlays
             totalMoneyText = new TextGameObject("Fonts/EndGameMoney", Depth.OverlayButton, Color.White, TextGameObject.HorizontalAlignment.Left, TextGameObject.VerticalAlignment.Center);
             AddChild(totalMoneyText);
             totalMoneyText.LocalPosition = new Vector2(170, 620);
+
+            getBallOverlay = new GetBallOverlay();
+            AddChild(getBallOverlay);
+
+            confirmOverlay = new ConfirmOverlay(getBallOverlay);
+            AddChild(confirmOverlay);
         }
 
         public override void HandleInput(InputHelper inputHelper)
         {
+            if (getBallOverlay.Visible)
+            {
+                getBallOverlay.HandleInput(inputHelper);
+                return;
+            }
+
+            if (confirmOverlay.Visible)
+            {
+                confirmOverlay.HandleInput(inputHelper);
+                return;
+            }
+
             base.HandleInput(inputHelper);
 
             if (getBallButton.Pressed)
             {
-                // get ball
+                confirmOverlay.Show();
             }
 
             if (replayButton.Pressed)
@@ -85,6 +105,9 @@ namespace BouncingGame.Overlays
             additionMoneyText.Text = "+ " + AdditionMoney.ToString();
 
             base.Show();
+
+            getBallOverlay.Visible = false;
+            confirmOverlay.Visible = false;
         }
     }
 }

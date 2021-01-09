@@ -15,14 +15,14 @@ namespace BouncingGame.Overlays
 
         public ContinueOverlay(PlayState playState):base()
         {
-            continueBackground = new Switch("Sprites/Backgrounds/spr_continue", Depth.OverlayBackground);
+            continueBackground = new Switch("Sprites/Backgrounds/spr_continue", Depth.OverlayBackground2);
             AddChild(continueBackground);
 
-            oneMoreButton = new Switch("Sprites/Buttons/spr_btn_onemore", Depth.OverlayButton);
+            oneMoreButton = new Switch("Sprites/Buttons/spr_btn_onemore", Depth.OverlayButton2);
             AddChild(oneMoreButton);
             oneMoreButton.LocalPosition = new Vector2(100, 400);
 
-            endGameButton = new Switch("Sprites/Buttons/spr_btn_endgame", Depth.OverlayButton);
+            endGameButton = new Switch("Sprites/Buttons/spr_btn_endgame", Depth.OverlayButton2);
             AddChild(endGameButton);
             endGameButton.LocalPosition = new Vector2(400, 400);
 

@@ -24,6 +24,7 @@ namespace BouncingGame.GameStates
         private PauseOverlay pauseOverlay;
         private ContinueOverlay continueOverlay;
         private EndGameOverlay endGameOverlay;
+        
 
         List<int> NumberBricks = new List<int>();
         bool canContinue = true;
@@ -76,6 +77,8 @@ namespace BouncingGame.GameStates
 
             endGameOverlay = new EndGameOverlay();
             gameObjects.AddChild(endGameOverlay);
+
+            
 
             Reset();
         }
@@ -225,6 +228,8 @@ namespace BouncingGame.GameStates
                 return;
             }
 
+            
+
             base.HandleInput(inputHelper);
 
             if (pauseButton.Pressed)
@@ -243,7 +248,10 @@ namespace BouncingGame.GameStates
         public override void Update(GameTime gameTime)
         {
             if (endGameOverlay.Visible)
+            {
+                endGameOverlay.Update(gameTime);
                 return;
+            }
 
             if (continueOverlay.Visible)
                 return;

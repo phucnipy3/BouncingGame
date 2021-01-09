@@ -19,6 +19,7 @@ namespace BouncingGame.GameStates
         private BallModel selectedBall;
 
         private GetBallOverlay getBallOverlay;
+        private ConfirmOverlay confirmOverlay;
 
         public HomeState()
         {
@@ -39,6 +40,9 @@ namespace BouncingGame.GameStates
             getBallOverlay = new GetBallOverlay();
             gameObjects.AddChild(getBallOverlay);
 
+            confirmOverlay = new ConfirmOverlay(getBallOverlay);
+            gameObjects.AddChild(confirmOverlay);
+
             Reset();
         }
 
@@ -48,6 +52,12 @@ namespace BouncingGame.GameStates
             if (getBallOverlay.Visible)
             {
                 getBallOverlay.HandleInput(inputHelper);
+                return;
+            }
+
+            if (confirmOverlay.Visible)
+            {
+                confirmOverlay.HandleInput(inputHelper);
                 return;
             }
 
@@ -61,7 +71,7 @@ namespace BouncingGame.GameStates
                 // TODO: remove this code
                 //GameSettingHelper.GenerateListBall();
 
-                getBallOverlay.Show();
+                confirmOverlay.Show();
             }
             if (changeBallButton.Pressed)
             {

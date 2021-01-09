@@ -181,6 +181,18 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Backgrounds/spr_changeball.png
 
+#begin Sprites/Backgrounds/spr_confirm.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Backgrounds/spr_confirm.png
+
 #begin Sprites/Backgrounds/spr_continue.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -313,6 +325,18 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Buttons/spr_btn_back.png
 
+#begin Sprites/Buttons/spr_btn_cancel.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Buttons/spr_btn_cancel.png
+
 #begin Sprites/Buttons/spr_btn_change_ball.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -324,6 +348,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Buttons/spr_btn_change_ball.png
+
+#begin Sprites/Buttons/spr_btn_continue.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Buttons/spr_btn_continue.png
 
 #begin Sprites/Buttons/spr_btn_endgame.png
 /importer:TextureImporter

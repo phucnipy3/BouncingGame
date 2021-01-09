@@ -26,14 +26,14 @@ namespace BouncingGame.Overlays
             giftBox.LocalPosition = new Vector2(320, 600);
             AddChild(giftBox);
 
-            glowing = new AnimatedGameObject(Depth.OverlayButton);
+            glowing = new AnimatedGameObject(Depth.OverlayButton2);
             glowing.LoadAnimation("Sprites/Animations/spr_animation_glowing@5", "glowing", true, 0.1f);
             glowing.PlayAnimation("glowing", true);
             glowing.SetOriginToCenter();
             glowing.LocalPosition = new Vector2(350, 500);
             AddChild(glowing);
 
-            background = new SpriteGameObject("Sprites/Backgrounds/spr_getball", Depth.OverlayBackground);
+            background = new SpriteGameObject("Sprites/Backgrounds/spr_getball", Depth.OverlayBackground2);
             AddChild(background);
 
             message = new TextGameObject("Fonts/GetBall", Depth.OverlayMessage, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);

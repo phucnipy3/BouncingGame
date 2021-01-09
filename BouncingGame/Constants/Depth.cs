@@ -20,9 +20,11 @@ namespace BouncingGame.Constants
         public const float OverlayBackground = 0.1f;
         public const float OverlayButton = 0.11f;
         public const float BallInformation = 0.12f;
-        public const float RandomBall = 0.13f;
-        public const float GiftBox = 0.14f;
-        public const float OverlayMessage = 0.14f;
+        public const float RandomBall = 0.23f;
+        public const float GiftBox = 0.24f;
+        public const float OverlayMessage = 0.24f;
+        public const float OverlayBackground2 = 0.2f;
+        public const float OverlayButton2 = 0.21f;
 
     }
 }
