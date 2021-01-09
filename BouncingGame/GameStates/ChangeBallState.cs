@@ -25,37 +25,37 @@ namespace BouncingGame.GameStates
 
         public ChangeBallState()
         {
-            gameObjects.AddChild(new SpriteGameObject("Sprites/Backgrounds/spr_changeball", 0));
+            gameObjects.AddChild(new SpriteGameObject("Sprites/Backgrounds/spr_changeball", Depth.Backgroud));
 
-            name = new TextGameObject("Fonts/BallName", 0, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
+            name = new TextGameObject("Fonts/BallName", Depth.BallInformation, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
             gameObjects.AddChild(name);
             name.LocalPosition = new Vector2(350, 300);
 
-            rarity = new TextGameObject("Fonts/Rarity", 0, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
+            rarity = new TextGameObject("Fonts/Rarity", Depth.BallInformation, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
             gameObjects.AddChild(rarity);
             rarity.LocalPosition = new Vector2(350, 370);
 
-            size = new TextGameObject("Fonts/Size", 0, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
+            size = new TextGameObject("Fonts/Size", Depth.BallInformation, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
             gameObjects.AddChild(size);
             size.LocalPosition = new Vector2(350, 440);
 
-            backButton = new Button("Sprites/Buttons/spr_btn_back", 0);
+            backButton = new Button("Sprites/Buttons/spr_btn_back", Depth.Button);
             backButton.LocalPosition = new Vector2(10, 160);
             gameObjects.AddChild(backButton);
 
-            selectButton = new Button("Sprites/Buttons/spr_btn_select", 0);
+            selectButton = new Button("Sprites/Buttons/spr_btn_select", Depth.Button);
             selectButton.LocalPosition = new Vector2(300, 1000);
             gameObjects.AddChild(selectButton);
 
             ballForSelect = new BallForSelect();
             gameObjects.AddChild(ballForSelect);
 
-            selectLeftBallButton = new Button("Sprites/Buttons/spr_arrow_left", 0);
+            selectLeftBallButton = new Button("Sprites/Buttons/spr_arrow_left", Depth.Button);
             selectLeftBallButton.SetOriginToCenter();
             selectLeftBallButton.LocalPosition = new Vector2(20, 600);
             gameObjects.AddChild(selectLeftBallButton);
 
-            selectRightBallButton = new Button("Sprites/Buttons/spr_arrow_right", 0);
+            selectRightBallButton = new Button("Sprites/Buttons/spr_arrow_right", Depth.Button);
             selectRightBallButton.SetOriginToCenter();
             selectRightBallButton.LocalPosition = new Vector2(600, 600);
             gameObjects.AddChild(selectRightBallButton);

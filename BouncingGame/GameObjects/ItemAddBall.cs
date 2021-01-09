@@ -11,7 +11,7 @@ namespace BouncingGame.GameObjects
         private Vector2 targetPosition;
         private IncreaseEffect visualEffect;
 
-        public ItemAddBall(int column): base("Sprites/UI/spr_item_add_ball", 0f)
+        public ItemAddBall(int column): base("Sprites/UI/spr_item_add_ball", Depth.Item)
         {
             SetOriginToCenter();
             LocalPosition = new Vector2(50 + column * 100,50 + 150);

@@ -26,38 +26,38 @@ namespace BouncingGame.Overlays
 
         public EndGameOverlay(): base()
         {
-            background = new Switch("Sprites/Backgrounds/spr_game_over", 0.75f);
+            background = new Switch("Sprites/Backgrounds/spr_game_over", Depth.OverlayBackground);
             AddChild(background);
 
-            getBallButton = new Switch("Sprites/Buttons/spr_btn_getball", 1);
+            getBallButton = new Switch("Sprites/Buttons/spr_btn_getball", Depth.OverlayButton);
             AddChild(getBallButton);
             getBallButton.LocalPosition = new Vector2(400, 800);
 
-            rankButton = new Switch("Sprites/Buttons/spr_btn_rank", 1);
+            rankButton = new Switch("Sprites/Buttons/spr_btn_rank", Depth.OverlayButton);
             AddChild(rankButton);
             rankButton.LocalPosition = new Vector2(600, 1000);
 
-            replayButton = new Switch("Sprites/Buttons/spr_btn_replay", 1);
+            replayButton = new Switch("Sprites/Buttons/spr_btn_replay", Depth.OverlayButton);
             AddChild(replayButton);
             replayButton.LocalPosition = new Vector2(300, 1000);
 
-            shareButton = new Switch("Sprites/Buttons/spr_btn_share", 1);
+            shareButton = new Switch("Sprites/Buttons/spr_btn_share", Depth.OverlayButton);
             AddChild(shareButton);
             shareButton.LocalPosition = new Vector2(10, 1000);
 
-            scoreText = new TextGameObject("Fonts/EndGameScore", 1, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
+            scoreText = new TextGameObject("Fonts/EndGameScore", Depth.OverlayButton, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
             AddChild(scoreText);
             scoreText.LocalPosition = new Vector2(350, 215);
 
-            highScoreText = new TextGameObject("Fonts/EndGameHighScore", 1, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
+            highScoreText = new TextGameObject("Fonts/EndGameHighScore", Depth.OverlayButton, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
             AddChild(highScoreText);
             highScoreText.LocalPosition = new Vector2(350, 360);
 
-            additionMoneyText = new TextGameObject("Fonts/EndGameMoney", 1, Color.White, TextGameObject.HorizontalAlignment.Right, TextGameObject.VerticalAlignment.Center);
+            additionMoneyText = new TextGameObject("Fonts/EndGameMoney", Depth.OverlayButton, Color.White, TextGameObject.HorizontalAlignment.Right, TextGameObject.VerticalAlignment.Center);
             AddChild(additionMoneyText);
             additionMoneyText.LocalPosition = new Vector2(640, 620);
 
-            totalMoneyText = new TextGameObject("Fonts/EndGameMoney", 1, Color.White, TextGameObject.HorizontalAlignment.Left, TextGameObject.VerticalAlignment.Center);
+            totalMoneyText = new TextGameObject("Fonts/EndGameMoney", Depth.OverlayButton, Color.White, TextGameObject.HorizontalAlignment.Left, TextGameObject.VerticalAlignment.Center);
             AddChild(totalMoneyText);
             totalMoneyText.LocalPosition = new Vector2(170, 620);
         }

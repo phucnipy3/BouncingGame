@@ -1,4 +1,5 @@
-﻿using BouncingGame.Models;
+﻿using BouncingGame.Constants;
+using BouncingGame.Models;
 using Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,8 +17,8 @@ namespace BouncingGame.GameObjects
             set 
             {
                 information = value;
-                ball = new JumpingBall(information.LargeSpritePath, 0.1f, new Vector2(350, 600), 150, 0.2f);
-                shadowBall = new JumpingBall(information.ShadowSpritePath, 0.1f, new Vector2(350, 600), 150, 0.2f);
+                ball = new JumpingBall(information.LargeSpritePath, Depth.OverlayButton, new Vector2(350, 600), 150, 0.2f);
+                shadowBall = new JumpingBall(information.ShadowSpritePath, Depth.OverlayButton, new Vector2(350, 600), 150, 0.2f);
                 ball.Parent = this;
                 ball.SetOriginToCenter();
                 shadowBall.Parent = this;
@@ -25,9 +26,6 @@ namespace BouncingGame.GameObjects
             }
         }
 
-        private TextGameObject name;
-        private TextGameObject rarity;
-        private TextGameObject size;
         private JumpingBall ball;
         private JumpingBall shadowBall;
 

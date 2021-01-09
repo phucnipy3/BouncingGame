@@ -17,23 +17,23 @@ namespace BouncingGame.Overlays
 
         public PauseOverlay():base()
         {
-            pauseBackground = new SpriteGameObject("Sprites/Backgrounds/spr_pause", 0.75f);
+            pauseBackground = new SpriteGameObject("Sprites/Backgrounds/spr_pause", Depth.OverlayBackground);
             AddChild(pauseBackground);
 
-            guideBackground = new SpriteGameObject("Sprites/Backgrounds/spr_guide", 0.75f);
+            guideBackground = new SpriteGameObject("Sprites/Backgrounds/spr_guide", Depth.OverlayBackground);
             AddChild(guideBackground);
 
-            continueButton = new Button("Sprites/Buttons/spr_continue", 1);
+            continueButton = new Button("Sprites/Buttons/spr_continue", Depth.OverlayButton);
             AddChild(continueButton);
             continueButton.SetOriginToLeftCenter();
             continueButton.LocalPosition = new Vector2(20, 75);
 
-            homeButton = new Button("Sprites/Buttons/spr_back_to_home", 1);
+            homeButton = new Button("Sprites/Buttons/spr_back_to_home", Depth.OverlayButton);
             AddChild(homeButton);
             homeButton.SetOriginToRightCenter();
             homeButton.LocalPosition = new Vector2(680, 75);
 
-            volumnButton = new Switch("Sprites/Buttons/spr_volume@2", 1);
+            volumnButton = new Switch("Sprites/Buttons/spr_volume@2", Depth.OverlayButton);
             AddChild(volumnButton);
             volumnButton.SetOriginToLeftCenter();
             volumnButton.LocalPosition = new Vector2(120, 75);

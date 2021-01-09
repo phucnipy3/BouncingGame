@@ -34,7 +34,7 @@ namespace BouncingGame.GameStates
                 NumberBricks.AddRange(Enumerable.Repeat<int>(i, Constant.NumberBrickRate[i]));
             }
 
-            gameObjects.AddChild(new SpriteGameObject("Sprites/Backgrounds/spr_play", 0));
+            gameObjects.AddChild(new SpriteGameObject("Sprites/Backgrounds/spr_play", Depth.Backgroud));
             gameObjects.AddChild(ListBrick.Instance);
             gameObjects.AddChild(ListBall.Instance);
             gameObjects.AddChild(Director.Instance);
@@ -44,27 +44,27 @@ namespace BouncingGame.GameStates
             gameObjects.AddChild(ListItemClearRow.Instance);
             gameObjects.AddChild(ListItemSpreadBall.Instance);
 
-            pauseButton = new Button("Sprites/Buttons/spr_pause", 0);
+            pauseButton = new Button("Sprites/Buttons/spr_pause", Depth.Button);
             gameObjects.AddChild(pauseButton);
             pauseButton.SetOriginToLeftCenter();
             pauseButton.LocalPosition = new Vector2(20, 75);
 
-            guideButton = new Button("Sprites/Buttons/spr_guide", 0);
+            guideButton = new Button("Sprites/Buttons/spr_guide", Depth.Button);
             gameObjects.AddChild(guideButton);
             guideButton.SetOriginToLeftCenter();
             guideButton.LocalPosition = new Vector2(120, 75);
 
             
 
-            playScore = new TextGameObject("Fonts/PlayScore", 0, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
+            playScore = new TextGameObject("Fonts/PlayScore", Depth.Button, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
             gameObjects.AddChild(playScore);
             playScore.LocalPosition = new Vector2(350, 75);
 
-            playHighScore = new TextGameObject("Fonts/PlayHighScore", 0, Color.White, TextGameObject.HorizontalAlignment.Right, TextGameObject.VerticalAlignment.Center);
+            playHighScore = new TextGameObject("Fonts/PlayHighScore", Depth.Button, Color.White, TextGameObject.HorizontalAlignment.Right, TextGameObject.VerticalAlignment.Center);
             gameObjects.AddChild(playHighScore);
             playHighScore.LocalPosition = new Vector2(690, 75);
 
-            playMoney = new TextGameObject("Fonts/PlayMoney", 0, Color.White, TextGameObject.HorizontalAlignment.Left, TextGameObject.VerticalAlignment.Center);
+            playMoney = new TextGameObject("Fonts/PlayMoney", Depth.Button, Color.White, TextGameObject.HorizontalAlignment.Left, TextGameObject.VerticalAlignment.Center);
             gameObjects.AddChild(playMoney);
             playMoney.LocalPosition = new Vector2(100, 1130);
 

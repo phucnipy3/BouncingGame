@@ -60,7 +60,7 @@ namespace BouncingGame.GameObjects
 
         private ListBall()
         {
-            totalBall = new TextGameObject("Fonts/TotalBall", 1f, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
+            totalBall = new TextGameObject("Fonts/TotalBall", Depth.BallNumber, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
             Reset();
         }
 

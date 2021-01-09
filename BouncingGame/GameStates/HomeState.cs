@@ -22,13 +22,13 @@ namespace BouncingGame.GameStates
 
         public HomeState()
         {
-            gameObjects.AddChild(new SpriteGameObject("Sprites/Backgrounds/spr_home", 0));
+            gameObjects.AddChild(new SpriteGameObject("Sprites/Backgrounds/spr_home", Depth.Backgroud));
 
-            getBallButton = new Button("Sprites/Buttons/spr_btn_get_ball", 0);
+            getBallButton = new Button("Sprites/Buttons/spr_btn_get_ball", Depth.Button);
             getBallButton.LocalPosition = new Vector2(620, 210);
-            changeBallButton = new Button("Sprites/Buttons/spr_btn_change_ball", 0);
+            changeBallButton = new Button("Sprites/Buttons/spr_btn_change_ball", Depth.Button);
             changeBallButton.LocalPosition = new Vector2(100, 800);
-            playButton = new Button("Sprites/Buttons/spr_btn_play", 0);
+            playButton = new Button("Sprites/Buttons/spr_btn_play", Depth.Button);
             playButton.LocalPosition = new Vector2(400, 800);
 
 

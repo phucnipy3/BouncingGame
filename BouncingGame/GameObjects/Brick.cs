@@ -125,12 +125,12 @@ namespace BouncingGame.GameObjects
             targetPosition = LocalPosition;
 
             // initialize container
-            container = new SpriteGameObject("Sprites/UI/spr_brick@5", 0);
+            container = new SpriteGameObject("Sprites/UI/spr_brick@5", Depth.BrickContainer);
             container.Color = Color.White;
             container.Parent = this;
 
             // initialize text
-            text = new TextGameObject("Fonts/Brick", 0.1f, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
+            text = new TextGameObject("Fonts/Brick", Depth.BrickText, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
             text.Parent = this;
 
             container.SheetIndex = type;

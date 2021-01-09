@@ -48,6 +48,13 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/EndGameScore.spritefont
 
+#begin Fonts/GetBall.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/GetBall.spritefont
+
 #begin Fonts/PlayHighScore.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

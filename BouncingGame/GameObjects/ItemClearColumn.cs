@@ -22,7 +22,7 @@ namespace BouncingGame.GameObjects
             }
         }
 
-        public ItemClearColumn(int column): base("Sprites/UI/spr_item_break_vertical", 0f)
+        public ItemClearColumn(int column): base("Sprites/UI/spr_item_break_vertical", Depth.Item)
         {
             SetOriginToCenter();
             LocalPosition = new Vector2(50 + column * 100,50 + 150);
@@ -113,7 +113,7 @@ namespace BouncingGame.GameObjects
 
         private AnimatedGameObject CreateClearColumnEffect()
         {
-            AnimatedGameObject newObject = new AnimatedGameObject(0.6f);
+            AnimatedGameObject newObject = new AnimatedGameObject(Depth.Effect);
             newObject.LoadAnimation("Sprites/Animations/spr_animation_item_break_vertical@10", "col", false, 0.01f);
             newObject.PlayAnimation("col", true);
             newObject.SetOriginToCenter();

@@ -14,7 +14,7 @@ namespace BouncingGame.GameObjects
 
         private List<AnimatedGameObject> visualEffects = new List<AnimatedGameObject>();
 
-        public ItemClearRow(int column): base("Sprites/UI/spr_item_break_horizontal", 0f)
+        public ItemClearRow(int column): base("Sprites/UI/spr_item_break_horizontal", Depth.Item)
         {
             SetOriginToCenter();
             LocalPosition = new Vector2(50 + column * 100, 50 + 150);
@@ -104,7 +104,7 @@ namespace BouncingGame.GameObjects
 
         private AnimatedGameObject CreateClearRowEffect()
         {
-            AnimatedGameObject newObject = new AnimatedGameObject(0.6f);
+            AnimatedGameObject newObject = new AnimatedGameObject(Depth.Effect);
             newObject.LoadAnimation("Sprites/Animations/spr_animation_item_break_horizontal@1x11", "row", false, 0.01f);
             newObject.PlayAnimation("row", true);
             newObject.SetOriginToCenter();

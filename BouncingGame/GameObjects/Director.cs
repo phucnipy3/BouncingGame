@@ -1,4 +1,5 @@
-﻿using BouncingGame.GameStates;
+﻿using BouncingGame.Constants;
+using BouncingGame.GameStates;
 using BouncingGame.Helpers;
 using Engine;
 using Microsoft.Xna.Framework;
@@ -30,12 +31,12 @@ namespace BouncingGame.GameObjects
         }
         private Director()
         {
-            arrow = new SpriteGameObject("Sprites/UI/spr_arrow", 0);
+            arrow = new SpriteGameObject("Sprites/UI/spr_arrow", Depth.Director);
             arrow.SetOriginToLeftCenter();
             arrow.Rotation = -MathHelper.Pi / 2;
             arrow.Parent = this;
             this.Visible = false;
-            alignment = new SpriteGameObject("Sprites/UI/spr_alignment_line", 0.2f);
+            alignment = new SpriteGameObject("Sprites/UI/spr_alignment_line", Depth.Director);
             alignment.SetOriginToLeftCenter();
             alignment.Rotation = -MathHelper.Pi / 2;
             alignment.Scale = 1f;

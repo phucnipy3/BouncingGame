@@ -19,7 +19,7 @@ namespace BouncingGame.GameObjects
         private int[] offsetWidths = new int[] { -10, -8, -6, -4, -2, 0, -2, -4, -6, -8, -10 };
 
 
-        public ItemSpreadBall(int column): base(0f)
+        public ItemSpreadBall(int column): base(Depth.Item)
         {
             LoadAnimation("Sprites/UI/spr_item_spread_ball", "stay", false, 1);
             LoadAnimation("Sprites/Animations/spr_animation_item_spread_ball@11", "anim", false, 0.01f);
