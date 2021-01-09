@@ -38,7 +38,7 @@ namespace BouncingGame.GameStates
                 NumberBricks.AddRange(Enumerable.Repeat<int>(i, Constant.NumberBrickRate[i]));
             }
 
-            gameObjects.AddChild(new SpriteGameObject("Sprites/Backgrounds/spr_home", 0));
+            gameObjects.AddChild(new SpriteGameObject("Sprites/Backgrounds/spr_play", 0));
             gameObjects.AddChild(ListBrick.Instance);
             gameObjects.AddChild(ListBall.Instance);
             gameObjects.AddChild(Director.Instance);

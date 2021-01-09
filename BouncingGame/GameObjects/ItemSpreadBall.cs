@@ -76,7 +76,7 @@ namespace BouncingGame.GameObjects
             return intersectingBalls.Contains(ball);
         }
 
-        private List<Ball> intersectingBalls = new List<Ball>();
+        private List<Ball> intersectingBalls = new List<Ball>();    
 
         public void StartIntersect(Ball ball)
         {
