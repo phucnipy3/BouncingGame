@@ -1,4 +1,5 @@
-﻿using Engine;
+﻿using BouncingGame.Helpers;
+using Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -88,6 +89,7 @@ namespace BouncingGame.GameObjects
                 {
                     item.Visible = false;
                     item.PlayEffect();
+                    GameSettingHelper.AddOneCoin();
                 }
             }
         }
@@ -96,7 +98,7 @@ namespace BouncingGame.GameObjects
         {
             foreach (var item in items)
             {
-                if (item.Row > 5)
+                if (item.Row > 6)
                     item.Visible = false;
             }
         }

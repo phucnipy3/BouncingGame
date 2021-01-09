@@ -102,7 +102,7 @@ namespace BouncingGame.GameObjects
         {
             foreach (var item in items)
             {
-                if (item.Row > 5)
+                if (item.Row > 6)
                     item.Visible = false;
             }
         }

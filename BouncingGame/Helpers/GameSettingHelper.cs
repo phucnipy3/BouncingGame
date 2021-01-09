@@ -54,6 +54,34 @@ namespace BouncingGame.Helpers
             AssignBalls(balls);
         }
 
+        public static int GetHighScore()
+        {
+            return Properties.GameSetting.Default.HighScore;
+        }
+
+        public static void SetHighScore(int score)
+        {
+            Properties.GameSetting.Default["HighScore"] = score;
+            Properties.GameSetting.Default.Save();
+        }
+
+        public static int GetMoney()
+        {
+            return Properties.GameSetting.Default.TotalCoin;
+        }
+
+        public static void SetMoney(int count)
+        {
+            Properties.GameSetting.Default["TotalCoin"] = count;
+            Properties.GameSetting.Default.Save();
+        }
+
+        public static void AddOneCoin()
+        {
+            Properties.GameSetting.Default["TotalCoin"] = Properties.GameSetting.Default.TotalCoin + 1;
+            Properties.GameSetting.Default.Save();
+        }
+
         // Call this method to re-generate list ball
         public static void GenerateListBall()
         {
@@ -65,7 +93,10 @@ namespace BouncingGame.Helpers
                     LargeSpritePath = "Sprites/UI/spr_ball_normal_4mm",
                     Locked = false,
                     OriginSpritePath = "Sprites/UI/spr_ball_normal_4mm",
-                    ShadowSpritePath = "Sprites/UI/spr_ball_normal_4mm"
+                    ShadowSpritePath = "Sprites/UI/spr_ball_normal_4mm",
+                    Name = "SIMPLE BALL",
+                    Rarity = "NORMAL",
+                    Size = "4.00MM"
                 },
                 new BallModel
                 {
@@ -73,7 +104,10 @@ namespace BouncingGame.Helpers
                     LargeSpritePath = "Sprites/UI/spr_item_add_coin",
                     Locked = false,
                     OriginSpritePath = "Sprites/UI/spr_item_add_coin",
-                    ShadowSpritePath = "Sprites/UI/spr_item_add_coin"
+                    ShadowSpritePath = "Sprites/UI/spr_item_add_coin",
+                    Name = "COIN BALL",
+                    Rarity = "UNIQUE",
+                    Size = "8.00MM"
                 },
             };
 

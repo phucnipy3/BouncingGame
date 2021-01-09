@@ -5,7 +5,7 @@ namespace BouncingGame.GameObjects
 {
     public class ClearColumnEffect : AnimatedGameObject
     {
-        public ClearColumnEffect(int col) : base(1)
+        public ClearColumnEffect(int col) : base(0.6f)
         {
             LoadAnimation("Sprites/Animations/spr_animation_item_break_vertical@10", "col", false, 0.01f);
             PlayAnimation("col", true);

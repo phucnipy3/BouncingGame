@@ -7,7 +7,7 @@ namespace BouncingGame.GameObjects
     {
         private Vector2 targetPosition;
 
-        public IncreaseEffect(Vector2 hostLocation) : base(1f)
+        public IncreaseEffect(Vector2 hostLocation) : base(0.6f)
         {
             LoadAnimation("Sprites/Animations/spr_animation_increase_one@15", "increase", false, 0.05f);
             PlayAnimation("increase", true);

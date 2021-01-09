@@ -56,9 +56,11 @@ namespace BouncingGame.GameObjects
         public Ball FirstDropBall { get; set; }
 
         private string spriteName;
+        private TextGameObject totalBall;
 
         private ListBall()
         {
+            totalBall = new TextGameObject("Fonts/TotalBall", 1f, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
             Reset();
         }
 
@@ -88,6 +90,7 @@ namespace BouncingGame.GameObjects
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            totalBall.Draw(gameTime, spriteBatch);
             base.Draw(gameTime, spriteBatch);
         }
 
@@ -104,17 +107,22 @@ namespace BouncingGame.GameObjects
             Clear();
             AddBall();
             BallOffset = new Vector2(0, balls[0].Height) / 2;
-
+            totalBall.Reset();
         }
 
         public override void Update(GameTime gameTime)
         {
+            totalBall.Visible = false;
+            totalBall.Text = "x" + ballNumber.ToString();
+            totalBall.LocalPosition = DropPosition - 2 * BallOffset - new Vector2(0, 20);
             if (!Shooting)
             {
                 while (ballNumber > balls.Count)
                 {
                     AddBall();
                 }
+
+                totalBall.Visible = true;
             }
 
             base.Update(gameTime);

@@ -19,9 +19,25 @@ namespace BouncingGame.GameStates
         private List<BallModel> listBall;
         private Button selectLeftBallButton;
         private Button selectRightBallButton;
+        private TextGameObject name;
+        private TextGameObject rarity;
+        private TextGameObject size;
+
         public ChangeBallState()
         {
             gameObjects.AddChild(new SpriteGameObject("Sprites/Backgrounds/spr_changeball", 0));
+
+            name = new TextGameObject("Fonts/BallName", 0, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
+            gameObjects.AddChild(name);
+            name.LocalPosition = new Vector2(350, 300);
+
+            rarity = new TextGameObject("Fonts/Rarity", 0, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
+            gameObjects.AddChild(rarity);
+            rarity.LocalPosition = new Vector2(350, 370);
+
+            size = new TextGameObject("Fonts/Size", 0, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
+            gameObjects.AddChild(size);
+            size.LocalPosition = new Vector2(350, 440);
 
             backButton = new Button("Sprites/Buttons/spr_btn_back", 0);
             backButton.LocalPosition = new Vector2(10, 160);
@@ -107,6 +123,10 @@ namespace BouncingGame.GameStates
             {
                 selectButton.Visible = true;
             }
+
+            name.Text = selectingBall.Name;
+            rarity.Text = selectingBall.Rarity;
+            size.Text = selectingBall.Size;
         }
     }
 }
