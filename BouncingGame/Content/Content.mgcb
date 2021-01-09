@@ -90,7 +90,7 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/TotalBall.spritefont
 
-#begin Sprites/Animations/spr_animation_increase_one@15.png
+#begin Sprites/Animations/spr_animation_increase_one@5x3.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -100,7 +100,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Animations/spr_animation_increase_one@15.png
+/build:Sprites/Animations/spr_animation_increase_one@5x3.png
 
 #begin Sprites/Animations/spr_animation_item_break_horizontal@1x11.png
 /importer:TextureImporter
@@ -114,7 +114,7 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Animations/spr_animation_item_break_horizontal@1x11.png
 
-#begin Sprites/Animations/spr_animation_item_break_vertical@10.png
+#begin Sprites/Animations/spr_animation_item_break_vertical@9.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -124,7 +124,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Sprites/Animations/spr_animation_item_break_vertical@10.png
+/build:Sprites/Animations/spr_animation_item_break_vertical@9.png
 
 #begin Sprites/Animations/spr_animation_item_spread_ball@11.png
 /importer:TextureImporter

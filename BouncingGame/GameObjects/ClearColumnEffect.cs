@@ -7,7 +7,7 @@ namespace BouncingGame.GameObjects
     {
         public ClearColumnEffect(int col) : base(0.6f)
         {
-            LoadAnimation("Sprites/Animations/spr_animation_item_break_vertical@10", "col", false, 0.01f);
+            LoadAnimation("Sprites/Animations/spr_animation_item_break_vertical@9", "col", false, 0.01f);
             PlayAnimation("col", true);
             SetOriginToCenter();
             LocalPosition = new Vector2(50 + col * 100 , 600);
