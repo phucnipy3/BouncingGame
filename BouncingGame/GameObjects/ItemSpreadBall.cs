@@ -10,15 +10,20 @@ using System.Threading.Tasks;
 
 namespace BouncingGame.GameObjects
 {
-    public class ItemSpreadBall : SpriteGameObject
+    public class ItemSpreadBall : AnimatedGameObject
     {
         public int Row { get; private set; } = 0;
         private Vector2 targetPosition;
         private bool intersected = false;
 
+        private int[] offsetWidths = new int[] { -10, -8, -6, -4, -2, 0, -2, -4, -6, -8, -10 };
 
-        public ItemSpreadBall(int column): base("Sprites/UI/spr_item_spread_ball", 0f)
+
+        public ItemSpreadBall(int column): base(0f)
         {
+            LoadAnimation("Sprites/UI/spr_item_spread_ball", "stay", false, 1);
+            LoadAnimation("Sprites/Animations/spr_animation_item_spread_ball@11", "anim", false, 0.01f);
+            PlayAnimation("stay", true);
             SetOriginToCenter();
             LocalPosition = new Vector2(50 + column * 100,50 + 150);
             targetPosition = LocalPosition;
@@ -44,7 +49,6 @@ namespace BouncingGame.GameObjects
         public override void Update(GameTime gameTime)
         {
 
-
             base.Update(gameTime);
 
             if (targetPosition.Y - localPosition.Y <= 0)
@@ -63,7 +67,7 @@ namespace BouncingGame.GameObjects
         {
             get
             {
-                return new Circle(Width / 2 , GlobalPosition);
+                return new Circle(Width / 2 + offsetWidths[SheetIndex], GlobalPosition);
             }
         }
 
@@ -89,6 +93,11 @@ namespace BouncingGame.GameObjects
             {
                 intersectingBalls.Remove(ball);
             }
+        }
+
+        public void PlayEffect()
+        {
+            PlayAnimation("anim", true);
         }
     }
 }

@@ -9,16 +9,16 @@ namespace BouncingGame.GameObjects
 
         public IncreaseEffect(Vector2 hostLocation) : base(1f)
         {
-            LoadAnimation("Sprites/Animations/", "increase", false, 0.5f);
+            LoadAnimation("Sprites/Animations/spr_animation_increase_one@15", "increase", false, 0.05f);
             PlayAnimation("increase", true);
             SetOriginToCenter();
             LocalPosition = hostLocation;
-            targetPosition = hostLocation - new Vector2(0, 10);
+            targetPosition = hostLocation - new Vector2(0, 100);
         }
 
         public override void Update(GameTime gameTime)
         {
-            velocity = (targetPosition - LocalPosition) * (float)gameTime.ElapsedGameTime.TotalSeconds * 10;
+            velocity = (targetPosition - LocalPosition) * (float)gameTime.ElapsedGameTime.TotalSeconds * 20;
             base.Update(gameTime);
         }
 

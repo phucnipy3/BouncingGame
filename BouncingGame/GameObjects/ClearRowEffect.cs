@@ -7,7 +7,7 @@ namespace BouncingGame.GameObjects
     {
         public ClearRowEffect(int row) : base(1)
         {
-            LoadAnimation("Sprites/Animations/", "row", false, 0.5f);
+            LoadAnimation("Sprites/Animations/spr_animation_item_break_horizontal@1x11", "row", false, 0.01f);
             PlayAnimation("row", true);
             SetOriginToCenter();
             LocalPosition = new Vector2(350, 200 + row * 100);

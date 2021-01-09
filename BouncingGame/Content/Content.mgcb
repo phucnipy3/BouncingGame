@@ -32,6 +32,42 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Animations/spr_animation_increase_one@15.png
 
+#begin Sprites/Animations/spr_animation_item_break_horizontal@1x11.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Animations/spr_animation_item_break_horizontal@1x11.png
+
+#begin Sprites/Animations/spr_animation_item_break_vertical@10.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Animations/spr_animation_item_break_vertical@10.png
+
+#begin Sprites/Animations/spr_animation_item_spread_ball@11.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Animations/spr_animation_item_spread_ball@11.png
+
 #begin Sprites/Backgrounds/spr_changeball.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -451,6 +487,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/UI/spr_item_spread_ball.png
+
+#begin Sprites/UI/spr_logo_name.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/UI/spr_logo_name.png
 
 #begin Sprites/UI/spr_pause.png
 /importer:TextureImporter

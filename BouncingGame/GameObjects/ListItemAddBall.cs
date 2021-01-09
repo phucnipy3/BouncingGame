@@ -11,6 +11,8 @@ namespace BouncingGame.GameObjects
 {
     public class ListItemAddBall: GameObject
     {
+        private List<IncreaseEffect> visualEffects = new List<IncreaseEffect>();
+
         private List<ItemAddBall> items;
 
         private static ListItemAddBall instance = new ListItemAddBall();
@@ -49,11 +51,12 @@ namespace BouncingGame.GameObjects
         {
             if (!Visible)
                 return;
-            items.RemoveAll(x => !x.Visible);
             foreach (var item in items)
             {
                 item.Update(gameTime);
             }
+
+            
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -66,6 +69,7 @@ namespace BouncingGame.GameObjects
 
         public void MoveDown()
         {
+            items.RemoveAll(x => !x.Visible);
             foreach (var item in items)
             {
                 item.MoveDown();

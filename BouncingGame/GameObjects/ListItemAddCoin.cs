@@ -50,7 +50,6 @@ namespace BouncingGame.GameObjects
             if (!Visible)
                 return;
 
-            items.RemoveAll(x => !x.Visible);
             foreach (var item in items)
             {
                 item.Update(gameTime);
@@ -67,6 +66,7 @@ namespace BouncingGame.GameObjects
 
         public void MoveDown()
         {
+            items.RemoveAll(x => !x.Visible);
             foreach (var item in items)
             {
                 item.MoveDown();
@@ -88,7 +88,6 @@ namespace BouncingGame.GameObjects
                 {
                     item.Visible = false;
                     item.PlayEffect();
-                    ListBall.Instance.Increase(1);
                 }
             }
         }

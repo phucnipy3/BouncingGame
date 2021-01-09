@@ -85,6 +85,7 @@ namespace BouncingGame.GameObjects
                     {
                         ListBrick.Instance.ClearRow(item.Row);
                         item.StartIntersect(ball);
+                        item.PlayEffect();
                     }
                 }
                 else

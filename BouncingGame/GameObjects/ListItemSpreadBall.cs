@@ -89,6 +89,7 @@ namespace BouncingGame.GameObjects
                         ball.ReflectRandom();
                         item.StartIntersect(ball);
                         touched = true;
+                        item.PlayEffect();
                     }
 
                 }
