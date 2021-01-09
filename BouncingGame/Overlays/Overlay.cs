@@ -21,5 +21,11 @@ namespace BouncingGame.Overlays
             foreach (var child in children)
                 child.Visible = false;
         }
+
+        public override void Reset()
+        {
+            base.Reset();
+            Hide();
+        }
     }
 }

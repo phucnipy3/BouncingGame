@@ -2,6 +2,7 @@
 using BouncingGame.GameObjects;
 using BouncingGame.Helpers;
 using BouncingGame.Models;
+using BouncingGame.Overlays;
 using Engine;
 using Engine.UI;
 using Microsoft.Xna.Framework;
@@ -17,18 +18,12 @@ namespace BouncingGame.GameStates
         private JumpingBall jumpingBall;
         private BallModel selectedBall;
 
-        private SpriteGameObject backgroundConfirm;
-        private SpriteGameObject cancelButton;
-        private SpriteGameObject continueButton;
-        private SpriteGameObject backgroundGetBall;
-        private GiftBox giftBox;
-        private Glowing glowing;
-
+        private GetBallOverlay getBallOverlay;
 
         public HomeState()
         {
             gameObjects.AddChild(new SpriteGameObject("Sprites/Backgrounds/spr_home", 0));
-            
+
             getBallButton = new Button("Sprites/Buttons/spr_btn_get_ball", 0);
             getBallButton.LocalPosition = new Vector2(620, 210);
             changeBallButton = new Button("Sprites/Buttons/spr_btn_change_ball", 0);
@@ -37,12 +32,12 @@ namespace BouncingGame.GameStates
             playButton.LocalPosition = new Vector2(400, 800);
 
 
-
             gameObjects.AddChild(getBallButton);
             gameObjects.AddChild(changeBallButton);
             gameObjects.AddChild(playButton);
 
-            
+            getBallOverlay = new GetBallOverlay();
+            gameObjects.AddChild(getBallOverlay);
 
             Reset();
         }
@@ -50,13 +45,19 @@ namespace BouncingGame.GameStates
         public override void HandleInput(InputHelper inputHelper)
         {
             base.HandleInput(inputHelper);
+
+            if (getBallOverlay.Visible)
+                return;
+
             if (getBallButton.Pressed)
             {
                 // TODO: switch to get ball
                 //ExtendedGame.GameStateManager.SwitchTo();
 
                 // TODO: remove this code
-                GameSettingHelper.GenerateListBall();
+                //GameSettingHelper.GenerateListBall();
+
+                getBallOverlay.Show();
             }
             if (changeBallButton.Pressed)
             {
