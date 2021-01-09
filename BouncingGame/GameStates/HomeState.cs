@@ -11,13 +11,20 @@ namespace BouncingGame.GameStates
 {
     public class HomeState : GameState
     {
-        Button getBallButton;
-        Button changeBallButton;
-        Button playButton;
-        JumpingBall jumpingBall;
-        BallModel selectedBall;
+        private Button getBallButton;
+        private Button changeBallButton;
+        private Button playButton;
+        private JumpingBall jumpingBall;
+        private BallModel selectedBall;
 
-        // TODO: get selected ball and display
+        private SpriteGameObject backgroundConfirm;
+        private SpriteGameObject cancelButton;
+        private SpriteGameObject continueButton;
+        private SpriteGameObject backgroundGetBall;
+        private GiftBox giftBox;
+        private Glowing glowing;
+
+
         public HomeState()
         {
             gameObjects.AddChild(new SpriteGameObject("Sprites/Backgrounds/spr_home", 0));

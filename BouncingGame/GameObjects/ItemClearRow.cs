@@ -12,7 +12,7 @@ namespace BouncingGame.GameObjects
         private Vector2 targetPosition;
         private bool intersected = false;
 
-        private List<ClearRowEffect> visualEffects = new List<ClearRowEffect>();
+        private List<AnimatedGameObject> visualEffects = new List<AnimatedGameObject>();
 
         public ItemClearRow(int column): base("Sprites/UI/spr_item_break_horizontal", 0f)
         {
@@ -99,7 +99,18 @@ namespace BouncingGame.GameObjects
         public void PlayEffect()
         {
             // play sound
-            visualEffects.Add(new ClearRowEffect(Row));
+            visualEffects.Add(CreateClearRowEffect());
+        }
+
+        private AnimatedGameObject CreateClearRowEffect()
+        {
+            AnimatedGameObject newObject = new AnimatedGameObject(0.6f);
+            newObject.LoadAnimation("Sprites/Animations/spr_animation_item_break_horizontal@1x11", "row", false, 0.01f);
+            newObject.PlayAnimation("row", true);
+            newObject.SetOriginToCenter();
+            newObject.LocalPosition = new Vector2(350, 200 + Row * 100);
+
+            return newObject;
         }
     }
 }

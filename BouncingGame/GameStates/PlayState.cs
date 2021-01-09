@@ -1,9 +1,11 @@
 ﻿using BouncingGame.Constants;
 using BouncingGame.GameObjects;
 using BouncingGame.Helpers;
+using BouncingGame.Overlays;
 using Engine;
 using Engine.UI;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,8 +38,8 @@ namespace BouncingGame.GameStates
         TextGameObject playScore;
         TextGameObject playHighScore;
         private int tempMoney;
+        private PauseOverlay pauseOverlay;
 
-        bool pause = false;
         List<int> NumberBricks = new List<int>();
         bool canContinue = true;
         public PlayState()
@@ -162,6 +164,9 @@ namespace BouncingGame.GameStates
             playMoney = new TextGameObject("Fonts/PlayMoney", 0, Color.White, TextGameObject.HorizontalAlignment.Left, TextGameObject.VerticalAlignment.Center);
             gameObjects.AddChild(playMoney);
             playMoney.LocalPosition = new Vector2(100, 1130);
+
+            pauseOverlay = new PauseOverlay();
+            gameObjects.AddChild(pauseOverlay);
 
             Reset();
         }
@@ -322,39 +327,22 @@ namespace BouncingGame.GameStates
                 return;
             }
 
-            if (pause)
+            if (pauseOverlay.Visible)
             {
-                if (continueButton.Pressed)
-                {
-                    HidePauseOverlay();
-                    pause = false;
-                }
-
-                if (volumnButton.Pressed)
-                {
-                    // do something with volumn
-                }
-
-                if (homeButton.Pressed)
-                {
-                    ExtendedGame.GameStateManager.SwitchTo(StateName.Home);
-                    pause = false;
-                }
-
+                pauseOverlay.Update(gameTime);
                 return;
             }
 
             if (pauseButton.Pressed)
             {
-                ShowPauseOverlay();
-                pause = true;
-
+                pauseOverlay.IsGuide = false;
+                pauseOverlay.Show();
             }
 
             if (guideButton.Pressed)
             {
-                ShowGuideOverlay();
-                pause = true;
+                pauseOverlay.IsGuide = true;
+                pauseOverlay.Show();
             }
 
             playScore.Text = Level.ToString();
@@ -445,7 +433,7 @@ namespace BouncingGame.GameStates
             base.Reset();
             gameOver = false;
             canContinue = true;
-            pause = false;
+            pauseOverlay.Hide();
             HidePauseOverlay();
             HideContinueOverlay();
             HideGameOverOverlay();

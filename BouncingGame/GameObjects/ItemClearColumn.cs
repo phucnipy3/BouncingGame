@@ -12,7 +12,7 @@ namespace BouncingGame.GameObjects
         private Vector2 targetPosition;
         private bool intersected = false;
         private int column;
-        private List<ClearColumnEffect> visualEffects = new List<ClearColumnEffect>();
+        private List<AnimatedGameObject> visualEffects = new List<AnimatedGameObject>();
 
         public int Column
         {
@@ -108,7 +108,18 @@ namespace BouncingGame.GameObjects
         public void PlayEffect()
         {
             // play sound
-            visualEffects.Add(new ClearColumnEffect(column));
+            visualEffects.Add(CreateClearColumnEffect());
+        }
+
+        private AnimatedGameObject CreateClearColumnEffect()
+        {
+            AnimatedGameObject newObject = new AnimatedGameObject(0.6f);
+            newObject.LoadAnimation("Sprites/Animations/spr_animation_item_break_vertical@10", "col", false, 0.01f);
+            newObject.PlayAnimation("col", true);
+            newObject.SetOriginToCenter();
+            newObject.LocalPosition = new Vector2(50 + column * 100, 600);
+
+            return newObject;
         }
     }
 }
