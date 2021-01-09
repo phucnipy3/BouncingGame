@@ -15,7 +15,7 @@ namespace BouncingGame.Overlays
                 child.Visible = true;
         }
 
-        public void Hide()
+        public virtual void Hide()
         {
             Visible = false;
             foreach (var child in children)

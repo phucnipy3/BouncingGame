@@ -1,4 +1,5 @@
 ﻿using BouncingGame.Models;
+using Engine;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -80,6 +81,19 @@ namespace BouncingGame.Helpers
         {
             Properties.GameSetting.Default["TotalCoin"] = Properties.GameSetting.Default.TotalCoin + 1;
             Properties.GameSetting.Default.Save();
+        }
+
+        public static BallModel GetRandomBall()
+        {
+            var balls = GetListBall();
+
+            int number = ExtendedGame.Random.Next(balls.Count());
+
+            var randomBall = balls[number];
+            randomBall.Locked = false;
+
+            AssignBalls(balls);
+            return randomBall;
         }
 
         // Call this method to re-generate list ball

@@ -66,12 +66,14 @@
     <Compile Include="GameObjects\ListItemClearColumn.cs" />
     <Compile Include="GameObjects\ListItemSpreadBall.cs" />
     <Compile Include="GameObjects\ListItemClearRow.cs" />
+    <Compile Include="GameObjects\RandomBall.cs" />
     <Compile Include="GameStates\ChangeBallState.cs" />
     <Compile Include="GameStates\HomeState.cs" />
     <Compile Include="GameStates\PlayState.cs" />
     <Compile Include="Helpers\GameSettingHelper.cs" />
     <Compile Include="Helpers\MathHelperExtenstion.cs" />
     <Compile Include="Models\BallModel.cs" />
+    <Compile Include="Overlays\ConfirmOverlay.cs" />
     <Compile Include="Overlays\ContinueOverlay.cs" />
     <Compile Include="Overlays\EndGameOverlay.cs" />
     <Compile Include="Overlays\GetBallOverlay.cs" />
