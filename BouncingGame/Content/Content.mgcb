@@ -90,6 +90,18 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/TotalBall.spritefont
 
+#begin Sprites/Animations/spr_animation_getball@4x3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Animations/spr_animation_getball@4x3.png
+
 #begin Sprites/Animations/spr_animation_increase_one@15.png
 /importer:TextureImporter
 /processor:TextureProcessor

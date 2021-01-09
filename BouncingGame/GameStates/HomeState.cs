@@ -1,8 +1,11 @@
 ﻿using BouncingGame.Constants;
+using BouncingGame.GameObjects;
 using BouncingGame.Helpers;
+using BouncingGame.Models;
 using Engine;
 using Engine.UI;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace BouncingGame.GameStates
 {
@@ -11,6 +14,8 @@ namespace BouncingGame.GameStates
         Button getBallButton;
         Button changeBallButton;
         Button playButton;
+        JumpingBall jumpingBall;
+        BallModel selectedBall;
 
         // TODO: get selected ball and display
         public HomeState()
@@ -24,10 +29,15 @@ namespace BouncingGame.GameStates
             playButton = new Button("Sprites/Buttons/spr_btn_play", 0);
             playButton.LocalPosition = new Vector2(400, 800);
 
+
+
             gameObjects.AddChild(getBallButton);
             gameObjects.AddChild(changeBallButton);
             gameObjects.AddChild(playButton);
 
+            
+
+            Reset();
         }
 
         public override void HandleInput(InputHelper inputHelper)
@@ -49,6 +59,28 @@ namespace BouncingGame.GameStates
             {
                 ExtendedGame.GameStateManager.SwitchTo(StateName.Play);
             }
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+            selectedBall = GameSettingHelper.GetSelectedBall();
+            jumpingBall = new JumpingBall(selectedBall.OriginSpritePath, 0, new Vector2(600, 650), 150, 0.2f);
+            jumpingBall.SetOriginToCenterBottom();
+        }
+
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            base.Draw(gameTime, spriteBatch);
+            if (jumpingBall != null)
+                jumpingBall.Draw(gameTime, spriteBatch);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+            if (jumpingBall != null)
+                jumpingBall.Update(gameTime);
         }
     }
 }

@@ -22,10 +22,10 @@ namespace BouncingGame.GameObjects
             base.Update(gameTime);
             if (LocalPosition.Y > bottom)
             {
-                velocity.Y *= -0.98f;
+                velocity.Y *= -0.999999f;
                 LocalPosition = new Vector2(
-                    LocalPosition.X, bottom);
-            }
+                    LocalPosition.X, (float)((int)bottom));
+            } 
         }
     }
 }
