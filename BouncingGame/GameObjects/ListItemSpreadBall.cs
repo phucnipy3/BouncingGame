@@ -45,6 +45,9 @@ namespace BouncingGame.GameObjects
         {
             if (!Visible)
                 return;
+
+            items.RemoveAll(x => !x.Visible);
+
             foreach (var item in items)
             {
                 item.Update(gameTime);

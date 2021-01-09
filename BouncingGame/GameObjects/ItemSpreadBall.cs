@@ -10,29 +10,23 @@ using System.Threading.Tasks;
 
 namespace BouncingGame.GameObjects
 {
-    public class ItemSpreadBall : GameObject
+    public class ItemSpreadBall : SpriteGameObject
     {
         public int Row { get; private set; } = 0;
-        private SpriteGameObject item;
         private Vector2 targetPosition;
         private bool intersected = false;
 
 
-        public ItemSpreadBall(int column)
+        public ItemSpreadBall(int column): base("Sprites/UI/spr_item_spread_ball", 0f)
         {
-            item = new SpriteGameObject("Sprites/UI/spr_item_spread_ball", 0f);
-            item.SetOriginToCenter();
-            item.Parent = this;
-            item.LocalPosition = new Vector2(50, 50);
-            LocalPosition = new Vector2(column * 100, 150);
+            SetOriginToCenter();
+            LocalPosition = new Vector2(50 + column * 100,50 + 150);
             targetPosition = LocalPosition;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            if (!Visible)
-                return;
-            item.Draw(gameTime, spriteBatch);
+            base.Draw(gameTime, spriteBatch);
         }
 
         public void MoveDown()
@@ -59,7 +53,7 @@ namespace BouncingGame.GameObjects
                 velocity = Vector2.Zero;
             }
 
-            if (LocalPosition.Y >= 946)
+            if (LocalPosition.Y >= 956)
             {
                 Visible = false;
             }
@@ -69,7 +63,7 @@ namespace BouncingGame.GameObjects
         {
             get
             {
-                return new Circle(item.Width / 2, item.GlobalPosition);
+                return new Circle(Width / 2 , GlobalPosition);
             }
         }
 

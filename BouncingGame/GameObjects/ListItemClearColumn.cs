@@ -45,6 +45,7 @@ namespace BouncingGame.GameObjects
         {
             if (!Visible)
                 return;
+            items.RemoveAll(x => !x.Visible);
             foreach (var item in items)
             {
                 item.Update(gameTime);
@@ -84,6 +85,7 @@ namespace BouncingGame.GameObjects
                     {
                         ListBrick.Instance.ClearColumn(item.Column);
                         item.StartIntersect(ball);
+                        item.PlayEffect();
                     }
                 }
                 else

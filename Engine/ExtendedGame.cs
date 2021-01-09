@@ -103,8 +103,8 @@ namespace Engine
             if (inputHelper.KeyPressed(Keys.Escape))
                 Exit();
 
-            // toggle full-screen mode when the player presses F5
-            if (inputHelper.KeyPressed(Keys.F5))
+            // toggle full-screen mode when the player presses F11
+            if (inputHelper.KeyPressed(Keys.F11))
                 FullScreen = !FullScreen;
 
             GameStateManager.HandleInput(inputHelper);

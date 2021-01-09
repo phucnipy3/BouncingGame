@@ -17,7 +17,8 @@ namespace BouncingGame.GameStates
         private BallForSelect ballForSelect;
         private BallModel selectingBall;
         private List<BallModel> listBall;
-
+        private Button selectLeftBallButton;
+        private Button selectRightBallButton;
         public ChangeBallState()
         {
             gameObjects.AddChild(new SpriteGameObject("Sprites/Backgrounds/spr_changeball", 0));
@@ -33,6 +34,15 @@ namespace BouncingGame.GameStates
             ballForSelect = new BallForSelect();
             gameObjects.AddChild(ballForSelect);
 
+            selectLeftBallButton = new Button("Sprites/Buttons/spr_arrow_left", 0);
+            selectLeftBallButton.SetOriginToCenter();
+            selectLeftBallButton.LocalPosition = new Vector2(20, 600);
+            gameObjects.AddChild(selectLeftBallButton);
+
+            selectRightBallButton = new Button("Sprites/Buttons/spr_arrow_right", 0);
+            selectRightBallButton.SetOriginToCenter();
+            selectRightBallButton.LocalPosition = new Vector2(600, 600);
+            gameObjects.AddChild(selectRightBallButton);
             
             Reset();
         }
@@ -50,6 +60,16 @@ namespace BouncingGame.GameStates
             {
                 GameSettingHelper.ChangeSelectedBall(selectingBall.Id);
                 ExtendedGame.GameStateManager.SwitchTo(StateName.Home);
+            }
+
+            if (selectLeftBallButton.Pressed)
+            {
+                SelectLeftBall();
+            }
+
+            if (selectRightBallButton.Pressed)
+            {
+                SelectRightBall();
             }
         }
 
@@ -79,6 +99,14 @@ namespace BouncingGame.GameStates
             if (selectingBall == null)
                 return;
             ballForSelect.Information = selectingBall;
+            if (selectingBall.Locked)
+            {
+                selectButton.Visible = false;
+            }
+            else
+            {
+                selectButton.Visible = true;
+            }
         }
     }
 }

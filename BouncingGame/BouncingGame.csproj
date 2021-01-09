@@ -50,7 +50,10 @@
     <Compile Include="GameObjects\BallForSelect.cs" />
     <Compile Include="GameObjects\Block.cs" />
     <Compile Include="GameObjects\Brick.cs" />
+    <Compile Include="GameObjects\ClearColumnEffect.cs" />
+    <Compile Include="GameObjects\ClearRowEffect.cs" />
     <Compile Include="GameObjects\Director.cs" />
+    <Compile Include="GameObjects\IncreaseEffect.cs" />
     <Compile Include="GameObjects\ItemAddBall.cs" />
     <Compile Include="GameObjects\ItemAddCoin.cs" />
     <Compile Include="GameObjects\ItemClearColumn.cs" />

@@ -49,6 +49,7 @@ namespace BouncingGame.GameObjects
         {
             if (!Visible)
                 return;
+            items.RemoveAll(x => !x.Visible);
             foreach (var item in items)
             {
                 item.Update(gameTime);
@@ -85,7 +86,7 @@ namespace BouncingGame.GameObjects
                 if (CollisionDetection.ShapesIntersect(item.BouncingBox, new Circle(ball.Radius, ball.GlobalCenter)))
                 {
                     item.Visible = false;
-                    item.PlayAnimation();
+                    item.PlayEffect();
                     ListBall.Instance.Increase(1);
                 }
             }

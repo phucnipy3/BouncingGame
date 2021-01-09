@@ -21,6 +21,8 @@ namespace BouncingGame.GameObjects
 
         public Vector2 DropPosition { get; set; } = new Vector2(350, 1050);
 
+        public Vector2 BallOffset { get; set; }
+
 
         private static ListBall instance = new ListBall();
 
@@ -101,6 +103,7 @@ namespace BouncingGame.GameObjects
             ballNumber = 1;
             Clear();
             AddBall();
+            BallOffset = new Vector2(0, balls[0].Height) / 2;
 
         }
 
