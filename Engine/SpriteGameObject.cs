@@ -114,6 +114,14 @@ namespace Engine
         }
 
         /// <summary>
+        /// Updates this object's origin so that it lies in the right at center of the sprite.
+        /// </summary>
+        public void SetOriginToRightCenter()
+        {
+            Origin = sprite.RightCenter;
+        }
+
+        /// <summary>
         /// Gets a Rectangle that describes this game object's current bounding box.
         /// This is useful for collision detection.
         /// </summary>

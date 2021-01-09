@@ -39,6 +39,7 @@ namespace BouncingGame
             // add the game states
             GameStateManager.AddGameState(StateName.Home, new HomeState());
             GameStateManager.AddGameState(StateName.Play, new PlayState());
+            GameStateManager.AddGameState(StateName.ChangeBall, new ChangeBallState());
 
 
             // start at the home screen

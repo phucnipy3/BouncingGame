@@ -123,6 +123,14 @@ namespace Engine
         }
 
         /// <summary>
+        /// Gets a vector that represents the right at center of a single sprite in this sprite sheet.
+        /// </summary>
+        public Vector2 RightCenter
+        {
+            get { return new Vector2(Width, Height / 2); }
+        }
+
+        /// <summary>
         /// Gets or sets the sprite index within this sprite sheet to use. 
         /// If you set a new index, the object will recalculate which part of the sprite should be drawn.
         /// </summary>

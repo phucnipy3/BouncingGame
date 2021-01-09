@@ -45,6 +45,9 @@ namespace BouncingGame.GameObjects
         {
             if (!Visible)
                 return;
+
+            items.RemoveAll(x => !x.Visible);
+
             foreach (var item in items)
             {
                 item.Update(gameTime);
@@ -86,6 +89,7 @@ namespace BouncingGame.GameObjects
                         ball.ReflectRandom();
                         item.StartIntersect(ball);
                         touched = true;
+                        item.PlayEffect();
                     }
 
                 }
@@ -105,7 +109,7 @@ namespace BouncingGame.GameObjects
         {
             foreach (var item in items)
             {
-                if (item.Row > 5)
+                if (item.Row > 6)
                     item.Visible = false;
             }
         }

@@ -6,34 +6,27 @@ using System;
 
 namespace BouncingGame.GameObjects
 {
-    public class ItemAddCoin : GameObject
+    public class ItemAddCoin : SpriteGameObject
     {
         public int Row { get; private set; } = 0; 
-        private SpriteGameObject item;
         private Vector2 targetPosition;
-        private AnimatedGameObject increase;
-        private VisibilityTimer visibilityTimerIncrease;
+        private IncreaseEffect visualEffect;
 
-        public ItemAddCoin(int column)
+        public ItemAddCoin(int column): base("Sprites/UI/spr_item_add_coin", 0f)
         {
-            item = new SpriteGameObject("Sprites/UI/spr_item_add_coin", 0f);
-            item.SetOriginToCenter();
-            item.Parent = this;
-            item.LocalPosition = new Vector2(50, 50);
-            LocalPosition = new Vector2(column * 100, 150);
+            SetOriginToCenter();
+            LocalPosition = new Vector2(50 + column * 100,50 + 150);
             targetPosition = LocalPosition;
-            increase = new AnimatedGameObject(0.25f);
-            increase.LoadAnimation("Sprites/Animations/spr_animation_increase_one@15", "increase", false, 0.03f);
-            increase.LocalPosition = new Vector2(-50, -50);
-            visibilityTimerIncrease = new VisibilityTimer(increase);
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            if (!Visible)
-                return;
-            item.Draw(gameTime, spriteBatch);
-            visibilityTimerIncrease.Draw(gameTime, spriteBatch);
+            base.Draw(gameTime, spriteBatch);
+
+            if(visualEffect != null)
+            {
+                visualEffect.Draw(gameTime, spriteBatch);
+            }
         }
 
         public void MoveDown()
@@ -45,7 +38,8 @@ namespace BouncingGame.GameObjects
 
         public override void Update(GameTime gameTime)
         {
-
+            if (visualEffect != null)
+                visualEffect.Update(gameTime);
 
             base.Update(gameTime);
 
@@ -55,7 +49,7 @@ namespace BouncingGame.GameObjects
                 velocity = Vector2.Zero;
             }
 
-            if (LocalPosition.Y >= 946)
+            if (LocalPosition.Y >= 996)
             {
                 Visible = false;
             }
@@ -65,16 +59,15 @@ namespace BouncingGame.GameObjects
         {
             get
             {
-                return new Circle(item.Width / 2, item.GlobalPosition);
+                return new Circle(Width / 2, GlobalPosition);
             }
         }
 
-        public void PlayAnimation()
+        public void PlayEffect()
         {
-            visibilityTimerIncrease.StartVisible(0.5f);
-            increase.PlayAnimation("increase");
+            // play sound
+            visualEffect = new IncreaseEffect(GlobalPosition);
         }
-
 
     }
 }

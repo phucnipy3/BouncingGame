@@ -1,5 +1,6 @@
 ﻿using BouncingGame.Constants;
 using BouncingGame.GameStates;
+using BouncingGame.Helpers;
 using Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -19,6 +20,8 @@ namespace BouncingGame.GameObjects
         }
 
         public Vector2 DropPosition { get; set; } = new Vector2(350, 1050);
+
+        public Vector2 BallOffset { get; set; }
 
 
         private static ListBall instance = new ListBall();
@@ -52,14 +55,18 @@ namespace BouncingGame.GameObjects
 
         public Ball FirstDropBall { get; set; }
 
+        private string spriteName;
+        private TextGameObject totalBall;
+
         private ListBall()
         {
+            totalBall = new TextGameObject("Fonts/TotalBall", 1f, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
             Reset();
         }
 
         public void AddBall()
         {
-            var newBall = new Ball();
+            var newBall = new Ball(spriteName);
             newBall.LocalPosition = DropPosition;
             AddChild(newBall);
         }
@@ -83,6 +90,7 @@ namespace BouncingGame.GameObjects
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
+            totalBall.Draw(gameTime, spriteBatch);
             base.Draw(gameTime, spriteBatch);
         }
 
@@ -93,21 +101,28 @@ namespace BouncingGame.GameObjects
 
         public override void Reset()
         {
+            spriteName = GameSettingHelper.GetSelectedBall().OriginSpritePath;
             DropPosition = new Vector2(350, 1050);
             ballNumber = 1;
             Clear();
             AddBall();
-
+            BallOffset = new Vector2(0, balls[0].Height) / 2;
+            totalBall.Reset();
         }
 
         public override void Update(GameTime gameTime)
         {
+            totalBall.Visible = false;
+            totalBall.Text = "x" + ballNumber.ToString();
+            totalBall.LocalPosition = DropPosition - 2 * BallOffset - new Vector2(0, 20);
             if (!Shooting)
             {
                 while (ballNumber > balls.Count)
                 {
                     AddBall();
                 }
+
+                totalBall.Visible = true;
             }
 
             base.Update(gameTime);

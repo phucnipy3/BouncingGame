@@ -11,6 +11,8 @@ namespace BouncingGame.GameObjects
 {
     public class ListItemAddBall: GameObject
     {
+        private List<IncreaseEffect> visualEffects = new List<IncreaseEffect>();
+
         private List<ItemAddBall> items;
 
         private static ListItemAddBall instance = new ListItemAddBall();
@@ -53,6 +55,8 @@ namespace BouncingGame.GameObjects
             {
                 item.Update(gameTime);
             }
+
+            
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -65,6 +69,7 @@ namespace BouncingGame.GameObjects
 
         public void MoveDown()
         {
+            items.RemoveAll(x => !x.Visible);
             foreach (var item in items)
             {
                 item.MoveDown();
@@ -85,7 +90,7 @@ namespace BouncingGame.GameObjects
                 if (CollisionDetection.ShapesIntersect(item.BouncingBox, new Circle(ball.Radius, ball.GlobalCenter)))
                 {
                     item.Visible = false;
-                    item.PlayAnimation();
+                    item.PlayEffect();
                     ListBall.Instance.Increase(1);
                 }
             }
@@ -95,7 +100,7 @@ namespace BouncingGame.GameObjects
         {
             foreach(var item in items)
             {
-                if (item.Row > 5)
+                if (item.Row > 6)
                     item.Visible = false;
             }
         }

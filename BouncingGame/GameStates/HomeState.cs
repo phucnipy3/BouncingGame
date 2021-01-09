@@ -1,4 +1,5 @@
 ﻿using BouncingGame.Constants;
+using BouncingGame.Helpers;
 using Engine;
 using Engine.UI;
 using Microsoft.Xna.Framework;
@@ -10,6 +11,8 @@ namespace BouncingGame.GameStates
         Button getBallButton;
         Button changeBallButton;
         Button playButton;
+
+        // TODO: get selected ball and display
         public HomeState()
         {
             gameObjects.AddChild(new SpriteGameObject("Sprites/Backgrounds/spr_home", 0));
@@ -34,11 +37,13 @@ namespace BouncingGame.GameStates
             {
                 // TODO: switch to get ball
                 //ExtendedGame.GameStateManager.SwitchTo();
+
+                // TODO: remove this code
+                GameSettingHelper.GenerateListBall();
             }
             if (changeBallButton.Pressed)
             {
-                // TODO: switch to change ball
-                //ExtendedGame.GameStateManager.SwitchTo();
+                ExtendedGame.GameStateManager.SwitchTo(StateName.ChangeBall);
             }
             if (playButton.Pressed)
             {

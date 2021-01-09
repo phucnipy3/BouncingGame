@@ -49,7 +49,7 @@ namespace BouncingGame.GameObjects
 
         List<Brick> touchedBricks;
 
-        public Ball() : base("Sprites/UI/spr_ball_normal_4mm", 0.1f)
+        public Ball(string spriteName) : base(spriteName, 0.1f)
         {
             SetOriginToCenterBottom();
             touchedBricks = new List<Brick>();

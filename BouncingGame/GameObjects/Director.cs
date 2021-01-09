@@ -44,7 +44,7 @@ namespace BouncingGame.GameObjects
 
         public override void Update(GameTime gameTime)
         {
-            LocalPosition = ListBall.Instance.DropPosition + new Vector2(0, -10);
+            LocalPosition = ListBall.Instance.DropPosition - ListBall.Instance.BallOffset;
             UpdateElements();
             base.Update(gameTime);
         }

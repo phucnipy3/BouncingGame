@@ -1,4 +1,5 @@
-﻿using Engine;
+﻿using BouncingGame.Helpers;
+using Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -49,6 +50,7 @@ namespace BouncingGame.GameObjects
         {
             if (!Visible)
                 return;
+
             foreach (var item in items)
             {
                 item.Update(gameTime);
@@ -65,6 +67,7 @@ namespace BouncingGame.GameObjects
 
         public void MoveDown()
         {
+            items.RemoveAll(x => !x.Visible);
             foreach (var item in items)
             {
                 item.MoveDown();
@@ -85,8 +88,8 @@ namespace BouncingGame.GameObjects
                 if (CollisionDetection.ShapesIntersect(item.BouncingBox, new Circle(ball.Radius, ball.GlobalCenter)))
                 {
                     item.Visible = false;
-                    item.PlayAnimation();
-                    ListBall.Instance.Increase(1);
+                    item.PlayEffect();
+                    GameSettingHelper.AddOneCoin();
                 }
             }
         }
@@ -95,7 +98,7 @@ namespace BouncingGame.GameObjects
         {
             foreach (var item in items)
             {
-                if (item.Row > 5)
+                if (item.Row > 6)
                     item.Visible = false;
             }
         }
