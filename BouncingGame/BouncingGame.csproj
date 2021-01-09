@@ -72,6 +72,8 @@
     <Compile Include="Helpers\GameSettingHelper.cs" />
     <Compile Include="Helpers\MathHelperExtenstion.cs" />
     <Compile Include="Models\BallModel.cs" />
+    <Compile Include="Overlays\ContinueOverlay.cs" />
+    <Compile Include="Overlays\EndGameOverlay.cs" />
     <Compile Include="Overlays\GetBallOverlay.cs" />
     <Compile Include="Overlays\PauseOverlay.cs" />
     <Compile Include="Overlays\Overlay.cs" />

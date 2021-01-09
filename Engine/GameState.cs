@@ -22,7 +22,7 @@ namespace Engine
         }
 
         /// <summary>
-        /// Calls HandleInout for all objects in this GameState.
+        /// Calls HandleInput for all objects in this GameState.
         /// </summary>
         /// <param name="inputHelper">An object required for handling player input.</param>
         public virtual void HandleInput(InputHelper inputHelper)

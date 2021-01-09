@@ -15,7 +15,7 @@ namespace BouncingGame.Overlays
 
         public bool IsGuide { get; set; } = false;
 
-        public PauseOverlay()
+        public PauseOverlay():base()
         {
             pauseBackground = new SpriteGameObject("Sprites/Backgrounds/spr_pause", 0.75f);
             AddChild(pauseBackground);
@@ -39,9 +39,9 @@ namespace BouncingGame.Overlays
             volumnButton.LocalPosition = new Vector2(120, 75);
         }
 
-        public override void Update(GameTime gameTime)
+        public override void HandleInput(InputHelper inputHelper)
         {
-            base.Update(gameTime);
+            base.HandleInput(inputHelper);
 
             if (continueButton.Pressed)
             {

@@ -14,31 +14,16 @@ namespace BouncingGame.GameStates
 {
     public class PlayState : GameState
     {
-        bool gameOver = false;
         Button pauseButton;
-        Button continueButton;
         Button guideButton;
-        Button homeButton;
-        Switch volumnButton;
-        SpriteGameObject pauseBackground;
-        SpriteGameObject guideBackground;
-        SpriteGameObject continueBackground;
-        Button oneMoreButton;
-        Button endGameButton;
-        SpriteGameObject gameOverBackground;
-        Button getBallButton;
-        Button rankButton;
-        Button replayButton;
-        Button shareButton;
-        TextGameObject endGameScore;
-        TextGameObject endGameHighScore;
-        TextGameObject endGameTotalMoney;
-        TextGameObject endGameAdditionMoney;
+        
         TextGameObject playMoney;
         TextGameObject playScore;
         TextGameObject playHighScore;
         private int tempMoney;
         private PauseOverlay pauseOverlay;
+        private ContinueOverlay continueOverlay;
+        private EndGameOverlay endGameOverlay;
 
         List<int> NumberBricks = new List<int>();
         bool canContinue = true;
@@ -69,89 +54,7 @@ namespace BouncingGame.GameStates
             guideButton.SetOriginToLeftCenter();
             guideButton.LocalPosition = new Vector2(120, 75);
 
-            pauseBackground = new SpriteGameObject("Sprites/Backgrounds/spr_pause", 0.75f);
-            pauseBackground.Visible = false;
-            gameObjects.AddChild(pauseBackground);
-
-            guideBackground = new SpriteGameObject("Sprites/Backgrounds/spr_guide", 0.75f);
-            guideBackground.Visible = false;
-            gameObjects.AddChild(guideBackground);
-
-            continueButton = new Button("Sprites/Buttons/spr_continue", 1);
-            gameObjects.AddChild(continueButton);
-            continueButton.SetOriginToLeftCenter();
-            continueButton.LocalPosition = new Vector2(20, 75);
-            continueButton.Visible = false;
-
-            homeButton = new Button("Sprites/Buttons/spr_back_to_home", 1);
-            gameObjects.AddChild(homeButton);
-            homeButton.SetOriginToRightCenter();
-            homeButton.LocalPosition = new Vector2(680, 75);
-            homeButton.Visible = false;
-
-            volumnButton = new Switch("Sprites/Buttons/spr_volume@2", 1);
-            gameObjects.AddChild(volumnButton);
-            volumnButton.SetOriginToLeftCenter();
-            volumnButton.LocalPosition = new Vector2(120, 75);
-            volumnButton.Visible = false;
-
-            continueBackground = new Switch("Sprites/Backgrounds/spr_continue", 0.75f);
-            gameObjects.AddChild(continueBackground);
-            continueBackground.Visible = false;
-
-            oneMoreButton = new Switch("Sprites/Buttons/spr_btn_onemore", 1);
-            gameObjects.AddChild(oneMoreButton);
-            oneMoreButton.LocalPosition = new Vector2(100, 400);
-            oneMoreButton.Visible = false;
-
-            endGameButton = new Switch("Sprites/Buttons/spr_btn_endgame", 1);
-            gameObjects.AddChild(endGameButton);
-            endGameButton.LocalPosition = new Vector2(400, 400);
-            endGameButton.Visible = false;
-
-            gameOverBackground = new Switch("Sprites/Backgrounds/spr_game_over", 0.75f);
-            gameObjects.AddChild(gameOverBackground);
-            gameOverBackground.Visible = false;
-
-            getBallButton = new Switch("Sprites/Buttons/spr_btn_getball", 1);
-            gameObjects.AddChild(getBallButton);
-            getBallButton.LocalPosition = new Vector2(400, 800);
-            getBallButton.Visible = false;
-
-            rankButton = new Switch("Sprites/Buttons/spr_btn_rank", 1);
-            gameObjects.AddChild(rankButton);
-            rankButton.LocalPosition = new Vector2(600, 1000);
-            rankButton.Visible = false;
-
-            replayButton = new Switch("Sprites/Buttons/spr_btn_replay", 1);
-            gameObjects.AddChild(replayButton);
-            replayButton.LocalPosition = new Vector2(300, 1000);
-            replayButton.Visible = false;
-
-            shareButton = new Switch("Sprites/Buttons/spr_btn_share", 1);
-            gameObjects.AddChild(shareButton);
-            shareButton.LocalPosition = new Vector2(10, 1000);
-            shareButton.Visible = false;
-
-            endGameScore = new TextGameObject("Fonts/EndGameScore", 1, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
-            gameObjects.AddChild(endGameScore);
-            endGameScore.LocalPosition = new Vector2(350, 215);
-            endGameScore.Visible = false;
-
-            endGameHighScore = new TextGameObject("Fonts/EndGameHighScore", 1, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
-            gameObjects.AddChild(endGameHighScore);
-            endGameHighScore.LocalPosition = new Vector2(350, 360);
-            endGameHighScore.Visible = false;
-
-            endGameAdditionMoney = new TextGameObject("Fonts/EndGameMoney", 1, Color.White, TextGameObject.HorizontalAlignment.Right, TextGameObject.VerticalAlignment.Center);
-            gameObjects.AddChild(endGameAdditionMoney);
-            endGameAdditionMoney.LocalPosition = new Vector2(640, 620);
-            endGameAdditionMoney.Visible = false;
-
-            endGameTotalMoney = new TextGameObject("Fonts/EndGameMoney", 1, Color.White, TextGameObject.HorizontalAlignment.Left, TextGameObject.VerticalAlignment.Center);
-            gameObjects.AddChild(endGameTotalMoney);
-            endGameTotalMoney.LocalPosition = new Vector2(170, 620);
-            endGameTotalMoney.Visible = false;
+            
 
             playScore = new TextGameObject("Fonts/PlayScore", 0, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
             gameObjects.AddChild(playScore);
@@ -168,21 +71,38 @@ namespace BouncingGame.GameStates
             pauseOverlay = new PauseOverlay();
             gameObjects.AddChild(pauseOverlay);
 
+            continueOverlay = new ContinueOverlay(this);
+            gameObjects.AddChild(continueOverlay);
+
+            endGameOverlay = new EndGameOverlay();
+            gameObjects.AddChild(endGameOverlay);
+
             Reset();
+        }
+
+        public void EndGame()
+        {
+            SetupEndGame();
+            canContinue = false;
+        }
+
+        public void Continue()
+        {
+
+            ClearDeadRows();
+            canContinue = false;
         }
 
         public void GameOver()
         {
-            gameOver = true;
-            tempMoney = GameSettingHelper.GetMoney();
-            GameSettingHelper.SetMoney(tempMoney + Level);
             if (canContinue)
             {
-                ShowContinueOverlay();
+                //TODO: -10 coin, warning if not enough
+                continueOverlay.Show();
             }
             else
             {
-                ShowGameOverOverlay();
+                SetupEndGame();
             }
         }
 
@@ -285,53 +205,27 @@ namespace BouncingGame.GameStates
             return blocks;
         }
 
-        public override void Update(GameTime gameTime)
+        public override void HandleInput(InputHelper inputHelper)
         {
-            if (gameOver)
-            {
-                endGameAdditionMoney.Text = "+ " + Level.ToString();
-                endGameHighScore.Text = GameSettingHelper.GetHighScore().ToString();
-                endGameScore.Text = Level.ToString();
-                endGameTotalMoney.Text = tempMoney.ToString();
-                if (canContinue)
-                {
-                    if (oneMoreButton.Pressed)
-                    {
-                        HideContinueOverlay();
-                        ClearDeadRows();
-                        gameOver = false;
-                        canContinue = false;
-                    }
-
-                    if (endGameButton.Pressed)
-                    {
-                        HideContinueOverlay();
-                        ShowGameOverOverlay();
-                        canContinue = false;
-                    }
-                }
-                else
-                {
-                    if (getBallButton.Pressed)
-                    {
-                        // get ball
-                    }
-
-                    if (replayButton.Pressed)
-                    {
-                        ExtendedGame.GameStateManager.SwitchTo(StateName.Home);
-                    }
-
-                }
-
-                return;
-            }
-
             if (pauseOverlay.Visible)
             {
-                pauseOverlay.Update(gameTime);
+                pauseOverlay.HandleInput(inputHelper);
                 return;
             }
+
+            if (continueOverlay.Visible)
+            {
+                continueOverlay.HandleInput(inputHelper);
+                return;
+            }
+
+            if (endGameOverlay.Visible)
+            {
+                endGameOverlay.HandleInput(inputHelper);
+                return;
+            }
+
+            base.HandleInput(inputHelper);
 
             if (pauseButton.Pressed)
             {
@@ -344,13 +238,23 @@ namespace BouncingGame.GameStates
                 pauseOverlay.IsGuide = true;
                 pauseOverlay.Show();
             }
+        }
 
+        public override void Update(GameTime gameTime)
+        {
+            if (endGameOverlay.Visible)
+                return;
+
+            if (continueOverlay.Visible)
+                return;
+
+            if (pauseOverlay.Visible)
+                return;
+            
             playScore.Text = Level.ToString();
             playHighScore.Text = GameSettingHelper.GetHighScore().ToString();
             playMoney.Text = GameSettingHelper.GetMoney().ToString();
             base.Update(gameTime);
-
-
         }
 
         private void ClearDeadRows()
@@ -363,80 +267,23 @@ namespace BouncingGame.GameStates
             ListItemSpreadBall.Instance.ClearDeadRows();
         }
 
-        private void HideGameOverOverlay()
+        private void SetupEndGame()
         {
-            gameOverBackground.Visible = false;
-            getBallButton.Visible = false;
-            rankButton.Visible = false;
-            replayButton.Visible = false;
-            shareButton.Visible = false;
-            endGameAdditionMoney.Visible = false;
-            endGameHighScore.Visible = false;
-            endGameScore.Visible = false;
-            endGameTotalMoney.Visible = false;
-        }
 
-        private void ShowGameOverOverlay()
-        {
-            gameOverBackground.Visible = true;
-            getBallButton.Visible = true;
-            rankButton.Visible = true;
-            replayButton.Visible = true;
-            shareButton.Visible = true;
-            endGameAdditionMoney.Visible = true;
-            endGameHighScore.Visible = true;
-            endGameScore.Visible = true;
-            endGameTotalMoney.Visible = true;
-        }
+            endGameOverlay.AdditionMoney = Level;
+            endGameOverlay.Score = Level;
+            endGameOverlay.HighScore = GameSettingHelper.GetHighScore();
+            tempMoney = GameSettingHelper.GetMoney();
+            endGameOverlay.TotalMoney = tempMoney;
+            GameSettingHelper.SetMoney(tempMoney + Level);
 
-        private void HideContinueOverlay()
-        {
-            continueBackground.Visible = false;
-            oneMoreButton.Visible = false;
-            endGameButton.Visible = false;
-        }
-
-        private void ShowContinueOverlay()
-        {
-            continueBackground.Visible = true;
-            oneMoreButton.Visible = true;
-            endGameButton.Visible = true;
-        }
-
-        private void HidePauseOverlay()
-        {
-            guideBackground.Visible = false;
-            pauseBackground.Visible = false;
-            homeButton.Visible = false;
-            continueButton.Visible = false;
-            volumnButton.Visible = false;
-        }
-
-        private void ShowGuideOverlay()
-        {
-            guideBackground.Visible = true;
-            homeButton.Visible = true;
-            continueButton.Visible = true;
-            volumnButton.Visible = true;
-        }
-
-        private void ShowPauseOverlay()
-        {
-            pauseBackground.Visible = true;
-            homeButton.Visible = true;
-            continueButton.Visible = true;
-            volumnButton.Visible = true;
+            endGameOverlay.Show();
         }
 
         public override void Reset()
         {
             base.Reset();
-            gameOver = false;
             canContinue = true;
-            pauseOverlay.Hide();
-            HidePauseOverlay();
-            HideContinueOverlay();
-            HideGameOverOverlay();
             Level = 0;
             NextLevel();
         }

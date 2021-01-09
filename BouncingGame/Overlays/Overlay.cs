@@ -27,5 +27,6 @@ namespace BouncingGame.Overlays
             base.Reset();
             Hide();
         }
+
     }
 }

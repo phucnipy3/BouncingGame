@@ -44,10 +44,14 @@ namespace BouncingGame.GameStates
 
         public override void HandleInput(InputHelper inputHelper)
         {
-            base.HandleInput(inputHelper);
 
             if (getBallOverlay.Visible)
+            {
+                getBallOverlay.HandleInput(inputHelper);
                 return;
+            }
+
+            base.HandleInput(inputHelper);
 
             if (getBallButton.Pressed)
             {

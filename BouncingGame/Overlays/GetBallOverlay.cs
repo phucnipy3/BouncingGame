@@ -9,7 +9,7 @@ namespace BouncingGame.Overlays
         private AnimatedGameObject giftBox;
         private AnimatedGameObject glowing;
 
-        public GetBallOverlay()
+        public GetBallOverlay(): base()
         {
             giftBox = new AnimatedGameObject(0.81f);
             giftBox.LoadAnimation("Sprites/Animations/spr_animation_getball@4x3", "box", false, 0.05f);
