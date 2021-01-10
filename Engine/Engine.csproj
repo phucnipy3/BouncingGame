@@ -51,24 +51,18 @@
     <Compile Include="CollisionDetection\Circle.cs" />
     <Compile Include="CollisionDetection\CollisionDetection.cs" />
     <Compile Include="ExtendedGame.cs" />
-    <Compile Include="Levels\ExtendedGameWithLevels.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="GameObjectList.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="GameStateManager.cs" />
     <Compile Include="IGameLoopObject.cs" />
     <Compile Include="InputHelper.cs" />
-    <Compile Include="Levels\LevelButton.cs" />
-    <Compile Include="Levels\LevelStatus.cs" />
-    <Compile Include="Levels\IPlayingState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpriteGameObject.cs" />
     <Compile Include="SpriteSheet.cs" />
     <Compile Include="TextGameObject.cs" />
     <Compile Include="UI\Button.cs" />
-    <Compile Include="UI\Slider.cs" />
     <Compile Include="UI\Switch.cs" />
-    <Compile Include="VisibilityTimer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
