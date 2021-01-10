@@ -1,0 +1,129 @@
+1. View home screen
+	Mô tả dữ liệu
+		D1:Không có
+		D2:Không có
+		D3:Số lượng xu, Id bóng hiện tại, danh sách bóng từ Game Setting
+		D4:Không có
+		D5:Không có
+		D6:Số lượng xu, bóng hiện tại
+	Thuật toán:
+		B1: Lấy D3
+		B2: Lấy D6 dựa trên D3
+		B3: Hiển thị D6
+		B4: Kết thúc
+
+2. Get new ball
+	Mô tả dữ liệu
+		D1:Không có
+		D2:Không có
+		D3:Danh sách bóng từ Game Setting
+		D4:Không có
+		D5:Không có
+		D6:Bóng ngẫu nhiên
+	Thuật toán
+		B1: Lấy D3
+		B2: Tính toán sinh D6 từ D3
+		B3: Hiển thị D6
+		B4: Kết thúc
+
+3. Change ball
+	Mô tả dữ liệu
+		D1:Không có
+		D2:Bóng đang được chọn từ Nghiệp vụ số 4
+		D3:Id bóng hiện tại, Danh sách bóng từ Game Setting
+		D4:Id bóng hiện tại
+		D5:Danh sách bóng, bóng đang được chọn cho nghiệp vụ số 4
+		D6:Bóng đang được chọn
+	Thuật toán:
+		B1: Lấy D3
+		B2: Hiển thị D6
+		B3: Lấy D2
+		B4: Nếu người chơi nhấn chọn bóng, thay đổi D4 theo bóng đang được chọn, kết thúc	
+		B5: Quay lại B3
+
+4. Select other ball
+	Mô tả dữ liệu
+		D1:Không có
+		D2:Danh sách bóng, bóng đang được chọn từ nghiệp vụ số 3
+		D3:Không có
+		D4:Không có
+		D5:Bóng đang được chọn
+		D6:Không có
+	Thuật toán:
+		B1: Lấy D2
+		B2: Nếu người chơi chọn bóng bên trái, thay đổi bóng được chọn dựa trên D2
+		B3: Nếu người chơi chọn bóng bên phải, thay đổi bóng được chọn dựa trên D2
+		B4: Quay lại bước 2
+
+5. Back to home screen
+	Mô tả dữ liệu
+		D1:Không có
+		D2:Không có
+		D3:Không có
+		D4:Không có
+		D5:Không có
+		D6:Không có
+	Thuật toán:
+		B1: Nếu người chơi nhấn quay lại, kết thúc
+		B2: Quay lại bước 1
+
+6. Play game
+	Mô tả dữ liệu
+		D1:Không có
+		D2:Không có
+		D3:Danh sách bóng, Id bóng hiện tại, số lượng xu, điểm cao từ Game Setting
+		D4:Số lượng xu, trạng thái âm thanh, điểm cao
+		D5:Điểm hiện tại cho nghiệp vụ 9
+		D6:Bóng hiện tại, số lượng xu, điểm cao
+	Thuật toán:
+		B1: Lấy D3
+		B2: Lấy bóng hiện tại từ D3
+		B3: Hiển thị D6
+		B4: Nếu người chơi thay đổi số lượng xu, cập nhật số lượng xu
+		B5: Nếu người chơi thay đổi điểm cao, cập nhật điểm cao
+		B6: Nếu người chơi đạt trạng thái kết thúc, kết thúc
+		B7: Quay lại bước 4
+
+7. View help
+	Mô tả dữ liệu
+		D1:Không có
+		D2:Không có 
+		D3:Trạng thái âm thanh từ Game Setting
+		D4:Trạng thái âm thanh
+		D5:Không có
+		D6:Trạng thái âm thanh
+	Thuật toán:
+		B1: Lấy D3
+		B2: Hiển thị D6
+		B3: Nếu người chơi thay đổi trạng thái âm thanh, cập nhật D4
+		B4: Nếu người chơi nhấn tiếp tục, kết thúc
+		B5: Nếu người chơi nhấn trở về màn hình chính, kết thúc
+		B6: Quay lại bước 2
+8. Pause game
+	Mô tả dữ liệu
+		D1:Không có
+		D2:Không có 
+		D3:Trạng thái âm thanh từ Game Setting
+		D4:Trạng thái âm thanh
+		D5:Không có
+		D6:Trạng thái âm thanh
+	Thuật toán:
+		B1: Lấy D3
+		B2: Hiển thị D6
+		B3: Nếu người chơi thay đổi trạng thái âm thanh, cập nhật D4
+		B4: Nếu người chơi nhấn tiếp tục, kết thúc
+		B5: Nếu người chơi nhấn trở về màn hình chính, kết thúc
+		B6: Quay lại bước 2
+
+9. View game over screen
+	Mô tả dữ liệu
+		D1:Không có
+		D2:Điểm hiện tại từ nghiệp vụ số 6
+		D3:Điểm cao, số lượng xu từ Game Setting
+		D4:Không có
+		D5:Không có
+		D6:Điểm cao, điểm hiện tại, số lượng xu
+	Thuật toán:
+		B1: Lấy D3
+		B2: Lấy D2
+		B3: Hiển thị D6
