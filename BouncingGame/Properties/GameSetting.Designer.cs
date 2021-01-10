@@ -70,5 +70,17 @@ namespace BouncingGame.Properties {
                 this["HighScore"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsMuted {
+            get {
+                return ((bool)(this["IsMuted"]));
+            }
+            set {
+                this["IsMuted"] = value;
+            }
+        }
     }
 }

@@ -1,7 +1,10 @@
 ﻿using BouncingGame.Constants;
+using BouncingGame.Helpers;
 using Engine;
 using Engine.UI;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 
 namespace BouncingGame.Overlays
 {
@@ -15,7 +18,7 @@ namespace BouncingGame.Overlays
 
         public bool IsGuide { get; set; } = false;
 
-        public PauseOverlay():base()
+        public PauseOverlay() : base()
         {
             pauseBackground = new SpriteGameObject("Sprites/Backgrounds/spr_pause", Depth.OverlayBackground);
             AddChild(pauseBackground);
@@ -45,16 +48,21 @@ namespace BouncingGame.Overlays
 
             if (continueButton.Pressed)
             {
+                ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
                 Hide();
             }
 
             if (volumnButton.Pressed)
             {
-                // do something with volumn
+                GameSettingHelper.SetVolumnState(volumnButton.Selected);
+                MediaPlayer.IsMuted = volumnButton.Selected;
+                SoundEffect.MasterVolume = volumnButton.Selected ? 0f : 1f;
+                ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
             }
 
             if (homeButton.Pressed)
             {
+                ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
                 ExtendedGame.GameStateManager.SwitchTo(StateName.Home);
             }
         }
@@ -71,6 +79,13 @@ namespace BouncingGame.Overlays
             {
                 guideBackground.Visible = false;
             }
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+            volumnButton.Selected = GameSettingHelper.GetVolumnState();
+
         }
 
     }

@@ -62,6 +62,7 @@ namespace BouncingGame.GameObjects
         public void PlayEffect()
         {
             visualEffect = new IncreaseEffect(GlobalPosition);
+            ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_touch_soft");
         }
 
 

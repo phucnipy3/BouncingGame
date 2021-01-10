@@ -86,7 +86,6 @@ namespace BouncingGame.GameObjects
             DropPosition = FirstDropBall.LocalPosition;
 
             ((PlayState)ExtendedGame.GameStateManager.GetGameState(StateName.Play)).NextLevel();
-            ((PlayState)ExtendedGame.GameStateManager.GetGameState(StateName.Play)).GameOver();
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)

@@ -96,6 +96,17 @@ namespace BouncingGame.Helpers
             return randomBall;
         }
 
+        public static bool GetVolumnState()
+        {
+            return Properties.GameSetting.Default.IsMuted;
+        }
+
+        public static void SetVolumnState(bool isMuted)
+        {
+            Properties.GameSetting.Default["IsMuted"] = isMuted;
+            Properties.GameSetting.Default.Save();
+        }
+
         // Call this method to re-generate list ball
         public static void GenerateListBall()
         {

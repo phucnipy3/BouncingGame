@@ -37,6 +37,7 @@ namespace BouncingGame.Overlays
 
             if (oneMoreButton.Pressed)
             {
+                ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
                 Hide();
                 playState.Continue();
                 
@@ -44,6 +45,7 @@ namespace BouncingGame.Overlays
 
             if (endGameButton.Pressed)
             {
+                ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
                 Hide();
                 playState.EndGame();
             }
