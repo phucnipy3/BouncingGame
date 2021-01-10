@@ -22,6 +22,7 @@ namespace BouncingGame.GameStates
 
         private GetBallOverlay getBallOverlay;
         private ConfirmOverlay confirmOverlay;
+        private WarningOverlay warningOverlay;
 
         public HomeState()
         {
@@ -59,6 +60,9 @@ namespace BouncingGame.GameStates
             confirmOverlay = new ConfirmOverlay(getBallOverlay);
             gameObjects.AddChild(confirmOverlay);
 
+            warningOverlay = new WarningOverlay();
+            gameObjects.AddChild(warningOverlay);
+
             Reset();
         }
 
@@ -77,16 +81,21 @@ namespace BouncingGame.GameStates
                 return;
             }
 
+            if (warningOverlay.Visible)
+            {
+                warningOverlay.HandleInput(inputHelper);
+                return;
+            }
+
             base.HandleInput(inputHelper);
 
             if (getBallButton.Pressed)
             {
                 ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
-
-                // TODO: remove this code
-                //GameSettingHelper.GenerateListBall();
-
-                confirmOverlay.Show();
+                if (GameSettingHelper.GetMoney() >= 100)
+                    confirmOverlay.Show();
+                else
+                    warningOverlay.Show();
             }
             if (changeBallButton.Pressed)
             {

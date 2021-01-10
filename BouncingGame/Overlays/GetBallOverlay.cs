@@ -57,6 +57,7 @@ namespace BouncingGame.Overlays
             message.Visible = false;
             randomBall = new RandomBall(GameSettingHelper.GetRandomBall().LargeSpritePath);
             glowing.Visible = false;
+            ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_gift");
         }
 
         public override void Update(GameTime gameTime)

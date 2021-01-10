@@ -82,6 +82,8 @@
     <Compile Include="Overlays\GetBallOverlay.cs" />
     <Compile Include="Overlays\PauseOverlay.cs" />
     <Compile Include="Overlays\Overlay.cs" />
+    <Compile Include="Overlays\TagOverlay.cs" />
+    <Compile Include="Overlays\WarningOverlay.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\GameSetting.Designer.cs">
       <AutoGen>True</AutoGen>

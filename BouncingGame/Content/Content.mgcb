@@ -277,6 +277,12 @@
 /processorParam:Quality=Best
 /build:Sounds/snd_click.wav
 
+#begin Sounds/snd_gift.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/snd_gift.wav
+
 #begin Sounds/snd_item_clear.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -480,6 +486,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Sprites/Backgrounds/spr_play.png
+
+#begin Sprites/Backgrounds/spr_tag.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Backgrounds/spr_tag.png
+
+#begin Sprites/Backgrounds/spr_warning.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/Backgrounds/spr_warning.png
 
 #begin Sprites/Buttons/spr_arrow_left.png
 /importer:TextureImporter

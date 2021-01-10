@@ -102,9 +102,10 @@ namespace BouncingGame.GameStates
 
         public void GameOver()
         {
-            if (canContinue)
+            var currentMoney = GameSettingHelper.GetMoney();
+            if (canContinue && currentMoney >= 10)
             {
-                //TODO: -10 coin, warning if not enough
+                GameSettingHelper.SetMoney(currentMoney - 10);
                 continueOverlay.Show();
             }
             else
