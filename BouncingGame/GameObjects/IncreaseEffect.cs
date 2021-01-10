@@ -10,7 +10,7 @@ namespace BouncingGame.GameObjects
 
         public IncreaseEffect(Vector2 hostLocation) : base(Depth.Effect)
         {
-            LoadAnimation("Sprites/Animations/spr_animation_increase_one@15", "increase", false, 0.05f);
+            LoadAnimation("Sprites/Animations/spr_animation_increase_one@5x3", "increase", false, 0.05f);
             PlayAnimation("increase", true);
             SetOriginToCenter();
             LocalPosition = hostLocation;
