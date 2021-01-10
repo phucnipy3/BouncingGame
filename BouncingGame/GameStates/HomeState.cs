@@ -22,6 +22,7 @@ namespace BouncingGame.GameStates
 
         private GetBallOverlay getBallOverlay;
         private ConfirmOverlay confirmOverlay;
+        private WarningOverlay warningOverlay;
 
         public HomeState()
         {
@@ -59,6 +60,9 @@ namespace BouncingGame.GameStates
             confirmOverlay = new ConfirmOverlay(getBallOverlay);
             gameObjects.AddChild(confirmOverlay);
 
+            warningOverlay = new WarningOverlay();
+            gameObjects.AddChild(warningOverlay);
+
             Reset();
         }
 
@@ -77,16 +81,21 @@ namespace BouncingGame.GameStates
                 return;
             }
 
+            if (warningOverlay.Visible)
+            {
+                warningOverlay.HandleInput(inputHelper);
+                return;
+            }
+
             base.HandleInput(inputHelper);
 
             if (getBallButton.Pressed)
             {
                 ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
-
-                // TODO: remove this code
-                //GameSettingHelper.GenerateListBall();
-
-                confirmOverlay.Show();
+                if (GameSettingHelper.GetMoney() >= 100)
+                    confirmOverlay.Show();
+                else
+                    warningOverlay.Show();
             }
             if (changeBallButton.Pressed)
             {
@@ -106,7 +115,6 @@ namespace BouncingGame.GameStates
             selectedBall = GameSettingHelper.GetSelectedBall();
             jumpingBall = new JumpingBall(selectedBall.OriginSpritePath, 0, new Vector2(525, 720), 110, 0.2f);
             jumpingBall.SetOriginToCenterBottom();
-            moneyText.Text = GameSettingHelper.GetMoney().ToString("N0");
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -121,6 +129,7 @@ namespace BouncingGame.GameStates
             base.Update(gameTime);
             if (jumpingBall != null)
                 jumpingBall.Update(gameTime);
+            moneyText.Text = GameSettingHelper.GetMoney().ToString("N0");
         }
     }
 }

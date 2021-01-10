@@ -22,6 +22,8 @@ namespace BouncingGame.Overlays
         private PlayState playState;
         private GetBallOverlay getBallOverlay;
         private ConfirmOverlay confirmOverlay;
+        private TagOverlay tagOverlay;
+        private WarningOverlay warningOverlay;
 
         public int Score { get; set; }
         public int HighScore { get; set; }
@@ -78,6 +80,12 @@ namespace BouncingGame.Overlays
 
             confirmOverlay = new ConfirmOverlay(getBallOverlay);
             AddChild(confirmOverlay);
+
+            tagOverlay = new TagOverlay();
+            AddChild(tagOverlay);
+
+            warningOverlay = new WarningOverlay();
+            AddChild(warningOverlay);
         }
 
         public override void HandleInput(InputHelper inputHelper)
@@ -94,18 +102,39 @@ namespace BouncingGame.Overlays
                 return;
             }
 
+            if (tagOverlay.Visible)
+            {
+                tagOverlay.HandleInput(inputHelper);
+                return;
+            }
+
+            if (warningOverlay.Visible)
+            {
+                warningOverlay.HandleInput(inputHelper);
+                return;
+            }
+
             base.HandleInput(inputHelper);
 
             if (getBallButton.Pressed)
             {
                 ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
-                confirmOverlay.Show();
+                if (GameSettingHelper.GetMoney() >= 100)
+                    confirmOverlay.Show();
+                else
+                    warningOverlay.Show();
             }
 
             if (replayButton.Pressed)
             {
                 ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
                 ExtendedGame.GameStateManager.SwitchTo(StateName.Home);
+            }
+
+            if (tagButton.Pressed)
+            {
+                ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
+                tagOverlay.Show();
             }
         }
 
@@ -115,6 +144,8 @@ namespace BouncingGame.Overlays
 
             getBallOverlay.Visible = false;
             confirmOverlay.Visible = false;
+            tagOverlay.Visible = false;
+            warningOverlay.Visible = false;
         }
 
         public override void Update(GameTime gameTime)

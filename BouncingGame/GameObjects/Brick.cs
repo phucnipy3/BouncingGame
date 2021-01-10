@@ -183,6 +183,9 @@ namespace BouncingGame.GameObjects
             if (durability <= 0)
             {
                 Visible = false;
+                ((PlayState)ExtendedGame.GameStateManager
+                    .GetGameState(StateName.Play))
+                    .CreateFireWork(GlobalPosition + new Vector2(container.Width, container.Height)/2);
             }
         }
 

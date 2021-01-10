@@ -16,6 +16,8 @@ namespace BouncingGame.Overlays
         private float timeEslapsed = 0;
         private TextGameObject message;
         private RandomBall randomBall;
+        private ListStar fireWorkMaker;
+        private float interval = 0.6f;
 
         public GetBallOverlay() : base()
         {
@@ -41,6 +43,9 @@ namespace BouncingGame.Overlays
             message.Visible = false;
             message.Text = "Click to get ball";
             message.LocalPosition = new Vector2(350, 900);
+
+            fireWorkMaker = new ListStar(Depth.RandomBall + 0.001f);
+            AddChild(fireWorkMaker);
             Reset();
         }
 
@@ -52,6 +57,7 @@ namespace BouncingGame.Overlays
             message.Visible = false;
             randomBall = new RandomBall(GameSettingHelper.GetRandomBall().LargeSpritePath);
             glowing.Visible = false;
+            ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_gift");
         }
 
         public override void Update(GameTime gameTime)
@@ -59,10 +65,25 @@ namespace BouncingGame.Overlays
             base.Update(gameTime);
 
             timeEslapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            if (timeEslapsed > loadingTime)
+
+            if(!message.Visible)
             {
-                message.Visible = true;
+                if (timeEslapsed > loadingTime)
+                {
+                    message.Visible = true;
+                    timeEslapsed -= loadingTime;
+                }
             }
+            else
+            {
+                if(timeEslapsed > interval)
+                {
+                    timeEslapsed -= interval;
+                    fireWorkMaker.CreateFireWork(ExtendedGame.Random.Next(40, 60), new Vector2(ExtendedGame.Random.Next(14), ExtendedGame.Random.Next(5,20)) * 50);
+                }
+            }
+            
+            
 
             if (randomBall != null)
             {
@@ -84,7 +105,7 @@ namespace BouncingGame.Overlays
         {
             base.HandleInput(inputHelper);
 
-            if (timeEslapsed > loadingTime && inputHelper.MouseLeftButtonPressed())
+            if (message.Visible && inputHelper.MouseLeftButtonPressed())
             {
                 Hide();
             }

@@ -57,6 +57,7 @@ namespace BouncingGame.GameObjects
 
         private string spriteName;
         private TextGameObject totalBall;
+        private float speed;
 
         private ListBall()
         {
@@ -66,7 +67,7 @@ namespace BouncingGame.GameObjects
 
         public void AddBall()
         {
-            var newBall = new Ball(spriteName);
+            var newBall = new Ball(spriteName, speed);
             newBall.LocalPosition = DropPosition;
             AddChild(newBall);
         }
@@ -101,7 +102,9 @@ namespace BouncingGame.GameObjects
 
         public override void Reset()
         {
-            spriteName = GameSettingHelper.GetSelectedBall().OriginSpritePath;
+            var model = GameSettingHelper.GetSelectedBall();
+            spriteName = model.OriginSpritePath;
+            speed = model.Speed;
             DropPosition = new Vector2(350, 1050);
             ballNumber = 1;
             Clear();

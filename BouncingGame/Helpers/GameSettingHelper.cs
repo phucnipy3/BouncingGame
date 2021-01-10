@@ -14,7 +14,7 @@ namespace BouncingGame.Helpers
     {
         public static BallModel DefaultBall = new BallModel
         {
-            OriginSpritePath = "Sprites/UI/spr_ball_normal_4mm"
+            OriginSpritePath = "UI/spr_ball_normal_4mm"
         };
 
         public static List<BallModel> GetListBall()
@@ -25,6 +25,7 @@ namespace BouncingGame.Helpers
 
         public static BallModel GetSelectedBall()
         {
+            GenerateListBall();
             var balls = GetListBall();
             var selectedBall = balls.FirstOrDefault(x => x.Id == Properties.GameSetting.Default.SelectedId);
             if (selectedBall == null)
@@ -86,7 +87,7 @@ namespace BouncingGame.Helpers
 
         public static BallModel GetRandomBall()
         {
-            var balls = GetListBall();
+            var originalBalls = GetListBall();
 
             int rate = ExtendedGame.Random.Next() % 100;
             string rarity = Rarity.Normal;
@@ -99,12 +100,12 @@ namespace BouncingGame.Helpers
             else if (rate >= 50)
                 rarity = Rarity.Rare;
 
-            balls = balls.Where(x => x.Rarity == rarity).ToList();
+            var balls = originalBalls.Where(x => x.Rarity == rarity).ToList();
 
             var randomBall = balls[ExtendedGame.Random.Next(balls.Count)];
             randomBall.Locked = false;
 
-            AssignBalls(balls);
+            AssignBalls(originalBalls);
             return randomBall;
         }
 
@@ -127,25 +128,61 @@ namespace BouncingGame.Helpers
                 new BallModel
                 {
                     Id = 1,
-                    LargeSpritePath = "Sprites/UI/spr_ball_normal_4mm",
-                    Locked = false,
-                    OriginSpritePath = "Sprites/UI/spr_ball_normal_4mm",
-                    ShadowSpritePath = "Sprites/UI/spr_ball_normal_4mm",
                     Name = "SIMPLE BALL",
-                    Rarity = "NORMAL",
-                    Size = "4.00MM"
+                    Rarity = Rarity.Normal,
+                    Size = "4.00MM",
+                    OriginSpritePath = "Balls/spr_ball_simple_normal_4mm",
+                    ShadowSpritePath = "Balls/spr_ball_simple_normal_4mm_store",
+                    LargeSpritePath = "Balls/spr_ball_simple_normal_4mm_store",
+                    Locked = false,
                 },
                 new BallModel
                 {
                     Id = 2,
-                    LargeSpritePath = "Sprites/UI/spr_item_add_coin",
-                    Locked = false,
-                    OriginSpritePath = "Sprites/UI/spr_item_add_coin",
-                    ShadowSpritePath = "Sprites/UI/spr_item_add_coin",
-                    Name = "COIN BALL",
-                    Rarity = "UNIQUE",
-                    Size = "8.00MM"
+                    Name = "COIN",
+                    Rarity = Rarity.Legendary,
+                    Size = "4.00MM",
+                    OriginSpritePath = "Balls/spr_ball_coin_legendary_4mm",
+                    ShadowSpritePath = "Balls/spr_ball_coin_legendary_4mm_shadow",
+                    LargeSpritePath = "Balls/spr_ball_coin_legendary_4mm_store",
+                    Locked = true,
                 },
+                new BallModel
+                {
+                    Id = 3,
+                    Name = "15KM",
+                    Rarity = Rarity.Unique,
+                    Size = "3.71MM",
+                    OriginSpritePath = "Balls/spr_ball_15km_legendary_3.71mm",
+                    ShadowSpritePath = "Balls/spr_ball_15km_legendary_3.71mm_shadow",
+                    LargeSpritePath = "Balls/spr_ball_15km_legendary_3.71mm_store",
+                    Locked = true,
+                    Speed = 1500
+                },
+
+                new BallModel
+                {
+                    Id = 4,
+                    Name = "STAR",
+                    Rarity = Rarity.Rare,
+                    Size = "4.00MM",
+                    OriginSpritePath = "Balls/spr_ball_star_unique_4mm",
+                    ShadowSpritePath = "Balls/spr_ball_star_unique_4mm_shadow",
+                    LargeSpritePath = "Balls/spr_ball_star_unique_4mm_store",
+                    Locked = true,
+                },
+                new BallModel
+                {
+                    Id = 5,
+                    Name = "SUN",
+                    Rarity = Rarity.Epic,
+                    Size = "11.00MM",
+                    OriginSpritePath = "Balls/spr_ball_sun_unique_11mm",
+                    ShadowSpritePath = "Balls/spr_ball_sun_unique_11mm_shadow",
+                    LargeSpritePath = "Balls/spr_ball_sun_unique_11mm_store",
+                    Locked = true,
+                },
+
             };
 
             AssignBalls(balls);

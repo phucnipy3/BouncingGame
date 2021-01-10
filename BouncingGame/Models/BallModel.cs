@@ -28,6 +28,7 @@ namespace BouncingGame.Models
         public string LargeSpritePath { get; set; }
         public string ShadowSpritePath { get; set; }
         public bool Locked { get; set; }
+        public float Speed { get; set; } = 1200;
 
     }
 }

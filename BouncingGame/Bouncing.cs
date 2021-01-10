@@ -54,8 +54,9 @@ namespace BouncingGame
             MediaPlayer.IsMuted = isMuted;
             SoundEffect.MasterVolume = isMuted ? 0f : 1f;
 
-            //// play background music
-            //AssetManager.PlaySong("Sounds/snd_music", true);
+            // play background music
+            AssetManager.PlaySong("Sounds/snd_music", true);
+
         }
     }
 }
