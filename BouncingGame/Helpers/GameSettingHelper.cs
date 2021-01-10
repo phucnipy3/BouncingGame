@@ -1,4 +1,5 @@
-﻿using BouncingGame.Models;
+﻿using BouncingGame.Constants;
+using BouncingGame.Models;
 using Engine;
 using Newtonsoft.Json;
 using System;
@@ -87,9 +88,20 @@ namespace BouncingGame.Helpers
         {
             var balls = GetListBall();
 
-            int number = ExtendedGame.Random.Next(balls.Count());
+            int rate = ExtendedGame.Random.Next() % 100;
+            string rarity = Rarity.Normal;
+            if (rate >= 98)
+                rarity = Rarity.Legendary;
+            else if (rate >= 90)
+                rarity = Rarity.Unique;
+            else if (rate >= 75)
+                rarity = Rarity.Epic;
+            else if (rate >= 50)
+                rarity = Rarity.Rare;
 
-            var randomBall = balls[number];
+            balls = balls.Where(x => x.Rarity == rarity).ToList();
+
+            var randomBall = balls[ExtendedGame.Random.Next(balls.Count)];
             randomBall.Locked = false;
 
             AssignBalls(balls);
