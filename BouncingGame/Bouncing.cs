@@ -1,7 +1,10 @@
 ﻿using BouncingGame.Constants;
 using BouncingGame.GameStates;
+using BouncingGame.Helpers;
 using Engine;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 using System;
 
 namespace BouncingGame
@@ -44,6 +47,12 @@ namespace BouncingGame
 
             // start at the home screen
             GameStateManager.SwitchTo(StateName.Home);
+
+            // hanlde volumn state
+
+            bool isMuted = GameSettingHelper.GetVolumnState();
+            MediaPlayer.IsMuted = isMuted;
+            SoundEffect.MasterVolume = isMuted ? 0f : 1f;
 
             //// play background music
             //AssetManager.PlaySong("Sounds/snd_music", true);

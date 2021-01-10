@@ -98,11 +98,13 @@ namespace BouncingGame.Overlays
 
             if (getBallButton.Pressed)
             {
+                ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
                 confirmOverlay.Show();
             }
 
             if (replayButton.Pressed)
             {
+                ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
                 ExtendedGame.GameStateManager.SwitchTo(StateName.Home);
             }
         }

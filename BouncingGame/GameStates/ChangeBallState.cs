@@ -40,24 +40,26 @@ namespace BouncingGame.GameStates
             size.LocalPosition = new Vector2(350, 440);
 
             backButton = new Button("Sprites/Buttons/spr_btn_back", Depth.Button);
+            backButton.SetOriginToLeftTop();
             backButton.LocalPosition = new Vector2(10, 160);
             gameObjects.AddChild(backButton);
 
             selectButton = new Button("Sprites/Buttons/spr_btn_select", Depth.Button);
-            selectButton.LocalPosition = new Vector2(300, 1000);
+            selectButton.SetOriginToCenterBottom();
+            selectButton.LocalPosition = new Vector2(350, 1000);
             gameObjects.AddChild(selectButton);
 
             ballForSelect = new BallForSelect();
             gameObjects.AddChild(ballForSelect);
 
             selectLeftBallButton = new Button("Sprites/Buttons/spr_arrow_left", Depth.Button);
-            selectLeftBallButton.SetOriginToCenter();
-            selectLeftBallButton.LocalPosition = new Vector2(20, 600);
+            selectLeftBallButton.SetOriginToLeftCenter();
+            selectLeftBallButton.LocalPosition = new Vector2(10, 650);
             gameObjects.AddChild(selectLeftBallButton);
 
             selectRightBallButton = new Button("Sprites/Buttons/spr_arrow_right", Depth.Button);
-            selectRightBallButton.SetOriginToCenter();
-            selectRightBallButton.LocalPosition = new Vector2(600, 600);
+            selectRightBallButton.SetOriginToRightCenter();
+            selectRightBallButton.LocalPosition = new Vector2(690, 650);
             gameObjects.AddChild(selectRightBallButton);
             
             Reset();
@@ -69,22 +71,26 @@ namespace BouncingGame.GameStates
 
             if (backButton.Pressed)
             {
+                ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
                 ExtendedGame.GameStateManager.SwitchTo(StateName.Home);
             }
 
             if (selectButton.Pressed)
             {
+                ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
                 GameSettingHelper.ChangeSelectedBall(selectingBall.Id);
                 ExtendedGame.GameStateManager.SwitchTo(StateName.Home);
             }
 
             if (selectLeftBallButton.Pressed)
             {
+                ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
                 SelectLeftBall();
             }
 
             if (selectRightBallButton.Pressed)
             {
+                ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
                 SelectRightBall();
             }
         }
@@ -100,7 +106,7 @@ namespace BouncingGame.GameStates
 
         public void SelectLeftBall()
         {
-            selectingBall =  listBall[(listBall.IndexOf(selectingBall) - 1) % listBall.Count()];
+            selectingBall =  listBall[(listBall.IndexOf(selectingBall) - 1 + listBall.Count()) % listBall.Count()];
             UpdateSelectingBall();
         }
 

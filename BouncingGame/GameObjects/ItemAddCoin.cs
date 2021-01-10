@@ -65,7 +65,7 @@ namespace BouncingGame.GameObjects
 
         public void PlayEffect()
         {
-            // play sound
+            ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_cash");
             visualEffect = new IncreaseEffect(GlobalPosition);
         }
 

@@ -212,6 +212,7 @@ namespace BouncingGame.GameObjects
             if (Vector2.Distance(ball.GlobalCenter, closestPoint) <= ball.Radius)
             {
                 normal = Vector2.Normalize(ball.GlobalCenter - closestPoint);
+                ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_touch_hard");
                 return true;
             }
 

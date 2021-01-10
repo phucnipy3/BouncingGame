@@ -38,11 +38,13 @@ namespace BouncingGame.Overlays
 
             if (cancelButton.Pressed)
             {
+                ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
                 Hide();
             }
 
             if (continueButton.Pressed)
             {
+                ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
                 Hide();
                 GameSettingHelper.SetMoney(GameSettingHelper.GetMoney() - 100);
                 getBallOverlay.Show();

@@ -107,7 +107,7 @@ namespace BouncingGame.GameObjects
 
         public void PlayEffect()
         {
-            // play sound
+            ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_clear_column");
             visualEffects.Add(CreateClearColumnEffect());
         }
 

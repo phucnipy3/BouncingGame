@@ -81,8 +81,7 @@ namespace BouncingGame.GameStates
 
             if (getBallButton.Pressed)
             {
-                // TODO: switch to get ball
-                //ExtendedGame.GameStateManager.SwitchTo();
+                ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
 
                 // TODO: remove this code
                 //GameSettingHelper.GenerateListBall();
@@ -91,10 +90,12 @@ namespace BouncingGame.GameStates
             }
             if (changeBallButton.Pressed)
             {
+                ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
                 ExtendedGame.GameStateManager.SwitchTo(StateName.ChangeBall);
             }
             if (playButton.Pressed)
             {
+                ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
                 ExtendedGame.GameStateManager.SwitchTo(StateName.Play);
             }
         }

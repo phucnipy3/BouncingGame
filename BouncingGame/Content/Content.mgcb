@@ -97,39 +97,41 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/TotalBall.spritefont
 
-#begin Sounds/snd_cash.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
+#begin Sounds/snd_cash.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:Sounds/snd_cash.mp3
+/build:Sounds/snd_cash.wav
 
-#begin Sounds/snd_clear_column.m4a
-/importer:
-/processor:
-/build:Sounds/snd_clear_column.m4a
-
-#begin Sounds/snd_clear_row.m4a
-/importer:
-/processor:
-/build:Sounds/snd_clear_row.m4a
-
-#begin Sounds/snd_click.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
+#begin Sounds/snd_clear_column.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:Sounds/snd_click.mp3
+/build:Sounds/snd_clear_column.wav
 
-#begin Sounds/snd_touch_hard.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
+#begin Sounds/snd_clear_row.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:Sounds/snd_touch_hard.mp3
+/build:Sounds/snd_clear_row.wav
 
-#begin Sounds/snd_touch_soft.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
+#begin Sounds/snd_click.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:Sounds/snd_touch_soft.mp3
+/build:Sounds/snd_click.wav
+
+#begin Sounds/snd_touch_hard.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/snd_touch_hard.wav
+
+#begin Sounds/snd_touch_soft.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/snd_touch_soft.wav
 
 #begin Sprites/Animations/spr_animation_getball@4x3.png
 /importer:TextureImporter

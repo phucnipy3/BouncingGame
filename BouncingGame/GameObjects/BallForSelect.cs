@@ -17,8 +17,8 @@ namespace BouncingGame.GameObjects
             set 
             {
                 information = value;
-                ball = new JumpingBall(information.LargeSpritePath, Depth.OverlayButton, new Vector2(350, 600), 150, 0.2f);
-                shadowBall = new JumpingBall(information.ShadowSpritePath, Depth.OverlayButton, new Vector2(350, 600), 150, 0.2f);
+                ball = new JumpingBall(information.LargeSpritePath, Depth.OverlayButton, new Vector2(350, 600), 100, 0.2f);
+                shadowBall = new JumpingBall(information.ShadowSpritePath, Depth.OverlayButton, new Vector2(350, 600), 100, 0.2f);
                 ball.Parent = this;
                 ball.SetOriginToCenter();
                 shadowBall.Parent = this;

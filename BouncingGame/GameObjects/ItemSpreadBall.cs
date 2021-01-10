@@ -97,6 +97,7 @@ namespace BouncingGame.GameObjects
 
         public void PlayEffect()
         {
+            ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_touch_soft");
             PlayAnimation("anim", true);
         }
     }

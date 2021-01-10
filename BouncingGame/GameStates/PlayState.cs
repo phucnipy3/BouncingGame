@@ -236,12 +236,14 @@ namespace BouncingGame.GameStates
 
             if (pauseButton.Pressed)
             {
+                ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
                 pauseOverlay.IsGuide = false;
                 pauseOverlay.Show();
             }
 
             if (guideButton.Pressed)
             {
+                ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
                 pauseOverlay.IsGuide = true;
                 pauseOverlay.Show();
             }
