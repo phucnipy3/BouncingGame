@@ -105,7 +105,6 @@ namespace BouncingGame.GameStates
             var currentMoney = GameSettingHelper.GetMoney();
             if (canContinue && currentMoney >= 10)
             {
-                GameSettingHelper.SetMoney(currentMoney - 10);
                 continueOverlay.Show();
             }
             else

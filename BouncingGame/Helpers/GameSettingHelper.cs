@@ -25,7 +25,7 @@ namespace BouncingGame.Helpers
 
         public static BallModel GetSelectedBall()
         {
-            //GenerateListBall();
+            GenerateListBall();
             var balls = GetListBall();
             var selectedBall = balls.FirstOrDefault(x => x.Id == Properties.GameSetting.Default.SelectedId);
             if (selectedBall == null)

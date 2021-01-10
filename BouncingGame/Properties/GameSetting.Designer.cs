@@ -25,7 +25,25 @@ namespace BouncingGame.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("[]")]
+        [global::System.Configuration.DefaultSettingValueAttribute("[{\"Id\":1,\"Name\":\"SIMPLE BALL\",\"Rarity\":\"NORMAL\",\"Color\":{\"B\":255,\"G\":255,\"R\":255," +
+            "\"A\":255},\"Size\":\"4.00MM\",\"OriginSpritePath\":\"Balls/spr_ball_simple_normal_4mm\",\"" +
+            "LargeSpritePath\":\"Balls/spr_ball_simple_normal_4mm_store\",\"ShadowSpritePath\":\"Ba" +
+            "lls/spr_ball_simple_normal_4mm_store\",\"Locked\":false,\"Speed\":1200.0},{\"Id\":2,\"Na" +
+            "me\":\"COIN\",\"Rarity\":\"LEGENDARY\",\"Color\":{\"B\":32,\"G\":32,\"R\":240,\"A\":255},\"Size\":\"" +
+            "4.00MM\",\"OriginSpritePath\":\"Balls/spr_ball_coin_legendary_4mm\",\"LargeSpritePath\"" +
+            ":\"Balls/spr_ball_coin_legendary_4mm_store\",\"ShadowSpritePath\":\"Balls/spr_ball_co" +
+            "in_legendary_4mm_shadow\",\"Locked\":true,\"Speed\":1200.0},{\"Id\":3,\"Name\":\"15KM\",\"Ra" +
+            "rity\":\"UNIQUE\",\"Color\":{\"B\":45,\"G\":207,\"R\":231,\"A\":255},\"Size\":\"3.71MM\",\"OriginS" +
+            "pritePath\":\"Balls/spr_ball_15km_legendary_3.71mm\",\"LargeSpritePath\":\"Balls/spr_b" +
+            "all_15km_legendary_3.71mm_store\",\"ShadowSpritePath\":\"Balls/spr_ball_15km_legenda" +
+            "ry_3.71mm_shadow\",\"Locked\":true,\"Speed\":1500.0},{\"Id\":4,\"Name\":\"STAR\",\"Rarity\":\"" +
+            "RARE\",\"Color\":{\"B\":154,\"G\":71,\"R\":10,\"A\":255},\"Size\":\"4.00MM\",\"OriginSpritePath\"" +
+            ":\"Balls/spr_ball_star_unique_4mm\",\"LargeSpritePath\":\"Balls/spr_ball_star_unique_" +
+            "4mm_store\",\"ShadowSpritePath\":\"Balls/spr_ball_star_unique_4mm_shadow\",\"Locked\":t" +
+            "rue,\"Speed\":1200.0},{\"Id\":5,\"Name\":\"SUN\",\"Rarity\":\"EPIC\",\"Color\":{\"B\":185,\"G\":19" +
+            ",\"R\":104,\"A\":255},\"Size\":\"11.00MM\",\"OriginSpritePath\":\"Balls/spr_ball_sun_unique" +
+            "_11mm\",\"LargeSpritePath\":\"Balls/spr_ball_sun_unique_11mm_store\",\"ShadowSpritePat" +
+            "h\":\"Balls/spr_ball_sun_unique_11mm_shadow\",\"Locked\":true,\"Speed\":1200.0}]")]
         public string ListBall {
             get {
                 return ((string)(this["ListBall"]));
@@ -49,7 +67,7 @@ namespace BouncingGame.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("200")]
         public int TotalCoin {
             get {
                 return ((int)(this["TotalCoin"]));
