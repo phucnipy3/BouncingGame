@@ -10,7 +10,7 @@ namespace BouncingGame.GameObjects
         public bool IsAtTop { get; private set; } = false;
         public RandomBall(string spriteName): base(spriteName, Depth.RandomBall)
         {
-            Scale = 150 / sprite.Width;
+            Scale = 150f / sprite.Width;
             SetOriginToCenter();
             LocalPosition = new Vector2(350, 600);
             targetPosition = LocalPosition - new Vector2(0, 100);

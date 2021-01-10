@@ -48,9 +48,11 @@ namespace BouncingGame.GameObjects
         }
 
         List<Brick> touchedBricks;
+        private float speed;
 
-        public Ball(string spriteName) : base(spriteName, Depth.Ball)
+        public Ball(string spriteName, float speed) : base(spriteName, Depth.Ball)
         {
+            this.speed = speed;
             SetOriginToCenterBottom();
             touchedBricks = new List<Brick>();
             Radius = Width / 2;
@@ -113,7 +115,7 @@ namespace BouncingGame.GameObjects
         {
             var rotation = ExtendedGame.Random.NextDouble() * MathHelper.Pi * 2;
             rotation = MathHelperExtension.Map(rotation, 0, MathHelper.Pi * 2, MathHelper.Pi / 6, MathHelper.Pi - MathHelper.Pi / 6);
-            velocity = new Vector2((float)Math.Cos(rotation),-(float)Math.Sin(rotation)) * Constant.BallVelocity;
+            velocity = new Vector2((float)Math.Cos(rotation),-(float)Math.Sin(rotation)) * speed;
             lastNormal = Vector2.Zero;
         }
 
@@ -260,7 +262,7 @@ namespace BouncingGame.GameObjects
 
         public void Shoot(float rotation, double peddingTime)
         {
-            velocity = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation)) * Constant.BallVelocity;
+            velocity = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation)) * speed;
             eslapsedTime = -peddingTime;
             Shooting = true;
             droped = false;

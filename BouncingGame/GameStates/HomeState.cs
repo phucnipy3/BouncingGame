@@ -106,7 +106,6 @@ namespace BouncingGame.GameStates
             selectedBall = GameSettingHelper.GetSelectedBall();
             jumpingBall = new JumpingBall(selectedBall.OriginSpritePath, 0, new Vector2(525, 720), 110, 0.2f);
             jumpingBall.SetOriginToCenterBottom();
-            moneyText.Text = GameSettingHelper.GetMoney().ToString("N0");
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -121,6 +120,7 @@ namespace BouncingGame.GameStates
             base.Update(gameTime);
             if (jumpingBall != null)
                 jumpingBall.Update(gameTime);
+            moneyText.Text = GameSettingHelper.GetMoney().ToString("N0");
         }
     }
 }

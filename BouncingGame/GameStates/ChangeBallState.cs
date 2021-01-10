@@ -130,8 +130,9 @@ namespace BouncingGame.GameStates
                 selectButton.Visible = true;
             }
 
-            name.Text = selectingBall.Name;
+            name.Text = selectingBall.Locked ? "???" : selectingBall.Name;
             rarity.Text = selectingBall.Rarity;
+            rarity.Color = selectingBall.Color;
             size.Text = selectingBall.Size;
         }
     }

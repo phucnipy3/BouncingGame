@@ -56,6 +56,7 @@ namespace BouncingGame
 
             // play background music
             AssetManager.PlaySong("Sounds/snd_music", true);
+
         }
     }
 }
