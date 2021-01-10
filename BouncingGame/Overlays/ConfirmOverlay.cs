@@ -1,4 +1,5 @@
 ﻿using BouncingGame.Constants;
+using BouncingGame.Helpers;
 using Engine;
 using Engine.UI;
 using Microsoft.Xna.Framework;
@@ -20,11 +21,13 @@ namespace BouncingGame.Overlays
             AddChild(background);
 
             cancelButton = new Button("Sprites/Buttons/spr_btn_cancel", Depth.OverlayButton2);
-            cancelButton.LocalPosition = new Vector2(100, 675);
+            cancelButton.SetOriginToLeftCenter();
+            cancelButton.LocalPosition = new Vector2(30, 700);
             AddChild(cancelButton);
 
             continueButton = new Button("Sprites/Buttons/spr_btn_continue", Depth.OverlayButton2);
-            continueButton.LocalPosition = new Vector2(450, 675);
+            continueButton.SetOriginToRightCenter();
+            continueButton.LocalPosition = new Vector2(670, 700);
             AddChild(continueButton);
 
         }
@@ -41,7 +44,7 @@ namespace BouncingGame.Overlays
             if (continueButton.Pressed)
             {
                 Hide();
-                // - coin
+                GameSettingHelper.SetMoney(GameSettingHelper.GetMoney() - 100);
                 getBallOverlay.Show();
             }
         }

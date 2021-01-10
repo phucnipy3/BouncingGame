@@ -114,7 +114,7 @@ namespace BouncingGame.GameObjects
         private AnimatedGameObject CreateClearColumnEffect()
         {
             AnimatedGameObject newObject = new AnimatedGameObject(Depth.Effect);
-            newObject.LoadAnimation("Sprites/Animations/spr_animation_item_break_vertical@10", "col", false, 0.01f);
+            newObject.LoadAnimation("Sprites/Animations/spr_animation_item_break_vertical@9", "col", false, 0.01f);
             newObject.PlayAnimation("col", true);
             newObject.SetOriginToCenter();
             newObject.LocalPosition = new Vector2(50 + column * 100, 600);

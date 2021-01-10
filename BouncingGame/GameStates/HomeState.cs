@@ -17,20 +17,36 @@ namespace BouncingGame.GameStates
         private Button playButton;
         private JumpingBall jumpingBall;
         private BallModel selectedBall;
+        private SpriteGameObject logo;
+        private TextGameObject moneyText;
 
         private GetBallOverlay getBallOverlay;
         private ConfirmOverlay confirmOverlay;
 
         public HomeState()
         {
-            gameObjects.AddChild(new SpriteGameObject("Sprites/Backgrounds/spr_home", Depth.Backgroud));
+            gameObjects.AddChild(new SpriteGameObject("Sprites/Backgrounds/spr_play", Depth.Backgroud));
 
             getBallButton = new Button("Sprites/Buttons/spr_btn_get_ball", Depth.Button);
-            getBallButton.LocalPosition = new Vector2(620, 210);
+            getBallButton.SetOriginToRightTop();
+            getBallButton.LocalPosition = new Vector2(680, 170);
+            
             changeBallButton = new Button("Sprites/Buttons/spr_btn_change_ball", Depth.Button);
-            changeBallButton.LocalPosition = new Vector2(100, 800);
+            changeBallButton.SetOriginToLeftBottom();
+            changeBallButton.LocalPosition = new Vector2(100, 940);
+            
             playButton = new Button("Sprites/Buttons/spr_btn_play", Depth.Button);
-            playButton.LocalPosition = new Vector2(400, 800);
+            playButton.SetOriginToRightBottom();
+            playButton.LocalPosition = new Vector2(600, 940);
+
+            logo = new SpriteGameObject("Sprites/UI/spr_logo_name", Depth.Button);
+            logo.SetOriginToCenter();
+            logo.LocalPosition = new Vector2(350, 550);
+            gameObjects.AddChild(logo);
+
+            moneyText = new TextGameObject("Fonts/PlayMoney", Depth.Button, Color.White, TextGameObject.HorizontalAlignment.Left, TextGameObject.VerticalAlignment.Center);
+            gameObjects.AddChild(moneyText);
+            moneyText.LocalPosition = new Vector2(120, 1132);
 
 
             gameObjects.AddChild(getBallButton);
@@ -87,8 +103,9 @@ namespace BouncingGame.GameStates
         {
             base.Reset();
             selectedBall = GameSettingHelper.GetSelectedBall();
-            jumpingBall = new JumpingBall(selectedBall.OriginSpritePath, 0, new Vector2(600, 650), 150, 0.2f);
+            jumpingBall = new JumpingBall(selectedBall.OriginSpritePath, 0, new Vector2(525, 720), 110, 0.2f);
             jumpingBall.SetOriginToCenterBottom();
+            moneyText.Text = GameSettingHelper.GetMoney().ToString("N0");
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)

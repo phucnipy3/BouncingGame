@@ -1,12 +1,13 @@
 ﻿using BouncingGame.Constants;
 using BouncingGame.GameStates;
+using BouncingGame.Helpers;
 using Engine;
 using Engine.UI;
 using Microsoft.Xna.Framework;
 
 namespace BouncingGame.Overlays
 {
-    public class EndGameOverlay:Overlay
+    public class EndGameOverlay : Overlay
     {
         private SpriteGameObject background;
         private Button getBallButton;
@@ -17,6 +18,7 @@ namespace BouncingGame.Overlays
         private TextGameObject highScoreText;
         private TextGameObject totalMoneyText;
         private TextGameObject additionMoneyText;
+        private Button tagButton;
         private PlayState playState;
         private GetBallOverlay getBallOverlay;
         private ConfirmOverlay confirmOverlay;
@@ -26,34 +28,42 @@ namespace BouncingGame.Overlays
         public int TotalMoney { get; set; }
         public int AdditionMoney { get; set; }
 
-        public EndGameOverlay(): base()
+        public EndGameOverlay() : base()
         {
             background = new Switch("Sprites/Backgrounds/spr_game_over", Depth.OverlayBackground);
             AddChild(background);
 
+            tagButton = new Switch("Sprites/Buttons/spr_btn_tag", Depth.OverlayButton);
+            AddChild(tagButton);
+            tagButton.SetOriginToLeftTop();
+            tagButton.LocalPosition = new Vector2(20, 120);
+
             getBallButton = new Switch("Sprites/Buttons/spr_btn_getball", Depth.OverlayButton);
             AddChild(getBallButton);
-            getBallButton.LocalPosition = new Vector2(400, 800);
+            getBallButton.LocalPosition = new Vector2(400, 770);
 
             rankButton = new Switch("Sprites/Buttons/spr_btn_rank", Depth.OverlayButton);
             AddChild(rankButton);
-            rankButton.LocalPosition = new Vector2(600, 1000);
+            rankButton.SetOriginToLeftBottom();
+            rankButton.LocalPosition = new Vector2(30, 1100);
 
             replayButton = new Switch("Sprites/Buttons/spr_btn_replay", Depth.OverlayButton);
+            replayButton.SetOriginToCenterBottom();
             AddChild(replayButton);
-            replayButton.LocalPosition = new Vector2(300, 1000);
+            replayButton.LocalPosition = new Vector2(350, 1100);
 
             shareButton = new Switch("Sprites/Buttons/spr_btn_share", Depth.OverlayButton);
             AddChild(shareButton);
-            shareButton.LocalPosition = new Vector2(10, 1000);
+            shareButton.SetOriginToRightBottom();
+            shareButton.LocalPosition = new Vector2(670, 1100);
 
             scoreText = new TextGameObject("Fonts/EndGameScore", Depth.OverlayButton, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
             AddChild(scoreText);
-            scoreText.LocalPosition = new Vector2(350, 215);
+            scoreText.LocalPosition = new Vector2(350, 252);
 
             highScoreText = new TextGameObject("Fonts/EndGameHighScore", Depth.OverlayButton, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
             AddChild(highScoreText);
-            highScoreText.LocalPosition = new Vector2(350, 360);
+            highScoreText.LocalPosition = new Vector2(350, 400);
 
             additionMoneyText = new TextGameObject("Fonts/EndGameMoney", Depth.OverlayButton, Color.White, TextGameObject.HorizontalAlignment.Right, TextGameObject.VerticalAlignment.Center);
             AddChild(additionMoneyText);
@@ -61,7 +71,7 @@ namespace BouncingGame.Overlays
 
             totalMoneyText = new TextGameObject("Fonts/EndGameMoney", Depth.OverlayButton, Color.White, TextGameObject.HorizontalAlignment.Left, TextGameObject.VerticalAlignment.Center);
             AddChild(totalMoneyText);
-            totalMoneyText.LocalPosition = new Vector2(170, 620);
+            totalMoneyText.LocalPosition = new Vector2(150, 620);
 
             getBallOverlay = new GetBallOverlay();
             AddChild(getBallOverlay);
@@ -99,15 +109,29 @@ namespace BouncingGame.Overlays
 
         public override void Show()
         {
-            scoreText.Text = Score.ToString();
-            highScoreText.Text = HighScore.ToString();
-            totalMoneyText.Text = TotalMoney.ToString();
-            additionMoneyText.Text = "+ " + AdditionMoney.ToString();
-
             base.Show();
 
             getBallOverlay.Visible = false;
             confirmOverlay.Visible = false;
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+
+            scoreText.Text = Score.ToString("N0");
+            highScoreText.Text = HighScore.ToString("N0");
+            int realtimeMoney = GameSettingHelper.GetMoney();
+            if (TotalMoney != realtimeMoney - AdditionMoney)
+            {
+                totalMoneyText.Text = GameSettingHelper.GetMoney().ToString("N0");
+                additionMoneyText.Visible = false;
+            }
+            else
+            {
+                totalMoneyText.Text = TotalMoney.ToString("N0");
+                additionMoneyText.Text = "+ " + AdditionMoney.ToString("N0");
+            }
         }
     }
 }

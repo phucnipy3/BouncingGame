@@ -20,11 +20,13 @@ namespace BouncingGame.Overlays
 
             oneMoreButton = new Switch("Sprites/Buttons/spr_btn_onemore", Depth.OverlayButton2);
             AddChild(oneMoreButton);
-            oneMoreButton.LocalPosition = new Vector2(100, 400);
+            oneMoreButton.SetOriginToRightCenter();
+            oneMoreButton.LocalPosition = new Vector2(670, 650);
 
             endGameButton = new Switch("Sprites/Buttons/spr_btn_endgame", Depth.OverlayButton2);
             AddChild(endGameButton);
-            endGameButton.LocalPosition = new Vector2(400, 400);
+            endGameButton.SetOriginToLeftCenter();
+            endGameButton.LocalPosition = new Vector2(30, 650);
 
             this.playState = playState;
         }

@@ -113,8 +113,9 @@ namespace BouncingGame.GameObjects
 
         public override void Update(GameTime gameTime)
         {
-            totalBall.Visible = false;
-            totalBall.Text = "x" + ballNumber.ToString();
+            int remainingBall = balls.Where(x => x.LocalPosition == DropPosition).Count();
+            totalBall.Visible = remainingBall > 0;
+            totalBall.Text = "x" + remainingBall.ToString();
             totalBall.LocalPosition = DropPosition - 2 * BallOffset - new Vector2(0, 20);
             if (!Shooting)
             {
@@ -122,8 +123,6 @@ namespace BouncingGame.GameObjects
                 {
                     AddBall();
                 }
-
-                totalBall.Visible = true;
             }
 
             base.Update(gameTime);

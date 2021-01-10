@@ -27,7 +27,7 @@ namespace BouncingGame.Overlays
             AddChild(giftBox);
 
             glowing = new AnimatedGameObject(Depth.OverlayButton2);
-            glowing.LoadAnimation("Sprites/Animations/spr_animation_glowing@5", "glowing", true, 0.1f);
+            glowing.LoadAnimation("Sprites/Animations/spr_animation_glowing@5x2", "glowing", true, 0.1f);
             glowing.PlayAnimation("glowing", true);
             glowing.SetOriginToCenter();
             glowing.LocalPosition = new Vector2(350, 500);
@@ -39,7 +39,7 @@ namespace BouncingGame.Overlays
             message = new TextGameObject("Fonts/GetBall", Depth.OverlayMessage, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
             AddChild(message);
             message.Visible = false;
-            message.Text = "Click to get ball!";
+            message.Text = "Click to get ball";
             message.LocalPosition = new Vector2(350, 900);
             Reset();
         }

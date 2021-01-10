@@ -53,21 +53,23 @@ namespace BouncingGame.GameStates
             guideButton = new Button("Sprites/Buttons/spr_guide", Depth.Button);
             gameObjects.AddChild(guideButton);
             guideButton.SetOriginToLeftCenter();
-            guideButton.LocalPosition = new Vector2(120, 75);
+            guideButton.LocalPosition = new Vector2(130, 75);
 
             
 
-            playScore = new TextGameObject("Fonts/PlayScore", Depth.Button, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Center);
-            gameObjects.AddChild(playScore);
-            playScore.LocalPosition = new Vector2(350, 75);
+            
 
-            playHighScore = new TextGameObject("Fonts/PlayHighScore", Depth.Button, Color.White, TextGameObject.HorizontalAlignment.Right, TextGameObject.VerticalAlignment.Center);
+            playHighScore = new TextGameObject("Fonts/PlayHighScore", Depth.Button, Color.White, TextGameObject.HorizontalAlignment.Right, TextGameObject.VerticalAlignment.Top);
             gameObjects.AddChild(playHighScore);
-            playHighScore.LocalPosition = new Vector2(690, 75);
+            playHighScore.LocalPosition = new Vector2(680, 30);
 
             playMoney = new TextGameObject("Fonts/PlayMoney", Depth.Button, Color.White, TextGameObject.HorizontalAlignment.Left, TextGameObject.VerticalAlignment.Center);
             gameObjects.AddChild(playMoney);
-            playMoney.LocalPosition = new Vector2(100, 1130);
+            playMoney.LocalPosition = new Vector2(120, 1132);
+
+            playScore = new TextGameObject("Fonts/PlayScore", Depth.Button, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Top);
+            gameObjects.AddChild(playScore);
+            playScore.LocalPosition = new Vector2(350, 20);
 
             pauseOverlay = new PauseOverlay();
             gameObjects.AddChild(pauseOverlay);
@@ -259,9 +261,9 @@ namespace BouncingGame.GameStates
             if (pauseOverlay.Visible)
                 return;
             
-            playScore.Text = Level.ToString();
-            playHighScore.Text = GameSettingHelper.GetHighScore().ToString();
-            playMoney.Text = GameSettingHelper.GetMoney().ToString();
+            playScore.Text = Level.ToString("N0");
+            playHighScore.Text = "TOP " + GameSettingHelper.GetHighScore().ToString("N0");
+            playMoney.Text = GameSettingHelper.GetMoney().ToString("N0");
             base.Update(gameTime);
         }
 
