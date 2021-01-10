@@ -44,6 +44,7 @@
     <Compile Include="Bouncing.cs" />
     <Compile Include="Constants\Constant.cs" />
     <Compile Include="Constants\Depth.cs" />
+    <Compile Include="Constants\Rarity.cs" />
     <Compile Include="Constants\UnitVector.cs" />
     <Compile Include="Constants\StateName.cs" />
     <Compile Include="Extension\DrawLineExtension.cs" />
