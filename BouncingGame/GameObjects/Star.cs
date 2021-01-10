@@ -10,22 +10,24 @@ namespace BouncingGame.GameObjects
         private Texture2D sprite;
         private Rectangle spriteRectangle;
         private Color color;
-        private int depth;
+        private float depth;
         private float time;
         private float visibleTime;
 
-        public Star(Vector2 startLocation, int depth)
+        public Star(Vector2 startLocation, float depth)
         {
             localPosition = startLocation;
             this.depth = depth;
 
-            // get sprite
+            sprite = ExtendedGame.AssetManager.LoadSprite("Sprites/UI/spr_fireworks");
 
-            spriteRectangle = new Rectangle(0, 0, ExtendedGame.Random.Next(sprite.Width), ExtendedGame.Random.Next(sprite.Height));
+            var width = ExtendedGame.Random.Next(sprite.Width);
+            var height = ExtendedGame.Random.Next(width, Math.Max(width + 5, sprite.Height));
+            spriteRectangle = new Rectangle(0, 0, width, height);
 
             color = new Color(ExtendedGame.Random.Next(255), ExtendedGame.Random.Next(255), ExtendedGame.Random.Next(255));
             var radio = ExtendedGame.Random.NextDouble() * MathHelper.TwoPi;
-            velocity = new Vector2((float)Math.Sin(radio), (float)Math.Cos(radio)) * ExtendedGame.Random.Next(600, 800);
+            velocity = new Vector2((float)Math.Sin(radio), (float)Math.Cos(radio)) * ExtendedGame.Random.Next(70, 150);
             visibleTime = (float)ExtendedGame.Random.NextDouble() * 3;
         }
 

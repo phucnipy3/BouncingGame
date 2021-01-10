@@ -98,7 +98,7 @@ namespace BouncingGame.GameObjects
 
         public void PlayEffect()
         {
-            ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_clear_row");
+            ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_item_clear");
             visualEffects.Add(CreateClearRowEffect());
         }
 

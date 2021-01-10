@@ -66,6 +66,7 @@
     <Compile Include="GameObjects\ListItemClearColumn.cs" />
     <Compile Include="GameObjects\ListItemSpreadBall.cs" />
     <Compile Include="GameObjects\ListItemClearRow.cs" />
+    <Compile Include="GameObjects\ListStar.cs" />
     <Compile Include="GameObjects\RandomBall.cs" />
     <Compile Include="GameObjects\Star.cs" />
     <Compile Include="GameStates\ChangeBallState.cs" />

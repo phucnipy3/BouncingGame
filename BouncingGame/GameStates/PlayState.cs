@@ -24,7 +24,8 @@ namespace BouncingGame.GameStates
         private PauseOverlay pauseOverlay;
         private ContinueOverlay continueOverlay;
         private EndGameOverlay endGameOverlay;
-        
+
+        private ListStar fireWorkMaker;
 
         List<int> NumberBricks = new List<int>();
         bool canContinue = true;
@@ -80,8 +81,9 @@ namespace BouncingGame.GameStates
             endGameOverlay = new EndGameOverlay();
             gameObjects.AddChild(endGameOverlay);
 
-            
 
+            fireWorkMaker = new ListStar(Depth.BallNumber + 0.001f);
+            gameObjects.AddChild(fireWorkMaker);
             Reset();
         }
 
@@ -298,6 +300,11 @@ namespace BouncingGame.GameStates
             canContinue = true;
             Level = 0;
             NextLevel();
+        }
+
+        public void CreateFireWork(Vector2 startLocation)
+        {
+            fireWorkMaker.CreateFireWork(ExtendedGame.Random.Next(40, 60), startLocation);
         }
 
         public int Level { get; private set; }
