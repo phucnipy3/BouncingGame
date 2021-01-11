@@ -123,7 +123,7 @@ namespace BouncingGame.GameStates
             ballForSelect.Information = selectingBall;
             if (selectingBall.Locked)
             {
-                selectButton.Visible = false;
+                selectButton.Visible = true;
             }
             else
             {
