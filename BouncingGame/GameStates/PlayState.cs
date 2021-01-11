@@ -1,152 +1,310 @@
 ﻿using BouncingGame.Constants;
 using BouncingGame.GameObjects;
+using BouncingGame.Helpers;
+using BouncingGame.Overlays;
 using Engine;
 using Engine.UI;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BouncingGame.GameStates
 {
     public class PlayState : GameState
     {
-        Ball ball = new Ball();
-        bool gameOver = false;
         Button pauseButton;
-        Button continueButton;
         Button guideButton;
-        Button homeButton;
-        Button volumnButton;
-        SpriteGameObject pauseBackground;
-        SpriteGameObject guideBackground;
-        bool pause = false;
+        
+        TextGameObject playMoney;
+        TextGameObject playScore;
+        TextGameObject playHighScore;
+        private int tempMoney;
+        private PauseOverlay pauseOverlay;
+        private ContinueOverlay continueOverlay;
+        private EndGameOverlay endGameOverlay;
 
+        private ListStar fireWorkMaker;
+
+        List<int> NumberBricks = new List<int>();
+        bool canContinue = true;
         public PlayState()
         {
-            gameObjects.AddChild(new SpriteGameObject("Sprites/Backgrounds/spr_home", 0));
+            for (int i = 0; i < Constant.NumberBrickRate.Length; i++)
+            {
+                NumberBricks.AddRange(Enumerable.Repeat<int>(i, Constant.NumberBrickRate[i]));
+            }
+
+            gameObjects.AddChild(new SpriteGameObject("Sprites/Backgrounds/spr_play", Depth.Backgroud));
             gameObjects.AddChild(ListBrick.Instance);
             gameObjects.AddChild(ListBall.Instance);
             gameObjects.AddChild(Director.Instance);
+            gameObjects.AddChild(ListItemAddBall.Instance);
+            gameObjects.AddChild(ListItemAddCoin.Instance);
+            gameObjects.AddChild(ListItemClearColumn.Instance);
+            gameObjects.AddChild(ListItemClearRow.Instance);
             gameObjects.AddChild(ListItemSpreadBall.Instance);
-            pauseButton = new Button("Sprites/Buttons/spr_pause", 0);
+
+            pauseButton = new Button("Sprites/Buttons/spr_pause", Depth.Button);
             gameObjects.AddChild(pauseButton);
-            pauseButton.LocalPosition = new Vector2(10, 10);
-            guideButton = new Button("Sprites/Buttons/spr_guide", 0);
+            pauseButton.SetOriginToLeftCenter();
+            pauseButton.LocalPosition = new Vector2(20, 75);
+
+            guideButton = new Button("Sprites/Buttons/spr_guide", Depth.Button);
             gameObjects.AddChild(guideButton);
-            guideButton.LocalPosition = new Vector2(100, 10);
+            guideButton.SetOriginToLeftCenter();
+            guideButton.LocalPosition = new Vector2(130, 75);
 
-            pauseBackground = new SpriteGameObject("Sprites/Backgrounds/spr_pause", 0.75f);
-            pauseBackground.Visible = false;
-            gameObjects.AddChild(pauseBackground);
-            guideBackground = new SpriteGameObject("Sprites/Backgrounds/spr_guide", 0.75f);
-            guideBackground.Visible = false;
-            gameObjects.AddChild(guideBackground);
+            
 
-            continueButton = new Button("Sprites/Buttons/spr_continue", 1);
-            gameObjects.AddChild(continueButton);
-            continueButton.LocalPosition = new Vector2(10, 10);
-            continueButton.Visible = false;
-            homeButton = new Button("Sprites/Buttons/spr_back_to_home", 1);
-            gameObjects.AddChild(homeButton);
-            homeButton.LocalPosition = new Vector2(600, 10);
-            homeButton.Visible = false; 
-            volumnButton = new Button("Sprites/Buttons/spr_mute", 1);
-            gameObjects.AddChild(volumnButton);
-            volumnButton.LocalPosition = new Vector2(100, 10);
-            volumnButton.Visible = false;
-            Level = 1;
+            
+
+            playHighScore = new TextGameObject("Fonts/PlayHighScore", Depth.Button, Color.White, TextGameObject.HorizontalAlignment.Right, TextGameObject.VerticalAlignment.Top);
+            gameObjects.AddChild(playHighScore);
+            playHighScore.LocalPosition = new Vector2(680, 30);
+
+            playMoney = new TextGameObject("Fonts/PlayMoney", Depth.Button, Color.White, TextGameObject.HorizontalAlignment.Left, TextGameObject.VerticalAlignment.Center);
+            gameObjects.AddChild(playMoney);
+            playMoney.LocalPosition = new Vector2(120, 1132);
+
+            playScore = new TextGameObject("Fonts/PlayScore", Depth.Button, Color.White, TextGameObject.HorizontalAlignment.Center, TextGameObject.VerticalAlignment.Top);
+            gameObjects.AddChild(playScore);
+            playScore.LocalPosition = new Vector2(350, 20);
+
+            pauseOverlay = new PauseOverlay();
+            gameObjects.AddChild(pauseOverlay);
+
+            continueOverlay = new ContinueOverlay(this);
+            gameObjects.AddChild(continueOverlay);
+
+            endGameOverlay = new EndGameOverlay();
+            gameObjects.AddChild(endGameOverlay);
+
+
+            fireWorkMaker = new ListStar(Depth.BallNumber + 0.001f);
+            gameObjects.AddChild(fireWorkMaker);
+            Reset();
+        }
+
+        public void EndGame()
+        {
+            SetupEndGame();
+            canContinue = false;
+        }
+
+        public void Continue()
+        {
+
+            ClearDeadRows();
+            canContinue = false;
         }
 
         public void GameOver()
         {
-            gameOver = true;
+            var currentMoney = GameSettingHelper.GetMoney();
+            if (canContinue && currentMoney >= 10)
+            {
+                continueOverlay.Show();
+            }
+            else
+            {
+                SetupEndGame();
+            }
         }
 
         public void NextLevel()
         {
             Level++;
-            ListBrick.Instance.NextLevel();
-            ListItemSpreadBall.Instance.AddItem();
+            if(Level > GameSettingHelper.GetHighScore())
+            {
+                GameSettingHelper.SetHighScore(Level);
+            }
+
+            var blocks = GenerateNewBlocks();
+            ListBrick.Instance.NextLevel(blocks.Where(x => x.Type == BlockType.Brick).ToList());
+            ListItemAddBall.Instance.AddItems(blocks.Where(x => x.Type == BlockType.ItemAddBall).Select(x => x.Column));
+            ListItemAddBall.Instance.MoveDown();
+            ListItemAddCoin.Instance.AddItems(blocks.Where(x => x.Type == BlockType.ItemAddCoin).Select(x => x.Column));
+            ListItemAddCoin.Instance.MoveDown();
+            ListItemClearColumn.Instance.AddItems(blocks.Where(x => x.Type == BlockType.ItemClearColumn).Select(x => x.Column));
+            ListItemClearColumn.Instance.MoveDown();
+            ListItemClearRow.Instance.AddItems(blocks.Where(x => x.Type == BlockType.ItemClearRow).Select(x => x.Column));
+            ListItemClearRow.Instance.MoveDown();
+            ListItemSpreadBall.Instance.AddItems(blocks.Where(x => x.Type == BlockType.ItemSpreadBall).Select(x => x.Column));
             ListItemSpreadBall.Instance.MoveDown();
         }
 
-        public override void Update(GameTime gameTime)
+        private List<Block> GenerateNewBlocks()
         {
-            if (gameOver)
+            List<Block> blocks = new List<Block>();
+            List<int> positions = new List<int>() { 0, 1, 2, 3, 4, 5, 6 };
+            int addBallPositionIndex = ExtendedGame.Random.Next(positions.Count);
+            blocks.Add(new Block
             {
-                Reset();
+                Type = BlockType.ItemAddBall,
+                Column = positions[addBallPositionIndex]
+            });
+            positions.RemoveAt(addBallPositionIndex);
+
+            if (Level % 10 == 0)
+            {
+                int numberSpecial = NumberBricks[ExtendedGame.Random.Next(0, NumberBricks.Count)];
+                for (int i = 0; i < numberSpecial; i++)
+                {
+                    int speacialBrickPositionIndex = ExtendedGame.Random.Next(positions.Count);
+                    blocks.Add(new Block
+                    {
+                        Type = BlockType.Brick,
+                        Column = positions[speacialBrickPositionIndex],
+                        BrickType = BrickType.Special
+                    });
+                    positions.RemoveAt(speacialBrickPositionIndex);
+                }
             }
 
-            if (pause)
+            if (positions.Count > 0)
             {
-                if (continueButton.Pressed)
+                int brickCount = NumberBricks[ExtendedGame.Random.Next(0, NumberBricks.Count)];
+
+                if (brickCount > positions.Count)
                 {
-                    HideOverlay();
-                    pause = false;
+                    brickCount = positions.Count;
                 }
 
-                if (volumnButton.Pressed)
+                for (int i = 0; i < brickCount; i++)
                 {
-                    // do something with volumn
-                }
+                    int brickPositionIndex = ExtendedGame.Random.Next(positions.Count);
 
-                if (homeButton.Pressed)
+                    bool isSquare = ExtendedGame.Random.NextDouble() <= Constant.SquareRate;
+                    blocks.Add(new Block
+                    {
+                        Type = BlockType.Brick,
+                        Column = positions[brickPositionIndex],
+                        BrickType = isSquare ? BrickType.Square : (BrickType)ExtendedGame.Random.Next((int)BrickType.Triangle1, (int)BrickType.Triangle4 + 1)
+                    });
+
+                    positions.RemoveAt(brickPositionIndex);
+                }
+            }
+
+            List<BlockType> existingItems = new List<BlockType>();
+
+            foreach (var leftPosition in positions)
+            {
+                bool isItem = ExtendedGame.Random.NextDouble() <= Constant.ItemRate;
+                if (isItem && (existingItems.Count < (int)BlockType.LastRandomItem - (int)BlockType.FirstRandomItem + 1))
                 {
-                    ExtendedGame.GameStateManager.SwitchTo(StateName.Home);
-                    pause = false;
+                    var type = (BlockType)ExtendedGame.Random.Next((int)BlockType.FirstRandomItem, (int)BlockType.LastRandomItem + 1);
+                    while (existingItems.Contains(type))
+                    {
+                        type = (BlockType)ExtendedGame.Random.Next((int)BlockType.FirstRandomItem, (int)BlockType.LastRandomItem + 1);
+                    }
+                    existingItems.Add(type);
+                    blocks.Add(new Block
+                    {
+                        Type = type,
+                        Column = leftPosition
+                    });
                 }
+            }
 
+            return blocks;
+        }
+
+        public override void HandleInput(InputHelper inputHelper)
+        {
+            if (pauseOverlay.Visible)
+            {
+                pauseOverlay.HandleInput(inputHelper);
                 return;
             }
 
+            if (continueOverlay.Visible)
+            {
+                continueOverlay.HandleInput(inputHelper);
+                return;
+            }
+
+            if (endGameOverlay.Visible)
+            {
+                endGameOverlay.HandleInput(inputHelper);
+                return;
+            }
+
+            
+
+            base.HandleInput(inputHelper);
+
             if (pauseButton.Pressed)
             {
-                ShowPauseOverlay();
-                pause = true;
-
+                ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
+                pauseOverlay.IsGuide = false;
+                pauseOverlay.Show();
             }
 
             if (guideButton.Pressed)
             {
-                ShowGuideOverlay();
-                pause = true;
+                ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
+                pauseOverlay.IsGuide = true;
+                pauseOverlay.Show();
+            }
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            if (endGameOverlay.Visible)
+            {
+                endGameOverlay.Update(gameTime);
+                return;
             }
 
+            if (continueOverlay.Visible)
+                return;
+
+            if (pauseOverlay.Visible)
+                return;
+            
+            playScore.Text = Level.ToString("N0");
+            playHighScore.Text = "TOP " + GameSettingHelper.GetHighScore().ToString("N0");
+            playMoney.Text = GameSettingHelper.GetMoney().ToString("N0");
             base.Update(gameTime);
-
-
         }
 
-        private void HideOverlay()
+        private void ClearDeadRows()
         {
-            guideBackground.Visible = false;
-            pauseBackground.Visible = false;
-            homeButton.Visible = false;
-            continueButton.Visible = false;
-            volumnButton.Visible = false;
+            ListBrick.Instance.ClearDeadRows();
+            ListItemAddBall.Instance.ClearDeadRows();
+            ListItemAddCoin.Instance.ClearDeadRows();
+            ListItemClearColumn.Instance.ClearDeadRows();
+            ListItemClearRow.Instance.ClearDeadRows();
+            ListItemSpreadBall.Instance.ClearDeadRows();
         }
 
-        private void ShowGuideOverlay()
+        private void SetupEndGame()
         {
-            guideBackground.Visible = true;
-            homeButton.Visible = true;
-            continueButton.Visible = true;
-            volumnButton.Visible = true;
-        }
 
-        private void ShowPauseOverlay()
-        {
-            pauseBackground.Visible = true;
-            homeButton.Visible = true;
-            continueButton.Visible = true;
-            volumnButton.Visible = true;
+            endGameOverlay.AdditionMoney = Level;
+            endGameOverlay.Score = Level;
+            endGameOverlay.HighScore = GameSettingHelper.GetHighScore();
+            tempMoney = GameSettingHelper.GetMoney();
+            endGameOverlay.TotalMoney = tempMoney;
+            GameSettingHelper.SetMoney(tempMoney + Level);
+
+            endGameOverlay.Show();
         }
 
         public override void Reset()
         {
-            gameOver = false;
-            pause = false;
-            HideOverlay();
             base.Reset();
+            canContinue = true;
+            Level = 0;
+            NextLevel();
+        }
+
+        public void CreateFireWork(Vector2 startLocation)
+        {
+            fireWorkMaker.CreateFireWork(ExtendedGame.Random.Next(40, 60), startLocation);
         }
 
         public int Level { get; private set; }

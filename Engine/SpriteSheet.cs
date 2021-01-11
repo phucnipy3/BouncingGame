@@ -123,6 +123,46 @@ namespace Engine
         }
 
         /// <summary>
+        /// Gets a vector that represents the right at center of a single sprite in this sprite sheet.
+        /// </summary>
+        public Vector2 RightCenter
+        {
+            get { return new Vector2(Width, Height / 2); }
+        }
+
+        /// <summary>
+        /// Gets a vector that represents the left at bottom of a single sprite in this sprite sheet.
+        /// </summary>
+        public Vector2 LeftBottom
+        {
+            get { return new Vector2(0, Height); }
+        }
+
+        /// <summary>
+        /// Gets a vector that represents the right at bottom of a single sprite in this sprite sheet.
+        /// </summary>
+        public Vector2 RightBottom
+        {
+            get { return new Vector2(Width, Height); }
+        }
+
+        /// <summary>
+        /// Gets a vector that represents the right at top of a single sprite in this sprite sheet.
+        /// </summary>
+        public Vector2 RightTop
+        {
+            get { return new Vector2(Width, 0); }
+        }
+
+        /// <summary>
+        /// Gets a vector that represents the left at top of a single sprite in this sprite sheet.
+        /// </summary>
+        public Vector2 LeftTop
+        {
+            get { return new Vector2(0, 0); }
+        }
+
+        /// <summary>
         /// Gets or sets the sprite index within this sprite sheet to use. 
         /// If you set a new index, the object will recalculate which part of the sprite should be drawn.
         /// </summary>

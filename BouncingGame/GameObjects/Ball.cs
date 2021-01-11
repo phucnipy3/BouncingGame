@@ -1,5 +1,6 @@
 ﻿using BouncingGame.Constants;
 using BouncingGame.GameStates;
+using BouncingGame.Helpers;
 using Engine;
 using Microsoft.Xna.Framework;
 using System;
@@ -47,9 +48,11 @@ namespace BouncingGame.GameObjects
         }
 
         List<Brick> touchedBricks;
+        private float speed;
 
-        public Ball() : base("Sprites/UI/spr_ball_normal_4mm", 0.1f)
+        public Ball(string spriteName, float speed) : base(spriteName, Depth.Ball)
         {
+            this.speed = speed;
             SetOriginToCenterBottom();
             touchedBricks = new List<Brick>();
             Radius = Width / 2;
@@ -111,7 +114,8 @@ namespace BouncingGame.GameObjects
         public void ReflectRandom()
         {
             var rotation = ExtendedGame.Random.NextDouble() * MathHelper.Pi * 2;
-            velocity = new Vector2((float)Math.Sin(rotation), (float)Math.Cos(rotation)) * Constant.BallVelocity;
+            rotation = MathHelperExtension.Map(rotation, 0, MathHelper.Pi * 2, MathHelper.Pi / 6, MathHelper.Pi - MathHelper.Pi / 6);
+            velocity = new Vector2((float)Math.Cos(rotation),-(float)Math.Sin(rotation)) * speed;
             lastNormal = Vector2.Zero;
         }
 
@@ -173,6 +177,7 @@ namespace BouncingGame.GameObjects
                 ListItemAddBall.Instance.CheckCollisionWithBall(this);
                 ListItemClearRow.Instance.CheckCollisionWithBall(this);
                 ListItemClearColumn.Instance.CheckCollisionWithBall(this);
+                ListItemAddCoin.Instance.CheckCollisionWithBall(this);
                 if (ListItemSpreadBall.Instance.CheckCollisionWithBall(this))
                 {
                     break;
@@ -185,13 +190,20 @@ namespace BouncingGame.GameObjects
 
         public bool Reflect(Vector2 normal)
         {
+            return Reflect(normal, ref this.velocity, ref this.lastNormal);
+        }
+
+
+        public bool Reflect(Vector2 normal, ref Vector2 velocity, ref Vector2 lastNormal)
+        {
             if (float.IsNaN(normal.X) || float.IsNaN(normal.Y))
                 return false;
+
             if (Vector2.Distance(normal, lastNormal) < 0.2f)
                 return false;
+
             velocity = Vector2.Reflect(velocity, normal);
             lastNormal = normal;
-
             return true;
         }
 
@@ -250,7 +262,7 @@ namespace BouncingGame.GameObjects
 
         public void Shoot(float rotation, double peddingTime)
         {
-            velocity = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation)) * Constant.BallVelocity;
+            velocity = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation)) * speed;
             eslapsedTime = -peddingTime;
             Shooting = true;
             droped = false;

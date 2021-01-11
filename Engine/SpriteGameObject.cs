@@ -114,6 +114,46 @@ namespace Engine
         }
 
         /// <summary>
+        /// Updates this object's origin so that it lies in the right at center of the sprite.
+        /// </summary>
+        public void SetOriginToRightCenter()
+        {
+            Origin = sprite.RightCenter;
+        }
+
+        /// <summary>
+        /// Updates this object's origin so that it lies in the left at bottom of the sprite.
+        /// </summary>
+        public void SetOriginToLeftBottom()
+        {
+            Origin = sprite.LeftBottom;
+        }
+
+        /// <summary>
+        /// Updates this object's origin so that it lies in the right at bottom of the sprite.
+        /// </summary>
+        public void SetOriginToRightBottom()
+        {
+            Origin = sprite.RightBottom;
+        }
+
+        /// <summary>
+        /// Updates this object's origin so that it lies in the right at bottom of the sprite.
+        /// </summary>
+        public void SetOriginToRightTop()
+        {
+            Origin = sprite.RightTop;
+        }
+
+        /// <summary>
+        /// Updates this object's origin so that it lies in the left at bottom of the sprite.
+        /// </summary>
+        public void SetOriginToLeftTop()
+        {
+            Origin = sprite.LeftTop;
+        }
+
+        /// <summary>
         /// Gets a Rectangle that describes this game object's current bounding box.
         /// This is useful for collision detection.
         /// </summary>

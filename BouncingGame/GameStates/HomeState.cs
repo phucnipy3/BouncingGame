@@ -1,49 +1,135 @@
 ﻿using BouncingGame.Constants;
+using BouncingGame.GameObjects;
+using BouncingGame.Helpers;
+using BouncingGame.Models;
+using BouncingGame.Overlays;
 using Engine;
 using Engine.UI;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace BouncingGame.GameStates
 {
     public class HomeState : GameState
     {
-        Button getBallButton;
-        Button changeBallButton;
-        Button playButton;
+        private Button getBallButton;
+        private Button changeBallButton;
+        private Button playButton;
+        private JumpingBall jumpingBall;
+        private BallModel selectedBall;
+        private SpriteGameObject logo;
+        private TextGameObject moneyText;
+
+        private GetBallOverlay getBallOverlay;
+        private ConfirmOverlay confirmOverlay;
+        private WarningOverlay warningOverlay;
+
         public HomeState()
         {
-            gameObjects.AddChild(new SpriteGameObject("Sprites/Backgrounds/spr_home", 0));
+            gameObjects.AddChild(new SpriteGameObject("Sprites/Backgrounds/spr_play", Depth.Backgroud));
+
+            getBallButton = new Button("Sprites/Buttons/spr_btn_get_ball", Depth.Button);
+            getBallButton.SetOriginToRightTop();
+            getBallButton.LocalPosition = new Vector2(680, 170);
             
-            getBallButton = new Button("Sprites/Buttons/spr_btn_get_ball", 0);
-            getBallButton.LocalPosition = new Vector2(620, 210);
-            changeBallButton = new Button("Sprites/Buttons/spr_btn_change_ball", 0);
-            changeBallButton.LocalPosition = new Vector2(100, 800);
-            playButton = new Button("Sprites/Buttons/spr_btn_play", 0);
-            playButton.LocalPosition = new Vector2(400, 800);
+            changeBallButton = new Button("Sprites/Buttons/spr_btn_change_ball", Depth.Button);
+            changeBallButton.SetOriginToLeftBottom();
+            changeBallButton.LocalPosition = new Vector2(100, 940);
+            
+            playButton = new Button("Sprites/Buttons/spr_btn_play", Depth.Button);
+            playButton.SetOriginToRightBottom();
+            playButton.LocalPosition = new Vector2(600, 940);
+
+            logo = new SpriteGameObject("Sprites/UI/spr_logo_name", Depth.Button);
+            logo.SetOriginToCenter();
+            logo.LocalPosition = new Vector2(350, 550);
+            gameObjects.AddChild(logo);
+
+            moneyText = new TextGameObject("Fonts/PlayMoney", Depth.Button, Color.White, TextGameObject.HorizontalAlignment.Left, TextGameObject.VerticalAlignment.Center);
+            gameObjects.AddChild(moneyText);
+            moneyText.LocalPosition = new Vector2(120, 1132);
+
 
             gameObjects.AddChild(getBallButton);
             gameObjects.AddChild(changeBallButton);
             gameObjects.AddChild(playButton);
 
+            getBallOverlay = new GetBallOverlay();
+            gameObjects.AddChild(getBallOverlay);
+
+            confirmOverlay = new ConfirmOverlay(getBallOverlay);
+            gameObjects.AddChild(confirmOverlay);
+
+            warningOverlay = new WarningOverlay();
+            gameObjects.AddChild(warningOverlay);
+
+            Reset();
         }
 
         public override void HandleInput(InputHelper inputHelper)
         {
+
+            if (getBallOverlay.Visible)
+            {
+                getBallOverlay.HandleInput(inputHelper);
+                return;
+            }
+
+            if (confirmOverlay.Visible)
+            {
+                confirmOverlay.HandleInput(inputHelper);
+                return;
+            }
+
+            if (warningOverlay.Visible)
+            {
+                warningOverlay.HandleInput(inputHelper);
+                return;
+            }
+
             base.HandleInput(inputHelper);
+
             if (getBallButton.Pressed)
             {
-                // TODO: switch to get ball
-                //ExtendedGame.GameStateManager.SwitchTo();
+                ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
+                if (GameSettingHelper.GetMoney() >= 100)
+                    confirmOverlay.Show();
+                else
+                    warningOverlay.Show();
             }
             if (changeBallButton.Pressed)
             {
-                // TODO: switch to change ball
-                //ExtendedGame.GameStateManager.SwitchTo();
+                ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
+                ExtendedGame.GameStateManager.SwitchTo(StateName.ChangeBall);
             }
             if (playButton.Pressed)
             {
+                ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_click");
                 ExtendedGame.GameStateManager.SwitchTo(StateName.Play);
             }
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+            selectedBall = GameSettingHelper.GetSelectedBall();
+            jumpingBall = new JumpingBall(selectedBall.OriginSpritePath, 0, new Vector2(525, 720), 110, 0.2f);
+            jumpingBall.SetOriginToCenterBottom();
+        }
+
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            base.Draw(gameTime, spriteBatch);
+            if (jumpingBall != null)
+                jumpingBall.Draw(gameTime, spriteBatch);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+            if (jumpingBall != null)
+                jumpingBall.Update(gameTime);
+            moneyText.Text = GameSettingHelper.GetMoney().ToString("N0");
         }
     }
 }

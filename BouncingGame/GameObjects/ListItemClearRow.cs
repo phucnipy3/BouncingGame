@@ -31,10 +31,21 @@ namespace BouncingGame.GameObjects
             newItem.Parent = this;
         }
 
+        public void AddItems(IEnumerable<int> cols)
+        {
+            foreach (var col in cols)
+            {
+                var newItem = new ItemClearRow(col);
+                items.Add(newItem);
+                newItem.Parent = this;
+            }
+        }
+
         public override void Update(GameTime gameTime)
         {
             if (!Visible)
                 return;
+            items.RemoveAll(x => !x.Visible);
             foreach (var item in items)
             {
                 item.Update(gameTime);
@@ -74,6 +85,7 @@ namespace BouncingGame.GameObjects
                     {
                         ListBrick.Instance.ClearRow(item.Row);
                         item.StartIntersect(ball);
+                        item.PlayEffect();
                     }
                 }
                 else
@@ -83,6 +95,15 @@ namespace BouncingGame.GameObjects
                         item.StopIntersect(ball);
                     }
                 }
+            }
+        }
+
+        public void ClearDeadRows()
+        {
+            foreach (var item in items)
+            {
+                if (item.Row > 6)
+                    item.Visible = false;
             }
         }
     }

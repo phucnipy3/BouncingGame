@@ -2,44 +2,41 @@
 using Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace BouncingGame.GameObjects
-{         
-    public class ItemAddBall : GameObject
+{
+    public class ItemAddBall : SpriteGameObject
     {
-        private int row = 0;
-        private SpriteGameObject item;
+        public int Row { get; private set; } = 0;
         private Vector2 targetPosition;
+        private IncreaseEffect visualEffect;
 
-        public ItemAddBall(int column)
+        public ItemAddBall(int column): base("Sprites/UI/spr_item_add_ball", Depth.Item)
         {
-            item = new SpriteGameObject("Sprites/UI/spr_item_add_ball", 0f);
-            item.SetOriginToCenter();
-            item.Parent = this;
-            item.LocalPosition = new Vector2(50, 50);
-            LocalPosition = new Vector2(column * 100, 150);
+            SetOriginToCenter();
+            LocalPosition = new Vector2(50 + column * 100,50 + 150);
             targetPosition = LocalPosition;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            if (!Visible)
-                return;
-            item.Draw(gameTime, spriteBatch);
+            base.Draw(gameTime, spriteBatch);
+            if (visualEffect != null)
+                visualEffect.Draw(gameTime, spriteBatch);
         }
 
         public void MoveDown()
         {
-            row++;
+            Row++;
             targetPosition = LocalPosition + new Vector2(0, 100);
             velocity = new Vector2(0, 1) * Constant.MoveDownVelocity;
         }
 
         public override void Update(GameTime gameTime)
         {
+            if (visualEffect != null)
+                visualEffect.Update(gameTime);
 
-            
             base.Update(gameTime);
 
             if (targetPosition.Y - localPosition.Y <= 0)
@@ -48,7 +45,7 @@ namespace BouncingGame.GameObjects
                 velocity = Vector2.Zero;
             }
 
-            if (LocalPosition.Y >= 946)
+            if (LocalPosition.Y >= 996)
             {
                 Visible = false;
             }
@@ -58,10 +55,16 @@ namespace BouncingGame.GameObjects
         {
             get
             {
-                return new Circle(item.Width/2, item.GlobalPosition);
+                return new Circle(Width / 2, GlobalPosition);
             }
         }
 
-        
+        public void PlayEffect()
+        {
+            visualEffect = new IncreaseEffect(GlobalPosition);
+            ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_touch_soft");
+        }
+
+
     }
 }

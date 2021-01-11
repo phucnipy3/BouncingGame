@@ -2,44 +2,33 @@
 using Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BouncingGame.GameObjects
 {
-    public class ItemClearRow: GameObject
+    public class ItemClearRow : SpriteGameObject
     {
-        private int row = 0;
-        private SpriteGameObject item;
+        public int Row { get; private set; } = 0;
         private Vector2 targetPosition;
         private bool intersected = false;
 
-        public int Row
-        {
-            get
-            {
-                return row;
-            }
-        }
+        private List<AnimatedGameObject> visualEffects = new List<AnimatedGameObject>();
 
-        public ItemClearRow(int column)
+        public ItemClearRow(int column): base("Sprites/UI/spr_item_break_horizontal", Depth.Item)
         {
-            item = new SpriteGameObject("Sprites/UI/spr_item_break_horizontal", 0f);
-            item.SetOriginToCenter();
-            item.Parent = this;
-            item.LocalPosition = new Vector2(50, 50);
-            LocalPosition = new Vector2(column * 100, 150);
+            SetOriginToCenter();
+            LocalPosition = new Vector2(50 + column * 100, 50 + 150);
             targetPosition = LocalPosition;
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            if (!Visible)
-                return;
-            item.Draw(gameTime, spriteBatch);
+            base.Draw(gameTime, spriteBatch);
+
+            foreach (var effect in visualEffects)
+            {
+                effect.Draw(gameTime, spriteBatch);
+            }
         }
 
         public void MoveDown()
@@ -49,14 +38,17 @@ namespace BouncingGame.GameObjects
                 Visible = false;
                 return;
             }
-            row++;
+            Row++;
             targetPosition = LocalPosition + new Vector2(0, 100);
             velocity = new Vector2(0, 1) * Constant.MoveDownVelocity;
         }
 
         public override void Update(GameTime gameTime)
         {
-
+            foreach(var effect in visualEffects)
+            {
+                effect.Update(gameTime);
+            }
 
             base.Update(gameTime);
 
@@ -66,7 +58,7 @@ namespace BouncingGame.GameObjects
                 velocity = Vector2.Zero;
             }
 
-            if (LocalPosition.Y >= 946)
+            if (LocalPosition.Y >= 996)
             {
                 Visible = false;
             }
@@ -76,11 +68,11 @@ namespace BouncingGame.GameObjects
         {
             get
             {
-                return new Circle(item.Width / 2, item.GlobalPosition);
+                return new Circle(Width / 2, GlobalPosition);
             }
         }
 
-        public bool Intersecting(Ball ball) 
+        public bool Intersecting(Ball ball)
         {
             return intersectingBalls.Contains(ball);
         }
@@ -102,6 +94,23 @@ namespace BouncingGame.GameObjects
             {
                 intersectingBalls.Remove(ball);
             }
+        }
+
+        public void PlayEffect()
+        {
+            ExtendedGame.AssetManager.PlaySoundEffect("Sounds/snd_item_clear");
+            visualEffects.Add(CreateClearRowEffect());
+        }
+
+        private AnimatedGameObject CreateClearRowEffect()
+        {
+            AnimatedGameObject newObject = new AnimatedGameObject(Depth.Effect);
+            newObject.LoadAnimation("Sprites/Animations/spr_animation_item_break_horizontal@1x11", "row", false, 0.01f);
+            newObject.PlayAnimation("row", true);
+            newObject.SetOriginToCenter();
+            newObject.LocalPosition = new Vector2(350, 200 + Row * 100);
+
+            return newObject;
         }
     }
 }

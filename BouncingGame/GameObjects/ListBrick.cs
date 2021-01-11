@@ -30,10 +30,10 @@ namespace BouncingGame.GameObjects
             Reset();
         }
 
-        public void NextLevel()
+        public void NextLevel(List<Block> bricks)
         {
             Level++;
-            AddNewBricks();
+            AddNewBricks(bricks);
             MoveDown();
         }
 
@@ -45,14 +45,13 @@ namespace BouncingGame.GameObjects
             }
         }
 
-        private void AddNewBricks()
+        private void AddNewBricks(List<Block> bricks)
         {
-            int durability = Level;
-            AddChild(new Brick(durability, 0));
-            AddChild(new Brick(durability, 1));
-            AddChild(new Brick(durability, 2));
-            AddChild(new Brick(durability, 4));
-            AddChild(new Brick(durability, 6));
+            foreach(var brick in bricks)
+            {
+                int durability = Level;
+                AddChild(new Brick(durability, (int)brick.BrickType % 5, brick.Column, brick.BrickType == BrickType.Special));
+            }
         }
 
         public override void Reset()
@@ -60,7 +59,6 @@ namespace BouncingGame.GameObjects
             Clear();
             bricks.Clear();
             Level = 0;
-            NextLevel();
         }
 
         public List<Vector2> GetNormalVectorsWhenTouchBall(Ball ball)
@@ -105,6 +103,15 @@ namespace BouncingGame.GameObjects
                 {
                     brick.Touched();
                 }
+            }
+        }
+
+        public void ClearDeadRows()
+        {
+            foreach (var brick in bricks)
+            {
+                if (brick.Row > 6)
+                    brick.Visible = false;
             }
         }
     }

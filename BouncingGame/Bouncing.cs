@@ -1,7 +1,10 @@
 ﻿using BouncingGame.Constants;
 using BouncingGame.GameStates;
+using BouncingGame.Helpers;
 using Engine;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 using System;
 
 namespace BouncingGame
@@ -39,13 +42,21 @@ namespace BouncingGame
             // add the game states
             GameStateManager.AddGameState(StateName.Home, new HomeState());
             GameStateManager.AddGameState(StateName.Play, new PlayState());
+            GameStateManager.AddGameState(StateName.ChangeBall, new ChangeBallState());
 
 
             // start at the home screen
             GameStateManager.SwitchTo(StateName.Home);
 
-            //// play background music
-            //AssetManager.PlaySong("Sounds/snd_music", true);
+            // hanlde volumn state
+
+            bool isMuted = GameSettingHelper.GetVolumnState();
+            MediaPlayer.IsMuted = isMuted;
+            SoundEffect.MasterVolume = isMuted ? 0f : 1f;
+
+            // play background music
+            AssetManager.PlaySong("Sounds/snd_music", true);
+
         }
     }
 }
