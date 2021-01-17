@@ -95,7 +95,7 @@ namespace BouncingGame.GameStates
 
         public void Continue()
         {
-
+            GameSettingHelper.SetMoney(GameSettingHelper.GetMoney() - 10);
             ClearDeadRows();
             canContinue = false;
         }
